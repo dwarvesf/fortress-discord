@@ -51,11 +51,11 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           path: ./infrastructure
           ref: main
-      - name: Update api version
+      - name: Update discord version
         run: |
-          cd ./infrastructure/fortress-api/$K8S_ENVIRONMENT
+          cd ./infrastructure/fortress-discord/$K8S_ENVIRONMENT
           git config user.name lmquang
           git config user.email quanglm.ops@gmail.com
           /tmp/kustomize edit set image $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE=$REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_REF_NAME}
-          git commit -am "[skip ci] fortress-api ${K8S_ENVIRONMENT} image update"
+          git commit -am "[skip ci] fortress-discord ${K8S_ENVIRONMENT} image update"
           git push origin main
