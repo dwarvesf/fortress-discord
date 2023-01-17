@@ -18,7 +18,7 @@ func (t *TechRadar) ListAssess(original *model.DiscordMessage, topics []*model.T
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       "<pepenote:885515949673951282> Assess Topics <pepenote:885515949673951282> ",
+		Title:       "<:pepenote:885515949673951282> Assess Topics <:pepenote:885515949673951282> ",
 		Description: content,
 	}
 
