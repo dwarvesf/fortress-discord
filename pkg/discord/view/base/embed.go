@@ -13,9 +13,10 @@ func SendEmbededMessage(ses *discordgo.Session, original *model.DiscordMessage, 
 	return err
 }
 
+// normalize add some default to embeded message if not set
 func normalize(original *model.DiscordMessage, response *discordgo.MessageEmbed) *discordgo.MessageEmbed {
 	if response.Timestamp == "" {
-		response.Timestamp = time.Now().Format("2006-01-02 15:04:05")
+		response.Timestamp = time.Now().Format(time.RFC3339)
 	}
 	if response.Color == 0 {
 		// default df color #D14960
