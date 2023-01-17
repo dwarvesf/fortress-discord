@@ -13,7 +13,7 @@ func (e *Earn) List(message *model.DiscordMessage) error {
 	}
 
 	// 2. render
-	err = e.view.Earn().List(data)
+	err = e.view.Earn().List(message.ChannelId, data)
 	if err != nil {
 		return err
 	}

@@ -41,14 +41,14 @@ func main() {
 		log.Fatal(err, "failed to create discord session")
 	}
 
-	discord := discord.New(ses, cfg, log, service.New(), view.New())
+	discord := discord.New(ses, cfg, log, service.New(), view.New(ses))
 	session, err := discord.ListenAndServe()
 	if err != nil {
 		log.Fatal(err, "failed to listen and serve discord")
 	}
 
 	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc
 
 	// Cleanly close down the Discord session.

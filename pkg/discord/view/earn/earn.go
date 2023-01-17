@@ -1,7 +1,13 @@
 package earn
 
-type Earn struct{}
+import "github.com/bwmarrin/discordgo"
 
-func New() EarnViewer {
-	return &Earn{}
+type Earn struct {
+	ses *discordgo.Session
+}
+
+func New(ses *discordgo.Session) EarnViewer {
+	return &Earn{
+		ses: ses,
+	}
 }
