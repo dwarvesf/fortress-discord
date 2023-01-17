@@ -6,7 +6,6 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
-	"github.com/dwarvesf/fortress-discord/pkg/errs"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -14,12 +13,14 @@ import (
 type Command struct {
 	L    logger.Logger
 	Cmds map[string]base.TextCommander
+	View view.Viewer
 }
 
 func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 	cmd := &Command{
 		Cmds: make(map[string]base.TextCommander),
 		L:    l,
+		View: view,
 	}
 
 	// register all commands here
@@ -53,7 +54,7 @@ func (c *Command) Execute(m *model.DiscordMessage) error {
 	cmd, ok := c.Cmds[m.ContentArgs[0]]
 	if !ok {
 		l.Info("command not found")
-		return errs.ErrInvalidCommand
+		return c.View.Error().CommandNotFound(m)
 	}
 
 	l.Field("cmd", cmd.Name()).Debug("execute command")
