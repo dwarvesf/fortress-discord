@@ -7,6 +7,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hold"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/new"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
@@ -35,6 +36,7 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 		assess.New(l, svc, view),
 		adopt.New(l, svc, view),
 		hold.New(l, svc, view),
+		new.New(l, svc, view),
 	})
 
 	return cmd

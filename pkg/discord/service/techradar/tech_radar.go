@@ -22,7 +22,7 @@ func (e *TechRadar) GetList(ringFilter string) ([]*model.TechRadarTopic, error) 
 	// get response from fortress
 	adapterTechRadars, err := e.adapter.Fortress().GetTechRadar(ringFilter)
 	if err != nil {
-		e.l.Error(err, "can't get community earn")
+		e.l.Error(err, "can't get tech radar")
 		return nil, err
 	}
 

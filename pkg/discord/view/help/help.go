@@ -26,6 +26,7 @@ func (h *Help) Help(message *model.DiscordMessage) error {
 		"**?assess**・list of assess tech",
 		"**?adopt**・list of adopt tech",
 		"**?hold**・list of on-hold tech",
+		"**?new**・list of new subscribers",
 	}
 
 	msg := &discordgo.MessageEmbed{
