@@ -1,20 +1,23 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/dwarvesf/fortress-discord/pkg/config"
+	"github.com/dwarvesf/fortress-discord/pkg/discord"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 )
 
 func main() {
 	cfg := config.LoadConfig(config.DefaultConfigLoaders())
 	log := logger.NewLogrusLogger()
-
-	// init discord session
 
 	// init healthcheck routes
 	router := setupRouter()
@@ -24,11 +27,25 @@ func main() {
 	}
 
 	go func() {
-		// service connections
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatal(err, "failed to listen and serve")
 		}
 	}()
+
+	// init discord session
+	discord := discord.New(cfg, log)
+	session, err := discord.ListenAndServe()
+	if err != nil {
+		log.Fatal(err, "failed to listen and serve discord")
+	}
+
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	<-sc
+
+	// Cleanly close down the Discord session.
+	session.Close()
+	srv.Shutdown(context.TODO())
 }
 
 func setupRouter() *gin.Engine {

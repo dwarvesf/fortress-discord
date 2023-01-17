@@ -25,6 +25,7 @@ type Endpoint struct {
 
 type Discord struct {
 	SecretToken string
+	Prefix      string
 }
 
 type ApiServer struct {
@@ -49,6 +50,7 @@ func Generate(v ENV) *Config {
 		},
 		Discord: Discord{
 			SecretToken: v.GetString("DISCORD_SECRET_TOKEN"),
+			Prefix:      v.GetString("DISCORD_PREFIX"),
 		},
 	}
 }
