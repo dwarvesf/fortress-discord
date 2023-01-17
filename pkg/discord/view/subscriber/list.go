@@ -11,14 +11,30 @@ import (
 
 func (s *Subscriber) ListNew(original *model.DiscordMessage, subs []*model.Subscriber) error {
 	var content string
-	content += fmt.Sprintf("Last 14 days has total %d new  subscribers \n\n", len(subs))
+
+	// group into 'source'
+	sourceMap := make(map[string][]*model.Subscriber)
 	for i := range subs {
-		sub := subs[i]
-		content += fmt.Sprintf("- %s\n", sub.Email)
+		var source string
+		if len(subs[i].Source) > 0 {
+			source = subs[i].Source[0]
+		} else {
+			source = "Unknown Source"
+		}
+		sourceMap[source] = append(sourceMap[source], subs[i])
+	}
+
+	content += fmt.Sprintf("Last 14 days has total %d new subscribers \n\n", len(subs))
+	for k, v := range sourceMap {
+		content += fmt.Sprintf("**%s:**\n", k)
+		for i := range v {
+			content += fmt.Sprintf("- %s\n", v[i].Email)
+		}
+		content += "\n"
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title: "<:pepe_ping:1028964391690965012> Weekly Subscribers	<:pepe_ping:1028964391690965012>",
+		Title:       "<:pepe_ping:1028964391690965012> Weekly Subscribers <:pepe_ping:1028964391690965012>",
 		Description: content,
 	}
 
