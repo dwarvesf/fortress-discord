@@ -41,6 +41,9 @@ func Generate(v ENV) *Config {
 	return &Config{
 		Debug: v.GetBool("DEBUG"),
 		Env:   v.GetString("ENV"),
+		ApiServer: ApiServer{
+			Port: v.GetString("PORT"),
+		},
 		Endpoint: Endpoint{
 			Fortress: v.GetString("FORTRESS_ENDPOINT"),
 		},
