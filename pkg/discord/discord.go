@@ -5,6 +5,8 @@ import (
 
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 )
 
@@ -17,16 +19,12 @@ type Discord struct {
 	Command *command.Command
 }
 
-func New(cfg *config.Config, l logger.Logger) *Discord {
-	discord, err := discordgo.New("Bot " + cfg.Discord.SecretToken)
-	if err != nil {
-		l.Fatal(err, "failed to create discord session")
-	}
+func New(ses *discordgo.Session, cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Viewer) *Discord {
 	return &Discord{
-		Session: discord,
+		Session: ses,
 		Cfg:     cfg,
 		L:       l,
-		Command: command.New(l),
+		Command: command.New(l, svc, view),
 	}
 }
 

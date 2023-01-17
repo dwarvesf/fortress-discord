@@ -1,24 +1,21 @@
 package earn
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
-	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
 type Earn struct {
-	L logger.Logger
+	L    logger.Logger
+	svc  service.Servicer
+	view view.Viewer
 }
 
-func New(l logger.Logger) IEarn {
+func New(l logger.Logger, svc service.Servicer, view view.Viewer) IEarn {
 	return &Earn{
-		L: l,
+		L:    l,
+		svc:  svc,
+		view: view,
 	}
-}
-
-func (e *Earn) List(message *model.DiscordMessage) error {
-	l := e.L.Fields(logger.Fields{"message": message, "command": "list"})
-	l.Info("executing command")
-	defer l.Info("executed command")
-
-	return nil
 }

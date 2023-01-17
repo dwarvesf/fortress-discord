@@ -3,6 +3,8 @@ package command
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/errs"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -13,7 +15,7 @@ type Command struct {
 	Cmds map[string]base.TextCommander
 }
 
-func New(l logger.Logger) *Command {
+func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 	cmd := &Command{
 		Cmds: make(map[string]base.TextCommander),
 		L:    l,
@@ -21,7 +23,7 @@ func New(l logger.Logger) *Command {
 
 	// register all commands here
 	cmd.Add([]base.TextCommander{
-		earn.New(l),
+		earn.New(l, svc, view),
 	})
 
 	return cmd

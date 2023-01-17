@@ -8,10 +8,13 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
 
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 )
 
@@ -33,7 +36,12 @@ func main() {
 	}()
 
 	// init discord session
-	discord := discord.New(cfg, log)
+	ses, err := discordgo.New("Bot " + cfg.Discord.SecretToken)
+	if err != nil {
+		log.Fatal(err, "failed to create discord session")
+	}
+
+	discord := discord.New(ses, cfg, log, service.New(), view.New())
 	session, err := discord.ListenAndServe()
 	if err != nil {
 		log.Fatal(err, "failed to listen and serve discord")
