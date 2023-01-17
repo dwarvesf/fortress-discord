@@ -3,7 +3,7 @@ package base
 import "github.com/dwarvesf/fortress-discord/pkg/model"
 
 type Helper interface {
-	Help()
+	Help(message *model.DiscordMessage) error
 }
 
 type Executor interface {

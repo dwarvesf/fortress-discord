@@ -28,7 +28,8 @@ func (e *Earn) Name() string {
 	return "Earn Command"
 }
 
-func (e *Earn) Help() {
+func (e *Earn) Help(message *model.DiscordMessage) error {
+	return nil
 }
 
 func (e *Earn) DefaultCommand(message *model.DiscordMessage) error {

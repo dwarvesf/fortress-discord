@@ -8,7 +8,9 @@ type AdapterEarn struct {
 
 // Earn is in-app model, after process from adapters
 type Earn struct {
-	Id     string `json:"id"`
-	Name   string `json:"name"`
-	Reward int64  `json:"reward"`
+	Id     string   `json:"id"`
+	Name   string   `json:"name"`
+	Reward int64    `json:"reward"`
+	Status string   `json:"status"`
+	Tags   []string `json:"tags"`
 }

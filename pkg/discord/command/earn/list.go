@@ -11,5 +11,5 @@ func (e *Earn) List(message *model.DiscordMessage) error {
 	}
 
 	// 2. render
-	return e.view.Earn().List(message.ChannelId, data)
+	return e.view.Earn().List(message, data)
 }

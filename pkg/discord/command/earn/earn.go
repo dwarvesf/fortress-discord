@@ -12,7 +12,7 @@ type Earn struct {
 	view view.Viewer
 }
 
-func New(l logger.Logger, svc service.Servicer, view view.Viewer) IEarn {
+func New(l logger.Logger, svc service.Servicer, view view.Viewer) EarnCommander {
 	return &Earn{
 		L:    l,
 		svc:  svc,

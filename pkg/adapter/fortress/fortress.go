@@ -24,7 +24,7 @@ func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode == http.StatusOK {
+	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&earns); err != nil {

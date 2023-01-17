@@ -3,6 +3,7 @@ package command
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/errs"
@@ -24,6 +25,7 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 	// register all commands here
 	cmd.Add([]base.TextCommander{
 		earn.New(l, svc, view),
+		help.New(l, svc, view),
 	})
 
 	return cmd
