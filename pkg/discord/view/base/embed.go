@@ -22,10 +22,10 @@ func normalize(original *model.DiscordMessage, response *discordgo.MessageEmbed)
 		// default df color #D14960
 		response.Color = 13715808
 	}
-	if response.Author == nil {
-		response.Author = &discordgo.MessageEmbedAuthor{
-			Name:    original.Author.Username,
+	if response.Footer == nil {
+		response.Footer = &discordgo.MessageEmbedFooter{
 			IconURL: original.Author.AvatarURL("128"),
+			Text:    "?help to see all commands",
 		}
 	}
 	return response

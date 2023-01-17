@@ -2,8 +2,12 @@ package command
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/adopt"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/assess"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hold"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -27,6 +31,10 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 	cmd.Add([]base.TextCommander{
 		earn.New(l, svc, view),
 		help.New(l, svc, view),
+		trial.New(l, svc, view),
+		assess.New(l, svc, view),
+		adopt.New(l, svc, view),
+		hold.New(l, svc, view),
 	})
 
 	return cmd
@@ -58,5 +66,11 @@ func (c *Command) Execute(m *model.DiscordMessage) error {
 	}
 
 	l.Field("cmd", cmd.Name()).Debug("execute command")
-	return cmd.Execute(m)
+	err := cmd.Execute(m)
+	if err != nil {
+		// add custom generic todo here (something went wrong, permission, ..)
+		return err
+	}
+
+	return nil
 }

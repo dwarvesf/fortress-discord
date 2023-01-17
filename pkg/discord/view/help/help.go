@@ -22,6 +22,7 @@ func New(ses *discordgo.Session) HelpViewer {
 func (h *Help) Help(message *model.DiscordMessage) error {
 	content := []string{
 		"**?earn**・earn $ICY for free",
+		"**?trial**・list of trial tech",
 	}
 
 	msg := &discordgo.MessageEmbed{

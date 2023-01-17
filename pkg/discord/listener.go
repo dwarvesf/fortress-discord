@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
@@ -19,6 +20,9 @@ func (d *Discord) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCrea
 		d.L.Field("message", m.Message.Content).Debug("ignored message")
 		return
 	}
+
+	// add "is typing" indicator
+	d.Session.ChannelTyping(m.ChannelID)
 
 	// pipetrhough message to command
 	err := d.Command.Execute(d.parseMessage(m))

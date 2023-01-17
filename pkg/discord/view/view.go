@@ -6,6 +6,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/errors"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/help"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
 )
 
 type View struct {
@@ -13,23 +14,29 @@ type View struct {
 }
 
 type subView struct {
-	Earn  earn.EarnViewer
-	Help  help.HelpViewer
-	Error errors.ErrorViewer
+	Earn      earn.EarnViewer
+	Help      help.HelpViewer
+	Error     errors.ErrorViewer
+	TechRadar techradar.TechRadarViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
 	return &View{
 		subView: subView{
-			Earn:  earn.New(ses),
-			Help:  help.New(ses),
-			Error: errors.New(ses),
+			Earn:      earn.New(ses),
+			Help:      help.New(ses),
+			Error:     errors.New(ses),
+			TechRadar: techradar.New(ses),
 		},
 	}
 }
 
 func (v *View) Earn() earn.EarnViewer {
 	return v.subView.Earn
+}
+
+func (v *View) TechRadar() techradar.TechRadarViewer {
+	return v.subView.TechRadar
 }
 
 func (v *View) Help() help.HelpViewer {
