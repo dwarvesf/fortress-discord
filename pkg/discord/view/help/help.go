@@ -23,6 +23,9 @@ func (h *Help) Help(message *model.DiscordMessage) error {
 	content := []string{
 		"**?earn**・earn $ICY for free",
 		"**?trial**・list of trial tech",
+		"**?assess**・list of assess tech",
+		"**?adopt**・list of adopt tech",
+		"**?hold**・list of on-hold tech",
 	}
 
 	msg := &discordgo.MessageEmbed{
