@@ -11,6 +11,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
 
+	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
@@ -20,7 +21,7 @@ import (
 
 func main() {
 	cfg := config.LoadConfig(config.DefaultConfigLoaders())
-	log := logger.NewLogrusLogger()
+	l := logger.NewLogrusLogger()
 
 	// init healthcheck routes
 	router := setupRouter()
@@ -31,20 +32,22 @@ func main() {
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatal(err, "failed to listen and serve")
+			l.Fatal(err, "failed to listen and serve")
 		}
 	}()
 
 	// init discord session
 	ses, err := discordgo.New("Bot " + cfg.Discord.SecretToken)
 	if err != nil {
-		log.Fatal(err, "failed to create discord session")
+		l.Fatal(err, "failed to create discord session")
 	}
 
-	discord := discord.New(ses, cfg, log, service.New(), view.New(ses))
+	adapter := adapter.New(cfg, l)
+
+	discord := discord.New(ses, cfg, l, service.New(adapter, l), view.New(ses))
 	session, err := discord.ListenAndServe()
 	if err != nil {
-		log.Fatal(err, "failed to listen and serve discord")
+		l.Fatal(err, "failed to listen and serve discord")
 	}
 
 	sc := make(chan os.Signal, 1)

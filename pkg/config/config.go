@@ -69,6 +69,7 @@ func LoadConfig(loaders []Loader) *Config {
 	v := viper.New()
 	v.SetDefault("PORT", "8080")
 	v.SetDefault("ENV", "local")
+	v.SetDefault("DISCORD_PREFIX", "?")
 
 	for idx := range loaders {
 		newV, err := loaders[idx].Load(*v)
