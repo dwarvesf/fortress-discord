@@ -62,3 +62,33 @@ func (f *Fortress) GetNewSubscribers() (subscribers *model.AdapterSubscriber, er
 	}
 	return subscribers, nil
 }
+
+func (f *Fortress) GetOpenPositions() (posistions *model.AdapterHiringPosition, err error) {
+	resp, err := http.Get(f.Url + "/api/v1/hiring-positions")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&posistions); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return posistions, nil
+}
+
+func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
+	resp, err := http.Get(f.Url + "/api/v1/events")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&events); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return events, nil
+}

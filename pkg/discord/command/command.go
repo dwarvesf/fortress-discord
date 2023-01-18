@@ -5,7 +5,9 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/adopt"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/assess"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hiring"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hold"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/new"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
@@ -37,6 +39,8 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 		adopt.New(l, svc, view),
 		hold.New(l, svc, view),
 		new.New(l, svc, view),
+		hiring.New(l, svc, view),
+		event.New(l, svc, view),
 	})
 
 	return cmd
