@@ -47,7 +47,7 @@ func (e *Staff) ListDemands(original *model.DiscordMessage, positions []*model.S
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       "<:aePepeevil:817892503499571222> Staffing Demands <:aePepeevil:817892503499571222> \n",
+		Title:       "<a:pepe_welcome:1055801372827725936> Staffing Demands <a:pepe_welcome:1055801372827725936>\n",
 		Description: content,
 	}
 
