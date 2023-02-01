@@ -92,3 +92,18 @@ func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
 	}
 	return events, nil
 }
+
+func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, err error) {
+	resp, err := http.Get(f.Url + "/api/v1/staffing-demands")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&events); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return events, nil
+}

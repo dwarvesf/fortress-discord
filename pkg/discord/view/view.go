@@ -8,6 +8,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
 )
@@ -24,6 +25,7 @@ type subView struct {
 	Subscriber subscriber.SubscriberViewer
 	Hiring     hiring.HiringViewer
 	Event      event.EventViewer
+	Staff      staff.StaffViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -36,6 +38,7 @@ func New(ses *discordgo.Session) Viewer {
 			Subscriber: subscriber.New(ses),
 			Hiring:     hiring.New(ses),
 			Event:      event.New(ses),
+			Staff:      staff.New(ses),
 		},
 	}
 }
@@ -66,4 +69,8 @@ func (v *View) Hiring() hiring.HiringViewer {
 
 func (v *View) Event() event.EventViewer {
 	return v.subView.Event
+}
+
+func (v *View) Staff() staff.StaffViewer {
+	return v.subView.Staff
 }
