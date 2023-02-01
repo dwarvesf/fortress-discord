@@ -6,6 +6,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
 )
@@ -17,5 +18,6 @@ type Viewer interface {
 	TechRadar() techradar.TechRadarViewer
 	Subscriber() subscriber.SubscriberViewer
 	Hiring() hiring.HiringViewer
+	Staff() staff.StaffViewer
 	Event() event.EventViewer
 }
