@@ -4,15 +4,18 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/adopt"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/assess"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hiring"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hold"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/milestone"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/new"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/updates"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -45,6 +48,9 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 		event.New(l, svc, view),
 		staff.New(l, svc, view),
 		milestone.New(l, svc, view),
+		digest.New(l, svc, view),
+		updates.New(l, svc, view),
+		memo.New(l, svc, view),
 	})
 
 	return cmd

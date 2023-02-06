@@ -13,7 +13,12 @@ type FortressAdapter interface {
 
 	GetUpcomingEvents() (events *model.AdapterEvent, err error)
 
-	GetStaffingDemands() (events *model.AdapterStaffingDemands, err error)
+	GetStaffingDemands() (staffs *model.AdapterStaffingDemands, err error)
 
-	GetProjectMilestones(q string) (events *model.AdapterProjectMilestone, err error)
+	GetProjectMilestones(q string) (milestones *model.AdapterProjectMilestone, err error)
+
+	GetInternalDigest() (digests *model.AdapterDigest, err error)
+	GetExternalDigest() (digests *model.AdapterDigest, err error)
+
+	GetMemos() (memos *model.AdapterMemo, err error)
 }

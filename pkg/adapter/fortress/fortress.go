@@ -122,3 +122,48 @@ func (f *Fortress) GetProjectMilestones(q string) (milestone *model.AdapterProje
 	}
 	return milestone, nil
 }
+
+func (f *Fortress) GetInternalDigest() (digest *model.AdapterDigest, err error) {
+	resp, err := http.Get(f.Url + "/api/v1/digests")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&digest); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return digest, nil
+}
+
+func (f *Fortress) GetExternalDigest() (digest *model.AdapterDigest, err error) {
+	resp, err := http.Get(f.Url + "/api/v1/updates")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&digest); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return digest, nil
+}
+
+func (f *Fortress) GetMemos() (memos *model.AdapterMemo, err error) {
+	resp, err := http.Get(f.Url + "/api/v1/memos")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&memos); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return memos, nil
+}
