@@ -14,4 +14,6 @@ type FortressAdapter interface {
 	GetUpcomingEvents() (events *model.AdapterEvent, err error)
 
 	GetStaffingDemands() (events *model.AdapterStaffingDemands, err error)
+
+	GetProjectMilestones(q string) (events *model.AdapterProjectMilestone, err error)
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
@@ -22,6 +23,7 @@ type subService struct {
 	Hiring     hiring.HiringServicer
 	Event      event.EventServicer
 	Staff      staff.StaffServicer
+	Project    project.ProjectServicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
@@ -33,6 +35,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Hiring:     hiring.New(adapter, l),
 			Event:      event.New(adapter, l),
 			Staff:      staff.New(adapter, l),
+			Project:    project.New(adapter, l),
 		},
 	}
 }
@@ -59,4 +62,8 @@ func (s *Service) Event() event.EventServicer {
 
 func (s *Service) Staff() staff.StaffServicer {
 	return s.subService.Staff
+}
+
+func (s *Service) Project() project.ProjectServicer {
+	return s.subService.Project
 }
