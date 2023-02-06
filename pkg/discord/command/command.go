@@ -9,6 +9,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hiring"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hold"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/milestone"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/new"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
@@ -43,6 +44,7 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 		hiring.New(l, svc, view),
 		event.New(l, svc, view),
 		staff.New(l, svc, view),
+		milestone.New(l, svc, view),
 	})
 
 	return cmd

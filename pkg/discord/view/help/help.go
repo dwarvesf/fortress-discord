@@ -30,6 +30,7 @@ func (h *Help) Help(message *model.DiscordMessage) error {
 		"**?event**・list of upcoming events",
 		"**?hiring**・list of open positions",
 		"**?staff**・list of staffing demands",
+		"**?milestones**・list of projects milestones",
 	}
 
 	msg := &discordgo.MessageEmbed{

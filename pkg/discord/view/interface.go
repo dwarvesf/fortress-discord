@@ -6,6 +6,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
@@ -20,4 +21,5 @@ type Viewer interface {
 	Hiring() hiring.HiringViewer
 	Staff() staff.StaffViewer
 	Event() event.EventViewer
+	Project() project.ProjectViewer
 }
