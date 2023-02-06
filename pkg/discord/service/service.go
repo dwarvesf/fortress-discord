@@ -2,9 +2,11 @@ package service
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
@@ -24,6 +26,8 @@ type subService struct {
 	Event      event.EventServicer
 	Staff      staff.StaffServicer
 	Project    project.ProjectServicer
+	Digest     digest.DigestServicer
+	Memo       memo.MemoServicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
@@ -36,6 +40,8 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Event:      event.New(adapter, l),
 			Staff:      staff.New(adapter, l),
 			Project:    project.New(adapter, l),
+			Digest:     digest.New(adapter, l),
+			Memo:       memo.New(adapter, l),
 		},
 	}
 }
@@ -66,4 +72,12 @@ func (s *Service) Staff() staff.StaffServicer {
 
 func (s *Service) Project() project.ProjectServicer {
 	return s.subService.Project
+}
+
+func (s *Service) Digest() digest.DigestServicer {
+	return s.subService.Digest
+}
+
+func (s *Service) Memo() memo.MemoServicer {
+	return s.subService.Memo
 }

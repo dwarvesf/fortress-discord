@@ -3,11 +3,13 @@ package view
 import (
 	"github.com/bwmarrin/discordgo"
 
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/errors"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
@@ -28,6 +30,8 @@ type subView struct {
 	Event      event.EventViewer
 	Staff      staff.StaffViewer
 	Project    project.ProjectViewer
+	Digest     digest.DigestViewer
+	Memo       memo.MemoViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -42,6 +46,8 @@ func New(ses *discordgo.Session) Viewer {
 			Event:      event.New(ses),
 			Staff:      staff.New(ses),
 			Project:    project.New(ses),
+			Digest:     digest.New(ses),
+			Memo:       memo.New(ses),
 		},
 	}
 }
@@ -80,4 +86,12 @@ func (v *View) Staff() staff.StaffViewer {
 
 func (v *View) Project() project.ProjectViewer {
 	return v.subView.Project
+}
+
+func (v *View) Digest() digest.DigestViewer {
+	return v.subView.Digest
+}
+
+func (v *View) Memo() memo.MemoViewer {
+	return v.subView.Memo
 }
