@@ -35,3 +35,7 @@ func (a *Digest) Help(message *model.DiscordMessage) error {
 func (a *Digest) DefaultCommand(message *model.DiscordMessage) error {
 	return a.List(message)
 }
+
+func (a *Digest) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	return true, []string{}
+}

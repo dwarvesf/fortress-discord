@@ -21,11 +21,19 @@ type Config struct {
 
 type Endpoint struct {
 	Fortress string
+	Mochi    string
 }
 
 type Discord struct {
 	SecretToken string
 	Prefix      string
+	ID          DiscordIds
+}
+
+type DiscordIds struct {
+	FortressBot       string
+	DwarvesGuild      string
+	RepostDoneChannel string
 }
 
 type ApiServer struct {
@@ -47,10 +55,16 @@ func Generate(v ENV) *Config {
 		},
 		Endpoint: Endpoint{
 			Fortress: v.GetString("FORTRESS_ENDPOINT"),
+			Mochi:    v.GetString("MOCHI_ENDPOINT"),
 		},
 		Discord: Discord{
 			SecretToken: v.GetString("DISCORD_SECRET_TOKEN"),
 			Prefix:      v.GetString("DISCORD_PREFIX"),
+			ID: DiscordIds{
+				FortressBot:       v.GetString("DISCORD_ID_FORTRESS_BOT"),
+				DwarvesGuild:      v.GetString("DISCORD_ID_DWARVES_GUILD"),
+				RepostDoneChannel: v.GetString("DISCORD_ID_REPOST_DONE"),
+			},
 		},
 	}
 }

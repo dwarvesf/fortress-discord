@@ -1,10 +1,12 @@
 package command
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/adopt"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/assess"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/digest"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
@@ -28,7 +30,7 @@ type Command struct {
 	View view.Viewer
 }
 
-func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
+func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 	cmd := &Command{
 		Cmds: make(map[string]base.TextCommander),
 		L:    l,
@@ -51,6 +53,7 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
 		digest.New(l, svc, view),
 		updates.New(l, svc, view),
 		memo.New(l, svc, view),
+		done.New(cfg, l, svc, view),
 	})
 
 	return cmd
@@ -79,6 +82,12 @@ func (c *Command) Execute(m *model.DiscordMessage) error {
 	if !ok {
 		l.Info("command not found")
 		return c.View.Error().CommandNotFound(m)
+	}
+
+	// run a permission check
+	canExec, required := cmd.PermissionCheck(m)
+	if !canExec {
+		return c.View.Error().NotHavePermission(m, required)
 	}
 
 	l.Field("cmd", cmd.Name()).Debug("execute command")

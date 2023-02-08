@@ -46,3 +46,7 @@ func (h *Help) Execute(message *model.DiscordMessage) error {
 func (h *Help) DefaultCommand(message *model.DiscordMessage) error {
 	return h.Help(message)
 }
+
+func (h *Help) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	return true, []string{}
+}

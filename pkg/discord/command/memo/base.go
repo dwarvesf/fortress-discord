@@ -4,34 +4,38 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (a *Memo) Prefix() []string {
+func (e *Memo) Prefix() []string {
 	return []string{"memo", "memos"}
 }
 
 // Execute is where we handle logic for each command
-func (a *Memo) Execute(message *model.DiscordMessage) error {
+func (e *Memo) Execute(message *model.DiscordMessage) error {
 	// default command for only 1 args input from user, e.g `?earn`
 	if len(message.ContentArgs) == 1 {
-		return a.DefaultCommand(message)
+		return e.DefaultCommand(message)
 	}
 
 	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
 	case "list":
-		return a.List(message)
+		return e.List(message)
 	}
 
 	return nil
 }
 
-func (a *Memo) Name() string {
+func (e *Memo) Name() string {
 	return "Memo Command"
 }
 
-func (a *Memo) Help(message *model.DiscordMessage) error {
+func (e *Memo) Help(message *model.DiscordMessage) error {
 	return nil
 }
 
-func (a *Memo) DefaultCommand(message *model.DiscordMessage) error {
-	return a.List(message)
+func (e *Memo) DefaultCommand(message *model.DiscordMessage) error {
+	return e.List(message)
+}
+
+func (e *Memo) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	return true, []string{}
 }

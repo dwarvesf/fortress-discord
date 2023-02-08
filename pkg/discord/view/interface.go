@@ -2,6 +2,7 @@ package view
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/errors"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
@@ -26,4 +27,5 @@ type Viewer interface {
 	Project() project.ProjectViewer
 	Digest() digest.DigestViewer
 	Memo() memo.MemoViewer
+	Done() done.DoneViewer
 }

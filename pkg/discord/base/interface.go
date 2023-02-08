@@ -22,10 +22,15 @@ type Namer interface {
 	Name() string
 }
 
+type PermissionChecker interface {
+	PermissionCheck(message *model.DiscordMessage) (bool, []string)
+}
+
 type TextCommander interface {
 	Helper
 	Executor
 	DefaultCommander
 	Prefixer
 	Namer
+	PermissionChecker
 }

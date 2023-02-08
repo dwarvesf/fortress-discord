@@ -24,7 +24,7 @@ func New(ses *discordgo.Session, cfg *config.Config, l logger.Logger, svc servic
 		Session: ses,
 		Cfg:     cfg,
 		L:       l,
-		Command: command.New(l, svc, view),
+		Command: command.New(cfg, l, svc, view),
 	}
 }
 

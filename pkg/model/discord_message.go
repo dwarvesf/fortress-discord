@@ -8,4 +8,5 @@ type DiscordMessage struct {
 	ChannelId   string
 	GuildId     string
 	Author      *discordgo.User
+	Roles       []string
 }

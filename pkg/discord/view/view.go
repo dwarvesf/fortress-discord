@@ -4,6 +4,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/errors"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
@@ -32,6 +33,7 @@ type subView struct {
 	Project    project.ProjectViewer
 	Digest     digest.DigestViewer
 	Memo       memo.MemoViewer
+	Done       done.DoneViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -48,6 +50,7 @@ func New(ses *discordgo.Session) Viewer {
 			Project:    project.New(ses),
 			Digest:     digest.New(ses),
 			Memo:       memo.New(ses),
+			Done:       done.New(ses),
 		},
 	}
 }
@@ -94,4 +97,8 @@ func (v *View) Digest() digest.DigestViewer {
 
 func (v *View) Memo() memo.MemoViewer {
 	return v.subView.Memo
+}
+
+func (v *View) Done() done.DoneViewer {
+	return v.subView.Done
 }

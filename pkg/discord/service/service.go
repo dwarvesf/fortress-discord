@@ -11,6 +11,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 )
 
@@ -28,6 +29,7 @@ type subService struct {
 	Project    project.ProjectServicer
 	Digest     digest.DigestServicer
 	Memo       memo.MemoServicer
+	Treasury   treasury.TreasuryServicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
@@ -42,6 +44,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Project:    project.New(adapter, l),
 			Digest:     digest.New(adapter, l),
 			Memo:       memo.New(adapter, l),
+			Treasury:   treasury.New(adapter, l),
 		},
 	}
 }
@@ -80,4 +83,8 @@ func (s *Service) Digest() digest.DigestServicer {
 
 func (s *Service) Memo() memo.MemoServicer {
 	return s.subService.Memo
+}
+
+func (s *Service) Treasury() treasury.TreasuryServicer {
+	return s.subService.Treasury
 }

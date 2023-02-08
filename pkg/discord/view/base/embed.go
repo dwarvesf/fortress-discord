@@ -9,7 +9,11 @@ import (
 )
 
 func SendEmbededMessage(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed) error {
-	_, err := ses.ChannelMessageSendEmbed(original.ChannelId, normalize(original, embed))
+	return SendEmbededMessageWithChannel(ses, original, embed, original.ChannelId)
+}
+
+func SendEmbededMessageWithChannel(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed, channelId string) error {
+	_, err := ses.ChannelMessageSendEmbed(channelId, normalize(original, embed))
 	return err
 }
 
