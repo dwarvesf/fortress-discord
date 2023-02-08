@@ -81,6 +81,12 @@ func (c *Command) Execute(m *model.DiscordMessage) error {
 		return c.View.Error().CommandNotFound(m)
 	}
 
+	// run a permission check
+	canExec, required := cmd.PermissionCheck(m)
+	if !canExec {
+		return c.View.Error().NotHavePermission(m, required)
+	}
+
 	l.Field("cmd", cmd.Name()).Debug("execute command")
 	err := cmd.Execute(m)
 	if err != nil {

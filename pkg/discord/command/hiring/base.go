@@ -35,3 +35,7 @@ func (e *Hiring) Help(message *model.DiscordMessage) error {
 func (e *Hiring) DefaultCommand(message *model.DiscordMessage) error {
 	return e.OpenPositions(message)
 }
+
+func (e *Hiring) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	return true, []string{}
+}

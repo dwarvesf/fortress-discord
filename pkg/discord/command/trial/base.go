@@ -35,3 +35,7 @@ func (t *Trial) Help(message *model.DiscordMessage) error {
 func (t *Trial) DefaultCommand(message *model.DiscordMessage) error {
 	return t.List(message)
 }
+
+func (t *Trial) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	return true, []string{}
+}

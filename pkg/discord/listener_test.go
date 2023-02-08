@@ -31,6 +31,9 @@ func Test_shouldParseMessage(t *testing.T) {
 				Author: &discordgo.User{
 					ID: "123",
 				},
+				Member: &discordgo.Member{
+					Roles: []string{"123"},
+				},
 			},
 		},
 		want: true,
@@ -97,6 +100,9 @@ func Test_parseMessage(t *testing.T) {
 				GuildID:   "987654321",
 				Author: &discordgo.User{
 					ID: "123",
+				},
+				Member: &discordgo.Member{
+					Roles: []string{"123"},
 				},
 			},
 		},

@@ -56,11 +56,18 @@ func (d *Discord) parseMessage(m *discordgo.MessageCreate) *model.DiscordMessage
 	// we remove the prefix from parsedContent[0]
 	parsedContent[0] = strings.TrimPrefix(parsedContent[0], d.Cfg.Discord.Prefix)
 
+	// we paste the roles to in-app  struct, make sure nil check
+	var roles []string
+	if m.Message.Member.Roles != nil {
+		roles = m.Message.Member.Roles
+	}
+
 	return &model.DiscordMessage{
 		RawContent:  m.Message.Content,
 		ContentArgs: parsedContent,
 		ChannelId:   m.ChannelID,
 		GuildId:     m.GuildID,
 		Author:      m.Author,
+		Roles:       roles,
 	}
 }
