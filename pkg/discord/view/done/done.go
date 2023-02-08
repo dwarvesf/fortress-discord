@@ -20,25 +20,12 @@ func New(ses *discordgo.Session) DoneViewer {
 	}
 }
 
-func (d *Done) Repost(original *model.DiscordMessage, msg string, channelId string) error {
+func (d *Done) Repost(original *model.DiscordMessage, msg string, channelId string, icy string) error {
+	content := tagutil.FormatUser(original.Author.ID) + ": " + msg + "\n\n" + fmt.Sprintf("Thanks for your work, **%s** ICY has been sent to your balances", icy)
 	embed := &discordgo.MessageEmbed{
-		Description: tagutil.FormatUser(original.Author.ID) + ": " + msg,
+		Description: content,
+		Color:       5814783,
 	}
 
 	return base.SendEmbededMessageWithChannel(d.ses, original, embed, channelId)
-}
-
-func (d *Done) NotifyIcyReward(original *model.DiscordMessage, msg string, icy string) error {
-	tmpl :=
-		`Thanks for your work, **%s** ICY has been sent to your balances
-
-		Try $balances to see your rewards.
-	`
-
-	embed := &discordgo.MessageEmbed{
-		Title:       ":ice_cube: You just got from ice :ice_cube:",
-		Description: fmt.Sprintf(tmpl, icy),
-	}
-
-	return base.SendEmbededMessage(d.ses, original, embed)
 }

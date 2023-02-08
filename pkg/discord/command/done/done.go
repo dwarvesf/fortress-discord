@@ -39,7 +39,7 @@ func (d *Done) Done(message *model.DiscordMessage) error {
 	msg := strings.Join(message.ContentArgs[1:], " ")
 
 	// first, we repost to a channel
-	err := d.view.Done().Repost(message, msg, d.cfg.Discord.ID.RepostDoneChannel)
+	err := d.view.Done().Repost(message, msg, d.cfg.Discord.ID.RepostDoneChannel, icy)
 	if err != nil {
 		d.L.Error(err, "can't repost message")
 		return err
@@ -61,13 +61,6 @@ func (d *Done) Done(message *model.DiscordMessage) error {
 	if err != nil {
 		d.L.Error(err, "can't send tip")
 		return d.view.Done().CantSendReward(message)
-	}
-
-	// we notify the user with icy reward
-	err = d.view.Done().NotifyIcyReward(message, msg, icy)
-	if err != nil {
-		d.L.Error(err, "can't notify icy")
-		return err
 	}
 
 	return nil
