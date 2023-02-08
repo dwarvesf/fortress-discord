@@ -28,8 +28,8 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 
 func (d *Done) Done(message *model.DiscordMessage) error {
 	// TODO: remove hard code
-	icy := "0.3"
-	icyF := 0.3
+	icy := "0.2"
+	icyF := 0.2
 
 	// we check the content
 	if len(message.ContentArgs) == 1 {
