@@ -10,6 +10,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
 )
 
 type Servicer interface {
@@ -22,4 +23,5 @@ type Servicer interface {
 	Project() project.ProjectServicer
 	Digest() digest.DigestServicer
 	Memo() memo.MemoServicer
+	Treasury() treasury.TreasuryServicer
 }

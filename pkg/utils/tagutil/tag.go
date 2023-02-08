@@ -6,3 +6,7 @@ import "fmt"
 func FormatRole(role string) string {
 	return fmt.Sprintf("<@&%s>", role)
 }
+
+func FormatUser(user string) string {
+	return fmt.Sprintf("<@%s>", user)
+}
