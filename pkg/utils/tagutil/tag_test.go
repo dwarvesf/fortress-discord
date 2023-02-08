@@ -44,7 +44,7 @@ func Test_formatUser(t *testing.T) {
 		c := cases[i]
 
 		t.Run(c.name, func(t *testing.T) {
-			got := FormatRole(c.user)
+			got := FormatUser(c.user)
 			if got != c.want {
 				t.Errorf("want %v, got %v", c.want, got)
 			}
