@@ -24,7 +24,7 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) AssessCommande
 
 func (t *Assess) List(message *model.DiscordMessage) error {
 	// 1. get data from service
-	data, err := t.svc.TechRadar().GetList(constant.TechRadarRingAssess)
+	data, err := t.svc.TechRadar().GetList(constant.TechRadarRingAssess, nil)
 	if err != nil {
 		t.L.Error(err, "can't get list of assess techradar")
 		return err

@@ -5,7 +5,7 @@ import (
 )
 
 func (a *Adopt) Prefix() []string {
-	return []string{"adopt", "index"}
+	return []string{"adopt"}
 }
 
 // Execute is where we handle logic for each command

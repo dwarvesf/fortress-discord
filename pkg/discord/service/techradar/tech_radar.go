@@ -18,9 +18,9 @@ func New(adapter adapter.IAdapter, l logger.Logger) TechRadarServicer {
 	}
 }
 
-func (e *TechRadar) GetList(ringFilter string) ([]*model.TechRadarTopic, error) {
+func (e *TechRadar) GetList(ringFilter string, q *string) ([]*model.TechRadarTopic, error) {
 	// get response from fortress
-	adapterTechRadars, err := e.adapter.Fortress().GetTechRadar(ringFilter)
+	adapterTechRadars, err := e.adapter.Fortress().GetTechRadar(ringFilter, q)
 	if err != nil {
 		e.l.Error(err, "can't get tech radar")
 		return nil, err

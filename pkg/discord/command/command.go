@@ -12,6 +12,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hiring"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hold"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/index"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/milestone"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/new"
@@ -53,6 +54,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		digest.New(l, svc, view),
 		updates.New(l, svc, view),
 		memo.New(l, svc, view),
+		index.New(l, svc, view),
 		done.New(cfg, l, svc, view),
 	})
 

@@ -33,8 +33,15 @@ func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
 	return earns, nil
 }
 
-func (f *Fortress) GetTechRadar(ringFilter string) (techRadars *model.AdapterTechRadar, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/tech-radar?ring=" + ringFilter)
+func (f *Fortress) GetTechRadar(ringFilter string, q *string) (techRadars *model.AdapterTechRadar, err error) {
+	url := f.Url + "/api/v1/tech-radar?"
+	if q != nil {
+		url += "&name=" + *q
+	}
+	if ringFilter != "" {
+		url += "&ring=" + ringFilter
+	}
+	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
