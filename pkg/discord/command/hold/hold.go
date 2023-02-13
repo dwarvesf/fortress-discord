@@ -24,7 +24,7 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) HoldCommander 
 
 func (t *Hold) List(message *model.DiscordMessage) error {
 	// 1. get data from service
-	data, err := t.svc.TechRadar().GetList(constant.TechRadarRingHold)
+	data, err := t.svc.TechRadar().GetList(constant.TechRadarRingHold, nil)
 	if err != nil {
 		t.L.Error(err, "can't get list of hold techradar")
 		return err

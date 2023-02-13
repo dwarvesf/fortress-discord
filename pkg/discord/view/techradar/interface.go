@@ -7,4 +7,6 @@ type TechRadarViewer interface {
 	ListAdopt(original *model.DiscordMessage, topics []*model.TechRadarTopic) error
 	ListAssess(original *model.DiscordMessage, topics []*model.TechRadarTopic) error
 	ListHold(original *model.DiscordMessage, topics []*model.TechRadarTopic) error
+	Search(original *model.DiscordMessage, topics []*model.TechRadarTopic) error
+	SearchEmpty(original *model.DiscordMessage) error
 }
