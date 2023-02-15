@@ -8,6 +8,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
@@ -28,4 +29,5 @@ type Viewer interface {
 	Digest() digest.DigestViewer
 	Memo() memo.MemoViewer
 	Done() done.DoneViewer
+	Issue() issue.IssueViewer
 }

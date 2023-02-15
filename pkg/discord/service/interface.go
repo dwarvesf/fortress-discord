@@ -5,6 +5,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
@@ -24,4 +25,5 @@ type Servicer interface {
 	Digest() digest.DigestServicer
 	Memo() memo.MemoServicer
 	Treasury() treasury.TreasuryServicer
+	Issue() issue.IssueServicer
 }

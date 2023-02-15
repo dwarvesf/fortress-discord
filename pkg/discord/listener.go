@@ -43,7 +43,17 @@ func (d *Discord) shouldParseMessage(m *discordgo.MessageCreate) bool {
 	}
 
 	// ignore non command format
-	if len(strings.Split(m.Content, " ")) < 1 {
+	args := strings.Split(m.Content, " ")
+	if len(args) < 1 {
+		return false
+	}
+
+	//
+	if len(args[0]) == 1 {
+		return false
+	}
+
+	if strings.ReplaceAll(args[0], d.Cfg.Discord.Prefix, "") == "" {
 		return false
 	}
 

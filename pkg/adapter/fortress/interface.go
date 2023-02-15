@@ -21,4 +21,6 @@ type FortressAdapter interface {
 	GetExternalDigest() (digests *model.AdapterDigest, err error)
 
 	GetMemos() (memos *model.AdapterMemo, err error)
+
+	GetActiveIssues() (issues *model.AdapterIssue, err error)
 }

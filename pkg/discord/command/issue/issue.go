@@ -23,13 +23,12 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) IssueCommander
 
 func (t *Issue) List(message *model.DiscordMessage) error {
 	// 1. get data from service
-	// data, err := t.svc.TechRadar().GetList(constant.TechRadarRingIssue, nil)
-	// if err != nil {
-	// 	t.L.Error(err, "can't get list of Issue")
-	// 	return err
-	// }
+	data, err := t.svc.Issue().GetActiveList()
+	if err != nil {
+		t.L.Error(err, "can't get list of Issue")
+		return err
+	}
 
 	// // 2. render
-	// return t.view.TechRadar().ListAdopt(message, data)
-	return nil
+	return t.view.Issue().ListActive(message, data)
 }

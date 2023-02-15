@@ -2,10 +2,11 @@ package issue
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/permutil"
 )
 
 func (i *Issue) Prefix() []string {
-	return []string{"issue"}
+	return []string{"issue", "issues"}
 }
 
 // Execute is where we handle logic for each command
@@ -37,5 +38,6 @@ func (i *Issue) DefaultCommand(message *model.DiscordMessage) error {
 }
 
 func (i *Issue) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
-	return true, []string{}
+	// we require roles for all commands in milestones
+	return permutil.CheckSupporterOrAbove(message.Roles)
 }
