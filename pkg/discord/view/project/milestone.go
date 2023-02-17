@@ -9,29 +9,33 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (e *Project) ListMilestones(original *model.DiscordMessage, milestones *model.ProjectMilestone) error {
-	var content string
-
-	for i, v := range milestones.Milestones {
-		t := ""
-		if v.EndDate != nil {
-			t = v.EndDate.Format("02 Jan 2006")
+func (e *Project) ListMilestones(original *model.DiscordMessage, milestones []*model.ProjectMilestone) error {
+	for i := range milestones {
+		v := milestones[i]
+		if len(v.Milestones) == 0 {
+			continue
 		}
+		var content string
+		for ii, vv := range v.Milestones {
+			t := ""
+			if vv.EndDate != nil {
+				t = vv.EndDate.Format("02 Jan 2006")
+			}
 
-		content += fmt.Sprintf("%d. **%s** ・ %s \n", i+1, milestones.Milestones[i].Name, t)
+			content += fmt.Sprintf("%d. **%s** ・ %s \n", ii+1, vv.Name, t)
 
-		for _, subMilestone := range v.SubMilestones {
-			content += fmt.Sprintf("\t- %s\n", subMilestone.Name)
+			for _, subMilestone := range vv.SubMilestones {
+				content += fmt.Sprintf("\t- %s\n", subMilestone.Name)
+			}
 		}
-
+		msg := &discordgo.MessageEmbed{
+			Title:       fmt.Sprintf("<:pepe_ping:1028964391690965012> %s <:pepe_ping:1028964391690965012>", v.Name),
+			Description: content,
+		}
+		base.SendEmbededMessage(e.ses, original, msg)
 	}
 
-	msg := &discordgo.MessageEmbed{
-		Title:       "<:pepe_ping:1028964391690965012> Upcoming Milestones <:pepe_ping:1028964391690965012>",
-		Description: content,
-	}
-
-	return base.SendEmbededMessage(e.ses, original, msg)
+	return nil
 }
 
 func (e *Project) EmptyMilestones(original *model.DiscordMessage) error {

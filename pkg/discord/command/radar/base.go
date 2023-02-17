@@ -19,6 +19,8 @@ func (h *Radar) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "list":
 		return h.List(message)
+	case "log":
+		return h.Log(message)
 	}
 
 	return nil

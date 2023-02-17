@@ -3,8 +3,8 @@ package model
 import "time"
 
 type AdapterProjectMilestone struct {
-	Data    *ProjectMilestone `json:"data"`
-	Message string            `json:"message"`
+	Data    []*ProjectMilestone `json:"data"`
+	Message string              `json:"message"`
 }
 
 type Milestone struct {

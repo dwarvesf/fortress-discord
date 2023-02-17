@@ -23,4 +23,6 @@ type FortressAdapter interface {
 	GetMemos() (memos *model.AdapterMemo, err error)
 
 	GetActiveIssues() (issues *model.AdapterIssue, err error)
+
+	LogTechRadarTopic(topicName string, discordId string) error
 }

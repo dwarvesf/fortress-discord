@@ -1,9 +1,12 @@
 package fortress
 
 import (
+	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -188,4 +191,35 @@ func (f *Fortress) GetActiveIssues() (issues *model.AdapterIssue, err error) {
 		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
 	}
 	return issues, nil
+}
+
+func (f *Fortress) LogTechRadarTopic(topicName string, discordId string) error {
+
+	type RadarTopic struct {
+		Name      string `json:"name"`
+		DiscordId string `json:"discord_id"`
+	}
+
+	// post to fortress
+	radarTopic := RadarTopic{
+		Name:      topicName,
+		DiscordId: discordId,
+	}
+
+	jsonValue, _ := json.Marshal(radarTopic)
+	resp, err := http.Post(f.Url+"/api/v1/tech-radar", "application/json", bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		var errMsg ErrorMessage
+		if err := json.NewDecoder(resp.Body).Decode(&errMsg); err != nil {
+			return errors.New("invalid decoded, error " + err.Error())
+		}
+		return errors.New("invalid call, code " + strconv.Itoa(resp.StatusCode) + " " + errMsg.Message)
+	}
+
+	return nil
 }

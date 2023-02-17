@@ -9,4 +9,7 @@ type TechRadarViewer interface {
 	ListHold(original *model.DiscordMessage, topics []*model.TechRadarTopic) error
 	Search(original *model.DiscordMessage, topics []*model.TechRadarTopic) error
 	SearchEmpty(original *model.DiscordMessage) error
+
+	LogTopicSuccess(original *model.DiscordMessage, topicName string) error
+	LogTopicFailed(original *model.DiscordMessage, err string) error
 }
