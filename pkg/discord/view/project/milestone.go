@@ -2,6 +2,7 @@ package project
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 
@@ -16,13 +17,20 @@ func (e *Project) ListMilestones(original *model.DiscordMessage, milestones []*m
 			continue
 		}
 		var content string
-		for ii, vv := range v.Milestones {
+		for _, vv := range v.Milestones {
 			t := ""
+			past := false
 			if vv.EndDate != nil {
 				t = vv.EndDate.Format("02 Jan 2006")
+				if vv.EndDate.After(time.Now()) {
+					past = true
+				}
 			}
 
-			content += fmt.Sprintf("%d. **%s** ・ %s \n", ii+1, vv.Name, t)
+			content += fmt.Sprintf("[%s]・ **%s**", t, vv.Name)
+			if past {
+				content += "<:pepeno2:885513214467661834><:pepeno2:885513214467661834><:pepeno2:885513214467661834>"
+			}
 
 			for _, subMilestone := range vv.SubMilestones {
 				content += fmt.Sprintf("\t- %s\n", subMilestone.Name)
