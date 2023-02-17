@@ -31,3 +31,14 @@ func (e *TechRadar) GetList(ringFilter string, q *string) ([]*model.TechRadarTop
 
 	return techRadars, nil
 }
+
+func (e *TechRadar) LogTopic(topicName string, discordId string) error {
+	// get response from fortress
+	err := e.adapter.Fortress().LogTechRadarTopic(topicName, discordId)
+	if err != nil {
+		e.l.Error(err, "can't log tech radar")
+		return err
+	}
+
+	return nil
+}

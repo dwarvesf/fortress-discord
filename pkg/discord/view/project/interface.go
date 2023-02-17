@@ -5,7 +5,7 @@ import (
 )
 
 type ProjectViewer interface {
-	ListMilestones(original *model.DiscordMessage, milestone *model.ProjectMilestone) error
+	ListMilestones(original *model.DiscordMessage, milestones []*model.ProjectMilestone) error
 	EmptyMilestones(original *model.DiscordMessage) error
 	MissingArgsMilestones(original *model.DiscordMessage) error
 }

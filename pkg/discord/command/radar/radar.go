@@ -1,6 +1,8 @@
 package radar
 
 import (
+	"strings"
+
 	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
@@ -53,4 +55,26 @@ func (t *Radar) List(message *model.DiscordMessage) error {
 
 	// 2. render
 	return nil
+}
+
+func (t *Radar) Log(message *model.DiscordMessage) error {
+	// validate input
+	if len(message.ContentArgs) <= 2 {
+		// render error view
+		return t.view.TechRadar().LogTopicFailed(message, "Missing topic name")
+	}
+
+	name := strings.Join(message.ContentArgs[2:], " ")
+	name = strings.ReplaceAll(name, "\"", "")
+	userID := message.Author.ID
+
+	// send to fortress
+	err := t.svc.TechRadar().LogTopic(name, userID)
+	if err != nil {
+		// render error view
+		return t.view.TechRadar().LogTopicFailed(message, err.Error())
+	}
+
+	// render success view
+	return t.view.TechRadar().LogTopicSuccess(message, name)
 }

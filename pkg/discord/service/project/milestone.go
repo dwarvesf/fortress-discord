@@ -18,7 +18,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) ProjectServicer {
 	}
 }
 
-func (e *Project) GetListMilestone(q string) (*model.ProjectMilestone, error) {
+func (e *Project) GetListMilestone(q string) ([]*model.ProjectMilestone, error) {
 	// get response from fortress
 	adapterMilestones, err := e.adapter.Fortress().GetProjectMilestones(q)
 	if err != nil {
