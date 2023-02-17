@@ -22,7 +22,7 @@ func (e *Project) ListMilestones(original *model.DiscordMessage, milestones []*m
 			past := false
 			if vv.EndDate != nil {
 				t = vv.EndDate.Format("02 Jan 2006")
-				if vv.EndDate.After(time.Now()) {
+				if vv.EndDate.Before(time.Now()) {
 					past = true
 				} else {
 					past = false
@@ -31,7 +31,7 @@ func (e *Project) ListMilestones(original *model.DiscordMessage, milestones []*m
 
 			content += fmt.Sprintf("[%s]・ **%s**", t, vv.Name)
 			if past {
-				content += "<:pepeno2:885513214467661834><:pepeno2:885513214467661834><:pepeno2:885513214467661834>"
+				content += "<:pepeno2:885513214467661834>"
 			}
 			content += "\n"
 
