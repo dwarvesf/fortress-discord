@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/event"
@@ -32,6 +33,7 @@ type subService struct {
 	Memo       memo.MemoServicer
 	Treasury   treasury.TreasuryServicer
 	Issue      issue.IssueServicer
+	Changelog  changelog.ChangelogServicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
@@ -48,6 +50,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Memo:       memo.New(adapter, l),
 			Treasury:   treasury.New(adapter, l),
 			Issue:      issue.New(adapter, l),
+			Changelog:  changelog.New(adapter, l),
 		},
 	}
 }
@@ -94,4 +97,8 @@ func (s *Service) Treasury() treasury.TreasuryServicer {
 
 func (s *Service) Issue() issue.IssueServicer {
 	return s.subService.Issue
+}
+
+func (s *Service) Changelog() changelog.ChangelogServicer {
+	return s.subService.Changelog
 }

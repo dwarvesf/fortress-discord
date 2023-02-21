@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/history"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -44,8 +46,12 @@ func main() {
 
 	adapter := adapter.New(cfg, l)
 
-	discord := discord.New(ses, cfg, l, service.New(adapter, l), view.New(ses))
-	session, err := discord.ListenAndServe()
+	msgHistory := history.NewMsgHistory()
+	go msgHistory.GC(60 * time.Second)
+
+	d := discord.New(ses, cfg, l, service.New(adapter, l), view.New(ses), msgHistory)
+
+	session, err := d.ListenAndServe()
 	if err != nil {
 		l.Fatal(err, "failed to listen and serve discord")
 	}

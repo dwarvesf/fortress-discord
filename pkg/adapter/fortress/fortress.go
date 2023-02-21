@@ -21,6 +21,22 @@ func New(url string) FortressAdapter {
 	}
 }
 
+// GetChangelogs implements FortressAdapter
+func (f *Fortress) GetChangelogs() (changelogs *model.ChangelogDigest, err error) {
+	resp, err := http.Get(f.Url + "/api/v1/notion-changelog/projects/available")
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&changelogs); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return changelogs, nil
+}
+
 func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
 	resp, err := http.Get(f.Url + "/api/v1/earn")
 	if err != nil {
@@ -194,7 +210,6 @@ func (f *Fortress) GetActiveIssues() (issues *model.AdapterIssue, err error) {
 }
 
 func (f *Fortress) LogTechRadarTopic(topicName string, discordId string) error {
-
 	type RadarTopic struct {
 		Name      string `json:"name"`
 		DiscordId string `json:"discord_id"`
@@ -208,6 +223,48 @@ func (f *Fortress) LogTechRadarTopic(topicName string, discordId string) error {
 
 	jsonValue, _ := json.Marshal(radarTopic)
 	resp, err := http.Post(f.Url+"/api/v1/tech-radar", "application/json", bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		var errMsg ErrorMessage
+		if err := json.NewDecoder(resp.Body).Decode(&errMsg); err != nil {
+			return errors.New("invalid decoded, error " + err.Error())
+		}
+		return errors.New("invalid call, code " + strconv.Itoa(resp.StatusCode) + " " + errMsg.Message)
+	}
+
+	return nil
+}
+
+// SendChangelog implements FortressAdapter
+func (f *Fortress) SendChangelog(c *model.Changelog) error {
+	type SendChangelogReq struct {
+		ProjectPageID string `json:"project_page_id"`
+		IsPreview     bool   `json:"is_preview"`
+		From          struct {
+			Email string `json:"email"`
+			Name  string `json:"name"`
+		} `json:"from"`
+	}
+
+	// post to fortress
+	req := SendChangelogReq{
+		ProjectPageID: c.RowID,
+		IsPreview:     false,
+		From: struct {
+			Email string "json:\"email\""
+			Name  string "json:\"name\""
+		}{
+			Email: "team@d.foundation",
+			Name:  "Team Dwarves",
+		},
+	}
+
+	jsonValue, _ := json.Marshal(req)
+	resp, err := http.Post(f.Url+"/api/v1/notion-changelog/project", "application/json", bytes.NewBuffer(jsonValue))
 	if err != nil {
 		return err
 	}

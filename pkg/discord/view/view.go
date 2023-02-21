@@ -3,6 +3,7 @@ package view
 import (
 	"github.com/bwmarrin/discordgo"
 
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
@@ -36,6 +37,7 @@ type subView struct {
 	Memo       memo.MemoViewer
 	Done       done.DoneViewer
 	Issue      issue.IssueViewer
+	Changelog  changelog.ChangelogViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -54,6 +56,7 @@ func New(ses *discordgo.Session) Viewer {
 			Memo:       memo.New(ses),
 			Done:       done.New(ses),
 			Issue:      issue.New(ses),
+			Changelog:  changelog.New(ses),
 		},
 	}
 }
@@ -108,4 +111,8 @@ func (v *View) Done() done.DoneViewer {
 
 func (v *View) Issue() issue.IssueViewer {
 	return v.subView.Issue
+}
+
+func (v *View) Changelog() changelog.ChangelogViewer {
+	return v.subView.Changelog
 }

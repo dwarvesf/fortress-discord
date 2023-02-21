@@ -5,6 +5,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/adopt"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/assess"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
@@ -21,6 +22,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/updates"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/history"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -33,7 +35,7 @@ type Command struct {
 	View view.Viewer
 }
 
-func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Viewer) *Command {
+func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Viewer, msgHistory *history.MsgHistory) *Command {
 	cmd := &Command{
 		Cmds: make(map[string]base.TextCommander),
 		L:    l,
@@ -60,6 +62,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		done.New(cfg, l, svc, view),
 		radar.New(l, svc, view),
 		issue.New(l, svc, view),
+		changelog.New(l, svc, view, msgHistory),
 	})
 
 	return cmd
