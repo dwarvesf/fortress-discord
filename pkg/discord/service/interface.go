@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/event"
@@ -23,6 +24,7 @@ type Servicer interface {
 	Staff() staff.StaffServicer
 	Project() project.ProjectServicer
 	Digest() digest.DigestServicer
+	Changelog() changelog.ChangelogServicer
 	Memo() memo.MemoServicer
 	Treasury() treasury.TreasuryServicer
 	Issue() issue.IssueServicer
