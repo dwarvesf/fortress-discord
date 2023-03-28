@@ -28,5 +28,5 @@ func (m *Milestone) DefaultCommand(message *model.DiscordMessage) error {
 
 func (m *Milestone) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
 	// we require roles for all commands in milestones
-	return permutil.CheckSupporterOrAbove(message.Roles)
+	return permutil.CheckModOrAbove(message.Roles)
 }
