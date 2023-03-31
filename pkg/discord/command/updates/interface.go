@@ -9,4 +9,5 @@ type UpdatesCommander interface {
 	base.TextCommander
 
 	List(message *model.DiscordMessage) error
+	PreSend(message *model.DiscordMessage) error
 }

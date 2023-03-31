@@ -21,6 +21,11 @@ func CheckModOrAbove(roles []string) (bool, []string) {
 	return checkPermission(roles, required), required
 }
 
+func CheckSmodOrAbove(roles []string) (bool, []string) {
+	required := SmodOrAbove()
+	return checkPermission(roles, required), required
+}
+
 func SupporterOrAbove() []string {
 	return []string{
 		DiscordRoleAdmin,

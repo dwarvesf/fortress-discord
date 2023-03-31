@@ -41,6 +41,9 @@ func (d *Discord) ListenAndServe() (*discordgo.Session, error) {
 		d.MessageHistory.AddMsg(curMsg.Message)
 	})
 
+	// register interaction, right now use for sending updates
+	d.Session.AddHandler(d.onInteractionCreate)
+
 	// intents to receive message
 	d.Session.Identify.Intents = discordgo.IntentsGuildMessages
 

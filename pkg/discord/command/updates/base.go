@@ -2,6 +2,7 @@ package updates
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/permutil"
 )
 
 func (u *Updates) Prefix() []string {
@@ -19,6 +20,8 @@ func (u *Updates) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "list":
 		return u.List(message)
+	case "send":
+		return u.PreSend(message)
 	}
 
 	return nil
@@ -37,5 +40,6 @@ func (u *Updates) DefaultCommand(message *model.DiscordMessage) error {
 }
 
 func (u *Updates) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
-	return true, []string{}
+	// we require roles for all commands in milestones
+	return permutil.CheckSmodOrAbove(message.Roles)
 }
