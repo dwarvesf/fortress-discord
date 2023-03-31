@@ -32,3 +32,15 @@ func (t *Updates) List(message *model.DiscordMessage) error {
 	// 2. render
 	return t.view.Digest().ListExternal(message, data)
 }
+
+func (t *Updates) PreSend(message *model.DiscordMessage) error {
+	// 1. get data from service
+	data, err := t.svc.Digest().GetExternalUpdates()
+	if err != nil {
+		t.L.Error(err, "can't get list of Updates")
+		return err
+	}
+
+	// 2. render
+	return t.view.Digest().SendoutSelection(message, data)
+}

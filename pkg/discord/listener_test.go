@@ -15,7 +15,7 @@ func Test_shouldParseMessage(t *testing.T) {
 	// dummy discord session
 	ses := discordgo.Session{}
 
-	d := New(&ses, cfg, l, nil, nil)
+	d := New(&ses, cfg, l, nil, nil, nil)
 
 	type tc struct {
 		name string
@@ -84,7 +84,7 @@ func Test_parseMessage(t *testing.T) {
 	// dummy discord session
 	ses := discordgo.Session{}
 
-	d := New(&ses, cfg, l, nil, nil)
+	d := New(&ses, cfg, l, nil, nil, nil)
 
 	type tc struct {
 		name string

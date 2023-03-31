@@ -25,4 +25,7 @@ type FortressAdapter interface {
 	GetActiveIssues() (issues *model.AdapterIssue, err error)
 
 	LogTechRadarTopic(topicName string, discordId string) error
+
+	GetChangelogs() (digests *model.ChangelogDigest, err error)
+	SendChangelog(changelog *model.Changelog) error
 }

@@ -1,13 +1,12 @@
-package updates
+package changelog
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-type UpdatesCommander interface {
+type ChangelogCommander interface {
 	base.TextCommander
 
-	List(message *model.DiscordMessage) error
-	PreSend(message *model.DiscordMessage) error
+	Send(message *model.DiscordMessage) error
 }
