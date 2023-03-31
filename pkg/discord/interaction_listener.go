@@ -49,7 +49,7 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 		// --url 'https://develop-api.fortress.d.foundation/api/v1/bc072472af5e4ab29a8025dc71565677/send?preview=true'
 
 		// TODO:clean up
-		url := "https://api.fortress.d.foundation/api/v1/%s/send"
+		url := "https://api.fortress.d.foundation/api/v1/df-updates/%s/send"
 		if previewMode {
 			url = url + "?preview=true"
 		}
