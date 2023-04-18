@@ -23,7 +23,7 @@ func New(url string) FortressAdapter {
 
 // GetChangelogs implements FortressAdapter
 func (f *Fortress) GetChangelogs() (changelogs *model.ChangelogDigest, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion-changelog/projects/available")
+	resp, err := http.Get(f.Url + "/api/v1/notion/notion-changelog/projects/available")
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +38,7 @@ func (f *Fortress) GetChangelogs() (changelogs *model.ChangelogDigest, err error
 }
 
 func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/earn")
+	resp, err := http.Get(f.Url + "/api/v1/notion/earn")
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
 }
 
 func (f *Fortress) GetTechRadar(ringFilter string, q *string) (techRadars *model.AdapterTechRadar, err error) {
-	url := f.Url + "/api/v1/tech-radar?"
+	url := f.Url + "/api/v1/notion/tech-radar?"
 	if q != nil {
 		url += "&name=" + *q
 	}
@@ -75,7 +75,7 @@ func (f *Fortress) GetTechRadar(ringFilter string, q *string) (techRadars *model
 }
 
 func (f *Fortress) GetNewSubscribers() (subscribers *model.AdapterSubscriber, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/audiences")
+	resp, err := http.Get(f.Url + "/api/v1/notion/audiences")
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (f *Fortress) GetNewSubscribers() (subscribers *model.AdapterSubscriber, er
 }
 
 func (f *Fortress) GetOpenPositions() (posistions *model.AdapterHiringPosition, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/hiring-positions")
+	resp, err := http.Get(f.Url + "/api/v1/notion/hiring-positions")
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (f *Fortress) GetOpenPositions() (posistions *model.AdapterHiringPosition, 
 }
 
 func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/events")
+	resp, err := http.Get(f.Url + "/api/v1/notion/events")
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
 }
 
 func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/staffing-demands")
+	resp, err := http.Get(f.Url + "/api/v1/notion/staffing-demands")
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +135,7 @@ func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, e
 }
 
 func (f *Fortress) GetProjectMilestones(q string) (milestone *model.AdapterProjectMilestone, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/projects/milestones?project_name=" + q)
+	resp, err := http.Get(f.Url + "/api/v1/notion/projects/milestones?project_name=" + q)
 	if err != nil {
 		return nil, err
 	}
@@ -150,7 +150,7 @@ func (f *Fortress) GetProjectMilestones(q string) (milestone *model.AdapterProje
 }
 
 func (f *Fortress) GetInternalDigest() (digest *model.AdapterDigest, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/digests")
+	resp, err := http.Get(f.Url + "/api/v1/notion/digests")
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (f *Fortress) GetInternalDigest() (digest *model.AdapterDigest, err error) 
 }
 
 func (f *Fortress) GetExternalDigest() (digest *model.AdapterDigest, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/updates")
+	resp, err := http.Get(f.Url + "/api/v1/notion/updates")
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (f *Fortress) GetExternalDigest() (digest *model.AdapterDigest, err error) 
 }
 
 func (f *Fortress) GetMemos() (memos *model.AdapterMemo, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/memos")
+	resp, err := http.Get(f.Url + "/api/v1/notion/memos")
 	if err != nil {
 		return nil, err
 	}
@@ -195,7 +195,7 @@ func (f *Fortress) GetMemos() (memos *model.AdapterMemo, err error) {
 }
 
 func (f *Fortress) GetActiveIssues() (issues *model.AdapterIssue, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/issues")
+	resp, err := http.Get(f.Url + "/api/v1/notion/issues")
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func (f *Fortress) LogTechRadarTopic(topicName string, discordId string) error {
 	}
 
 	jsonValue, _ := json.Marshal(radarTopic)
-	resp, err := http.Post(f.Url+"/api/v1/tech-radar", "application/json", bytes.NewBuffer(jsonValue))
+	resp, err := http.Post(f.Url+"/api/v1/notion/tech-radar", "application/json", bytes.NewBuffer(jsonValue))
 	if err != nil {
 		return err
 	}
@@ -264,7 +264,7 @@ func (f *Fortress) SendChangelog(c *model.Changelog) error {
 	}
 
 	jsonValue, _ := json.Marshal(req)
-	resp, err := http.Post(f.Url+"/api/v1/notion-changelog/project", "application/json", bytes.NewBuffer(jsonValue))
+	resp, err := http.Post(f.Url+"/api/v1/notion/notion-changelog/project", "application/json", bytes.NewBuffer(jsonValue))
 	if err != nil {
 		return err
 	}
