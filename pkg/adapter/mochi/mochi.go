@@ -26,7 +26,7 @@ func (m *Mochi) SendTip(tip *model.Tip) error {
 		return err
 	}
 
-	resp, err := http.Post(m.Url+"/api/v1/tip/transfer", "application/json", bytes.NewBuffer(data))
+	resp, err := http.Post(m.Url+"/api/v1/notion/tip/transfer", "application/json", bytes.NewBuffer(data))
 	if err != nil {
 		return err
 	}
