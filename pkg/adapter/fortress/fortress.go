@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -12,18 +13,37 @@ import (
 )
 
 type Fortress struct {
-	Url string
+	Url    string
+	ApiKey string
 }
 
-func New(url string) FortressAdapter {
+func New(url, apiKey string) FortressAdapter {
 	return &Fortress{
-		Url: url,
+		Url:    url,
+		ApiKey: apiKey,
 	}
+}
+
+func (f *Fortress) makeReq(subURL, method string, body io.Reader) (*http.Request, error) {
+	url := f.Url + subURL
+	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "ApiKey "+f.ApiKey)
+	req.Header.Set("Content-Type", "application/json")
+	return req, nil
 }
 
 // GetChangelogs implements FortressAdapter
 func (f *Fortress) GetChangelogs() (changelogs *model.ChangelogDigest, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/notion-changelog/projects/available")
+	req, err := f.makeReq("/api/v1/notion/changelogs/projects/available", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +58,12 @@ func (f *Fortress) GetChangelogs() (changelogs *model.ChangelogDigest, err error
 }
 
 func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/earn")
+	req, err := f.makeReq("/api/v1/notion/earn", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -53,14 +78,20 @@ func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
 }
 
 func (f *Fortress) GetTechRadar(ringFilter string, q *string) (techRadars *model.AdapterTechRadar, err error) {
-	url := f.Url + "/api/v1/notion/tech-radar?"
+	url := "/api/v1/notion/tech-radar?"
 	if q != nil {
 		url += "&name=" + *q
 	}
 	if ringFilter != "" {
 		url += "&ring=" + ringFilter
 	}
-	resp, err := http.Get(url)
+
+	req, err := f.makeReq(url, http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -75,10 +106,16 @@ func (f *Fortress) GetTechRadar(ringFilter string, q *string) (techRadars *model
 }
 
 func (f *Fortress) GetNewSubscribers() (subscribers *model.AdapterSubscriber, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/audiences")
+	req, err := f.makeReq("/api/v1/notion/audiences", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
@@ -90,10 +127,16 @@ func (f *Fortress) GetNewSubscribers() (subscribers *model.AdapterSubscriber, er
 }
 
 func (f *Fortress) GetOpenPositions() (posistions *model.AdapterHiringPosition, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/hiring-positions")
+	req, err := f.makeReq("/api/v1/notion/hiring-positions", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
@@ -105,10 +148,16 @@ func (f *Fortress) GetOpenPositions() (posistions *model.AdapterHiringPosition, 
 }
 
 func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/events")
+	req, err := f.makeReq("/api/v1/notion/events", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
@@ -120,10 +169,16 @@ func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
 }
 
 func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/staffing-demands")
+	req, err := f.makeReq("/api/v1/notion/staffing-demands", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
@@ -135,7 +190,12 @@ func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, e
 }
 
 func (f *Fortress) GetProjectMilestones(q string) (milestone *model.AdapterProjectMilestone, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/projects/milestones?project_name=" + q)
+	req, err := f.makeReq("/api/v1/notion/projects/milestones?project_name="+q, http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -150,7 +210,12 @@ func (f *Fortress) GetProjectMilestones(q string) (milestone *model.AdapterProje
 }
 
 func (f *Fortress) GetInternalDigest() (digest *model.AdapterDigest, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/digests")
+	req, err := f.makeReq("/api/v1/notion/digests", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -165,10 +230,16 @@ func (f *Fortress) GetInternalDigest() (digest *model.AdapterDigest, err error) 
 }
 
 func (f *Fortress) GetExternalDigest() (digest *model.AdapterDigest, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/updates")
+	req, err := f.makeReq("/api/v1/notion/updates", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
@@ -180,10 +251,16 @@ func (f *Fortress) GetExternalDigest() (digest *model.AdapterDigest, err error) 
 }
 
 func (f *Fortress) GetMemos() (memos *model.AdapterMemo, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/memos")
+	req, err := f.makeReq("/api/v1/notion/memos", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
@@ -195,10 +272,16 @@ func (f *Fortress) GetMemos() (memos *model.AdapterMemo, err error) {
 }
 
 func (f *Fortress) GetActiveIssues() (issues *model.AdapterIssue, err error) {
-	resp, err := http.Get(f.Url + "/api/v1/notion/issues")
+	req, err := f.makeReq("/api/v1/notion/issues", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
@@ -222,10 +305,16 @@ func (f *Fortress) LogTechRadarTopic(topicName string, discordId string) error {
 	}
 
 	jsonValue, _ := json.Marshal(radarTopic)
-	resp, err := http.Post(f.Url+"/api/v1/notion/tech-radar", "application/json", bytes.NewBuffer(jsonValue))
+	req, err := f.makeReq("/api/v1/notion/tech-radar", http.MethodPost, bytes.NewBuffer(jsonValue))
 	if err != nil {
 		return err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
@@ -251,7 +340,7 @@ func (f *Fortress) SendChangelog(c *model.Changelog) error {
 	}
 
 	// post to fortress
-	req := SendChangelogReq{
+	bodyReq := SendChangelogReq{
 		ProjectPageID: c.RowID,
 		IsPreview:     false,
 		From: struct {
@@ -263,11 +352,18 @@ func (f *Fortress) SendChangelog(c *model.Changelog) error {
 		},
 	}
 
-	jsonValue, _ := json.Marshal(req)
-	resp, err := http.Post(f.Url+"/api/v1/notion/notion-changelog/project", "application/json", bytes.NewBuffer(jsonValue))
+	jsonValue, _ := json.Marshal(bodyReq)
+
+	req, err := f.makeReq("/api/v1/notion/changelogs/project", http.MethodPost, bytes.NewBuffer(jsonValue))
 	if err != nil {
 		return err
 	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {

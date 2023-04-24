@@ -19,7 +19,7 @@ type subAdapter struct {
 func New(cfg *config.Config, l logger.Logger) IAdapter {
 	return &Adapter{
 		subAdapter: subAdapter{
-			Fortress: fortress.New(cfg.Endpoint.Fortress),
+			Fortress: fortress.New(cfg.Endpoint.Fortress, cfg.ApiServer.APIKey),
 			Mochi:    mochi.New(cfg.Endpoint.Mochi),
 		},
 	}
