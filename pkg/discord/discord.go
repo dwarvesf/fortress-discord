@@ -2,7 +2,6 @@ package discord
 
 import (
 	"github.com/bwmarrin/discordgo"
-
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/history"
@@ -43,9 +42,11 @@ func (d *Discord) ListenAndServe() (*discordgo.Session, error) {
 
 	// register interaction, right now use for sending updates
 	d.Session.AddHandler(d.onInteractionCreate)
+	d.Session.AddHandler(d.onReactionCreate)
 
 	// intents to receive message
-	d.Session.Identify.Intents = discordgo.IntentsGuildMessages
+	d.Session.Identify.Intents = discordgo.IntentsGuildMessages |
+		discordgo.IntentsGuildMessageReactions
 
 	err := d.Session.Open()
 	if err != nil {

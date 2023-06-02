@@ -81,3 +81,27 @@ func (d *Discord) parseMessage(m *discordgo.MessageCreate) *model.DiscordMessage
 		Roles:       roles,
 	}
 }
+
+func (d *Discord) onReactionCreate(s *discordgo.Session, m *discordgo.MessageReactionAdd) {
+	channel, err := s.Channel(m.ChannelID)
+	if err != nil {
+		l := d.L.AddField("channelID", m.ChannelID)
+		l.Error(err, "unable to get channel")
+		return
+	}
+	record := &model.EngagementsRollupRecord{
+		DiscordUserID: m.UserID,
+		LastMessageID: m.MessageID,
+		ChannelID:     channel.ID,
+		CategoryID:    channel.ParentID,
+		MessageCount:  0,
+		ReactionCount: 1,
+	}
+	l := d.L.AddField("record", record)
+	err = d.Command.S.Engagement().UpsertRollup(record)
+	if err != nil {
+		l.Error(err, "unable to upsert record")
+		return
+	}
+	l.Info("counted new reaction")
+}

@@ -33,6 +33,7 @@ type Command struct {
 	L    logger.Logger
 	Cmds map[string]base.TextCommander
 	View view.Viewer
+	S    service.Servicer
 }
 
 func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Viewer, msgHistory *history.MsgHistory) *Command {
@@ -40,6 +41,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		Cmds: make(map[string]base.TextCommander),
 		L:    l,
 		View: view,
+		S:    svc,
 	}
 
 	// register all commands here
