@@ -7,6 +7,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
@@ -23,6 +24,7 @@ type Service struct {
 
 type subService struct {
 	Earn       earn.EarnServicer
+	Icy        icy.IcyServicer
 	TechRadar  techradar.TechRadarServicer
 	Subscriber subscriber.SubscriberServicer
 	Hiring     hiring.HiringServicer
@@ -40,6 +42,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 	return &Service{
 		subService: subService{
 			Earn:       earn.New(adapter, l),
+			Icy:        icy.New(adapter, l),
 			TechRadar:  techradar.New(adapter, l),
 			Subscriber: subscriber.New(adapter, l),
 			Hiring:     hiring.New(adapter, l),
@@ -53,6 +56,11 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Changelog:  changelog.New(adapter, l),
 		},
 	}
+}
+
+// Icy implements Servicer.
+func (s *Service) Icy() icy.IcyServicer {
+	return s.subService.Icy
 }
 
 func (s *Service) Earn() earn.EarnServicer {

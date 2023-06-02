@@ -6,6 +6,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
@@ -17,6 +18,7 @@ import (
 
 type Servicer interface {
 	Earn() earn.EarnServicer
+	Icy() icy.IcyServicer
 	TechRadar() techradar.TechRadarServicer
 	Subscriber() subscriber.SubscriberServicer
 	Hiring() hiring.HiringServicer

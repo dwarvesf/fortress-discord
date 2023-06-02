@@ -9,6 +9,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/event"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/hiring"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
@@ -19,6 +20,7 @@ import (
 
 type Viewer interface {
 	Earn() earn.EarnViewer
+	Icy() icy.IcyViewer
 	Help() help.HelpViewer
 	Error() errors.ErrorViewer
 	TechRadar() techradar.TechRadarViewer

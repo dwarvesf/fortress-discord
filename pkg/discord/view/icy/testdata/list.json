@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "reward": 100
+  },
+  {
+    "id": 2,
+    "name": "Test 2",
+    "reward": 1000
+  }
+]
