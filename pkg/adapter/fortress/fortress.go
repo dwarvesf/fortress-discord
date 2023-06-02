@@ -77,6 +77,26 @@ func (f *Fortress) GetCommunityEarn() (earns *model.AdapterEarn, err error) {
 	return earns, nil
 }
 
+func (f *Fortress) GetIcyWeeklyDistribution() (icys *model.AdapterIcy, err error) {
+	req, err := f.makeReq("/api/v1/projects/icy-distribution/weekly", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&icys); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return icys, nil
+}
+
 func (f *Fortress) GetTechRadar(ringFilter string, q *string) (techRadars *model.AdapterTechRadar, err error) {
 	url := "/api/v1/notion/tech-radar?"
 	if q != nil {

@@ -3,6 +3,8 @@ package fortress
 import "github.com/dwarvesf/fortress-discord/pkg/model"
 
 type FortressAdapter interface {
+	GetIcyWeeklyDistribution() (icys *model.AdapterIcy, err error)
+
 	GetCommunityEarn() (earns *model.AdapterEarn, err error)
 
 	GetTechRadar(ringFilter string, query *string) (techradars *model.AdapterTechRadar, err error)

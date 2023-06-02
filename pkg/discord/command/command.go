@@ -13,6 +13,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/help"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hiring"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/hold"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/index"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/memo"
@@ -45,6 +46,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 	// register all commands here
 	cmd.Add([]base.TextCommander{
 		earn.New(l, svc, view),
+		icy.New(l, svc, view),
 		help.New(l, svc, view),
 		trial.New(l, svc, view),
 		assess.New(l, svc, view),
