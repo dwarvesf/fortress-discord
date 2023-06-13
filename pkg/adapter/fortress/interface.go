@@ -28,4 +28,6 @@ type FortressAdapter interface {
 
 	GetChangelogs() (digests *model.ChangelogDigest, err error)
 	SendChangelog(changelog *model.Changelog) error
+
+	UpsertRollupRecord(record *model.EngagementsRollupRecord) error
 }

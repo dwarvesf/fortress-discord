@@ -37,6 +37,7 @@ type DiscordIds struct {
 }
 
 type ApiServer struct {
+	APIKey         string
 	Port           string
 	AllowedOrigins string
 }
@@ -51,7 +52,8 @@ func Generate(v ENV) *Config {
 		Debug: v.GetBool("DEBUG"),
 		Env:   v.GetString("ENV"),
 		ApiServer: ApiServer{
-			Port: v.GetString("PORT"),
+			Port:   v.GetString("PORT"),
+			APIKey: v.GetString("FORTRESS_API_KEY"),
 		},
 		Endpoint: Endpoint{
 			Fortress: v.GetString("FORTRESS_ENDPOINT"),

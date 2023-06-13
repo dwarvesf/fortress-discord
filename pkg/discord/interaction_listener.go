@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/k0kubun/pp"
 )
 
 // TODO: generics this to specific packages
@@ -55,9 +54,8 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 		}
 		url = fmt.Sprintf(url, strings.Replace(i.MessageComponentData().Values[0], "-", "", -1))
 
-		pp.Println(url)
-
 		req, _ := http.NewRequest("POST", url, nil)
+		req.Header.Set("Authorization", "ApiKey "+d.Cfg.ApiServer.APIKey)
 		req.Header.Set("Content-Type", "application/json")
 
 		client := &http.Client{}
