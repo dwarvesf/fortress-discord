@@ -21,6 +21,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/new"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/radar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/staff"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/updates"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/history"
@@ -47,6 +48,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 	cmd.Add([]base.TextCommander{
 		earn.New(l, svc, view),
 		icy.New(l, svc, view),
+		sum.New(l, svc, view),
 		help.New(l, svc, view),
 		trial.New(l, svc, view),
 		assess.New(l, svc, view),

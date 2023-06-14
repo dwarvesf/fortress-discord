@@ -17,6 +17,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
 )
 
@@ -27,6 +28,7 @@ type View struct {
 type subView struct {
 	Earn       earn.EarnViewer
 	Icy        icy.IcyViewer
+	Sum        sum.SumViewer
 	Help       help.HelpViewer
 	Error      errors.ErrorViewer
 	TechRadar  techradar.TechRadarViewer
@@ -47,6 +49,7 @@ func New(ses *discordgo.Session) Viewer {
 		subView: subView{
 			Earn:       earn.New(ses),
 			Icy:        icy.New(ses),
+			Sum:        sum.New(ses),
 			Help:       help.New(ses),
 			Error:      errors.New(ses),
 			TechRadar:  techradar.New(ses),
@@ -66,6 +69,10 @@ func New(ses *discordgo.Session) Viewer {
 
 func (v *View) Icy() icy.IcyViewer {
 	return v.subView.Icy
+}
+
+func (v *View) Sum() sum.SumViewer {
+	return v.subView.Sum
 }
 
 func (v *View) Earn() earn.EarnViewer {
