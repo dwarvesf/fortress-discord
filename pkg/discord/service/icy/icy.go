@@ -22,7 +22,7 @@ func (e *Icy) GetWeeklyDistribution() ([]*model.Icy, error) {
 	// get response from fortress
 	adapterIcys, err := e.adapter.Fortress().GetIcyWeeklyDistribution()
 	if err != nil {
-		e.l.Error(err, "can't get community earn")
+		e.l.Error(err, "can't get weekly icy distribution")
 		return nil, err
 	}
 

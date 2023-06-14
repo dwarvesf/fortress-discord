@@ -14,9 +14,14 @@ type Config struct {
 	Env   string
 
 	ApiServer ApiServer
+	OpenAI    OpenAI
 	Discord   Discord
 
 	Endpoint Endpoint
+}
+
+type OpenAI struct {
+	APIKey string
 }
 
 type Endpoint struct {
@@ -58,6 +63,9 @@ func Generate(v ENV) *Config {
 		Endpoint: Endpoint{
 			Fortress: v.GetString("FORTRESS_ENDPOINT"),
 			Mochi:    v.GetString("MOCHI_ENDPOINT"),
+		},
+		OpenAI: OpenAI{
+			APIKey: v.GetString("OPENAI_API_KEY"),
 		},
 		Discord: Discord{
 			SecretToken: v.GetString("DISCORD_SECRET_TOKEN"),
