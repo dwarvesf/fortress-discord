@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 

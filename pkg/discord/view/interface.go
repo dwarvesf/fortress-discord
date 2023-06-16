@@ -1,6 +1,7 @@
 package view
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/done"
@@ -36,4 +37,5 @@ type Viewer interface {
 	Done() done.DoneViewer
 	Issue() issue.IssueViewer
 	Changelog() changelog.ChangelogViewer
+	Brainery() brainery.Viewer
 }
