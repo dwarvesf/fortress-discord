@@ -8,6 +8,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -61,10 +62,6 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "There is no valid user or more than one user tagged in your message.")
 	}
 
-	if len(extractTags) == 0 {
-		return e.view.Error().Raise(message, "Brainery post tag is required.\nTags should be like this format #tag1 #tag2")
-	}
-
 	reward := defaultBraineryReward
 	if len(extractReward) > 0 {
 		reward = extractReward[0]
@@ -75,18 +72,18 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		gh = extractGithub[0]
 	}
 
-	mbrainery := &model.Brainery{
+	mbrainery := &brainery.PostInput{
 		URL:         extractURL[0],
 		DiscordID:   extractDiscordID[0],
 		Reward:      reward,
 		PublishDate: &now,
-		Tags:        buildTags(extractTags),
+		Tags:        extractTags,
 		Github:      gh,
 	}
 
 	result, err := e.svc.Brainery().Post(mbrainery)
 	if err != nil {
-		return err
+		return e.view.Error().Raise(message, err.Error())
 	}
 
 	// 2. render
@@ -115,13 +112,4 @@ func formatString(str string) string {
 	formattedStr = strings.ReplaceAll(formattedStr, "# ", "#")
 
 	return formattedStr
-}
-
-func buildTags(tags []string) string {
-	var result []string
-	for _, tag := range tags {
-		result = append(result, "#"+tag)
-	}
-
-	return strings.Join(result, "\n")
 }
