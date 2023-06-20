@@ -21,7 +21,7 @@ func New(ses *discordgo.Session) Viewer {
 
 func (h *Brainery) Help(message *model.DiscordMessage) error {
 	content := []string{
-		"**?brainery publish**・publish new brainery article.",
+		"**?brainery post**・publish new brainery article.",
 	}
 
 	msg := &discordgo.MessageEmbed{

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	openai "github.com/sashabaranov/go-openai"
+	"github.com/sashabaranov/go-openai"
 )
 
 type OpenAI struct {
@@ -50,7 +50,7 @@ func (o *OpenAI) SummarizeArticle(url string) (string, error) {
 }
 
 // SummarizeBraineryPost implements OpenAIAdapter.
-func (o *OpenAI) SummarizeBraineryPost(url string) (string, error) {
+func (o *OpenAI) SummarizeBraineryPost(content string) (string, error) {
 	resp, err := o.client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -67,8 +67,9 @@ func (o *OpenAI) SummarizeBraineryPost(url string) (string, error) {
 				},
 				{
 					Role: openai.ChatMessageRoleUser,
-					Content: fmt.Sprintf(`Write a descriptive paragraph for this article: %s.
-					Write this paragraph max 40 words, do not mention the source. `, url),
+					Content: fmt.Sprintf(`Article: %s.
+					Write a descriptive paragraph for the article that mentioned above.
+					Write this paragraph under 50 words, do not mention the source. `, content),
 				},
 			},
 		},
