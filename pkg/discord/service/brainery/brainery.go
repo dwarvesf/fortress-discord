@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/shopspring/decimal"
 
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -31,7 +32,7 @@ type PostInput struct {
 	URL         string
 	Author      string
 	Reward      string
-	PublishDate *time.Time
+	PublishedAt *time.Time
 	Tags        []string
 	Github      string
 	DiscordID   string
@@ -82,17 +83,37 @@ func (e *Brainery) Post(in *PostInput) (*model.Brainery, error) {
 		return nil, err
 	}
 
-	return &model.Brainery{
+	mBrainery := &model.Brainery{
 		Title:       title,
 		URL:         in.URL,
 		Author:      in.Author,
 		Description: description + "..",
 		Reward:      in.Reward,
-		PublishDate: in.PublishDate,
+		PublishedAt: in.PublishedAt,
 		Tags:        tags,
 		Github:      in.Github,
 		DiscordID:   in.DiscordID,
-	}, nil
+	}
+
+	rw, err := decimal.NewFromString(mBrainery.Reward)
+	if err != nil {
+		return nil, err
+	}
+
+	err = e.adapter.Fortress().CreateBraineryPost(&model.CreateBraineryLogRequest{
+		Title:       mBrainery.Title,
+		URL:         mBrainery.URL,
+		GithubID:    mBrainery.Github,
+		DiscordID:   mBrainery.DiscordID,
+		Tags:        separateTags(mBrainery.Tags),
+		PublishedAt: mBrainery.PublishedAt.Format(time.RFC3339),
+		Reward:      rw,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return mBrainery, nil
 }
 
 func convertURL(originalURL string) (string, error) {
@@ -166,4 +187,7 @@ func buildTags(tags []string) string {
 	}
 
 	return strings.Join(result, "\n")
+}
+func separateTags(tags string) []string {
+	return strings.Split(strings.ReplaceAll(tags, "#", ""), "\n")
 }

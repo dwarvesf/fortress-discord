@@ -58,6 +58,10 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "There is no URL or more than one URL in your message.")
 	}
 
+	if !strings.Contains(extractURL[0], "https://brain.d.foundation") {
+		return e.view.Error().Raise(message, "The article should be get https://brain.d.foundation.")
+	}
+
 	if len(extractDiscordID) == 0 || len(extractDiscordID) > 1 {
 		return e.view.Error().Raise(message, "There is no valid user or more than one user tagged in your message.")
 	}
@@ -76,7 +80,7 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		URL:         extractURL[0],
 		DiscordID:   extractDiscordID[0],
 		Reward:      reward,
-		PublishDate: &now,
+		PublishedAt: &now,
 		Tags:        extractTags,
 		Github:      gh,
 	}

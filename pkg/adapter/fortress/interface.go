@@ -32,4 +32,6 @@ type FortressAdapter interface {
 	SendChangelog(changelog *model.Changelog) error
 
 	UpsertRollupRecord(record *model.EngagementsRollupRecord) error
+
+	CreateBraineryPost(post *model.CreateBraineryLogRequest) error
 }
