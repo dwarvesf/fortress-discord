@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
@@ -40,6 +41,7 @@ type subService struct {
 	Issue      issue.IssueServicer
 	Changelog  changelog.ChangelogServicer
 	Engagement engagement.EngagementServicer
+	Brainery   brainery.Service
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
@@ -60,6 +62,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Issue:      issue.New(adapter, l),
 			Changelog:  changelog.New(adapter, l),
 			Engagement: engagement.New(adapter, l),
+			Brainery:   brainery.New(adapter, l),
 		},
 	}
 }
@@ -123,4 +126,8 @@ func (s *Service) Changelog() changelog.ChangelogServicer {
 
 func (s *Service) Engagement() engagement.EngagementServicer {
 	return s.subService.Engagement
+}
+
+func (s *Service) Brainery() brainery.Service {
+	return s.subService.Brainery
 }

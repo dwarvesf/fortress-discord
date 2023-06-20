@@ -11,4 +11,7 @@ type ErrorViewer interface {
 
 	// NotHavePermission send message to user when user not have permission to execute command
 	NotHavePermission(m *model.DiscordMessage, required []string) error
+
+	// Raise send message to user when error occur
+	Raise(original *model.DiscordMessage, errorMessage string) error
 }

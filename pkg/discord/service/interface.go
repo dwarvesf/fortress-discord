@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
@@ -34,4 +35,5 @@ type Servicer interface {
 	Treasury() treasury.TreasuryServicer
 	Issue() issue.IssueServicer
 	Engagement() engagement.EngagementServicer
+	Brainery() brainery.Service
 }

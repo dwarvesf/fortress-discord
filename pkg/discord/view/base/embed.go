@@ -1,9 +1,8 @@
 package base
 
 import (
-	"time"
-
 	"github.com/bwmarrin/discordgo"
+	"time"
 
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -22,6 +21,13 @@ func normalize(original *model.DiscordMessage, response *discordgo.MessageEmbed)
 	if response.Timestamp == "" {
 		response.Timestamp = time.Now().Format(time.RFC3339)
 	}
+
+	// I did something tricky here, if timestamp is custom, we don't want to show it, because in case of user want to add a custom date time format in the footer
+	// instead of automatically add it, we don't want to show it twice.
+	if response.Timestamp == "custom" {
+		response.Timestamp = ""
+	}
+
 	if response.Color == 0 {
 		// default df color #D14960
 		response.Color = 13715808
