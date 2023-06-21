@@ -22,6 +22,7 @@ func New(ses *discordgo.Session) Viewer {
 func (h *Brainery) Help(message *model.DiscordMessage) error {
 	content := []string{
 		"**?brainery post**・publish new brainery article.",
+		"*Example:* `?brainery post <url> @n #tag1 #tag2 gh:namnhce`",
 	}
 
 	msg := &discordgo.MessageEmbed{
@@ -73,7 +74,7 @@ func (h *Brainery) Post(original *model.DiscordMessage, content *model.Brainery,
 		Fields:      messageEmbed,
 
 		Footer: &discordgo.MessageEmbedFooter{
-			Text: "Added at " + content.PublishDate.Format("January 2, 2006 3:04 PM") + " 🎉🎉🎉",
+			Text: "Added at " + content.PublishedAt.Format("January 2, 2006 3:04 PM") + " 🎉🎉🎉",
 		},
 		Timestamp: "custom",
 		Thumbnail: &discordgo.MessageEmbedThumbnail{

@@ -421,3 +421,28 @@ func (f *Fortress) UpsertRollupRecord(record *model.EngagementsRollupRecord) err
 
 	return nil
 }
+
+func (f *Fortress) CreateBraineryPost(post *model.CreateBraineryLogRequest) error {
+	jsonValue, err := json.Marshal(post)
+	req, err := f.makeReq("/api/v1/brainery-logs", http.MethodPost, bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		var errMsg ErrorMessage
+		if err := json.NewDecoder(resp.Body).Decode(&errMsg); err != nil {
+			return errors.New("invalid decoded, error " + err.Error())
+		}
+		return errors.New("invalid call, code " + strconv.Itoa(resp.StatusCode) + " " + errMsg.Message)
+	}
+
+	return nil
+}

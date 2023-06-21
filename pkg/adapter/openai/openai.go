@@ -67,9 +67,9 @@ func (o *OpenAI) SummarizeBraineryPost(content string) (string, error) {
 				},
 				{
 					Role: openai.ChatMessageRoleUser,
-					Content: fmt.Sprintf(`Article: %s.
-					Write a descriptive paragraph for the article that mentioned above.
-					Write this paragraph under 50 words, do not mention the source. `, content),
+					Content: fmt.Sprintf(`Memo: %s.
+					Write a excerpt for the Memo that mentioned above.
+					Write this excerpt under 40 words, do not mention the source. `, content),
 				},
 			},
 		},
