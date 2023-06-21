@@ -32,6 +32,7 @@ type PostInput struct {
 	URL         string
 	Author      string
 	Reward      string
+	Description string
 	PublishedAt *time.Time
 	Tags        []string
 	Github      string
@@ -77,10 +78,30 @@ func (e *Brainery) Post(in *PostInput) (*model.Brainery, error) {
 		in.Github = metadata["github_id"]
 	}
 
-	description, err := e.adapter.OpenAI().SummarizeBraineryPost(string(body)[:3000])
-	if err != nil {
-		fmt.Printf("ChatCompletion error: %v\n", err)
-		return nil, err
+	if in.Reward == "" {
+		in.Github = metadata["github_id"]
+	}
+
+	if in.Reward == "0" {
+		in.Reward = "10"
+		if metadata["reward"] != "" {
+			in.Reward = metadata["reward"]
+		}
+
+	}
+
+	description := in.Description
+	if description == "" {
+		maxlength := 3000
+		if len(string(body)) < maxlength {
+			maxlength = len(string(body))
+		}
+
+		description, err = e.adapter.OpenAI().SummarizeBraineryPost(string(body)[:maxlength])
+		if err != nil {
+			fmt.Printf("ChatCompletion error: %v\n", err)
+			return nil, err
+		}
 	}
 
 	mBrainery := &model.Brainery{
