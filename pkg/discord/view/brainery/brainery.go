@@ -39,7 +39,7 @@ func (h *Brainery) Post(original *model.DiscordMessage, content *model.Brainery,
 		return err
 	}
 
-	avatar := fmt.Sprintf("https://cdn.discordapp.com/avatars/%v/%v.webp?size=240", author.User.ID, author.Avatar)
+	avatar := fmt.Sprintf("https://cdn.discordapp.com/avatars/%v/%v.webp?size=240", author.User.ID, author.User.Avatar)
 	if author.Avatar != "" {
 		avatar = fmt.Sprintf("https://cdn.discordapp.com/guilds/%v/users/%v/avatars/%v.webp?size=240", original.GuildId, author.User.ID, author.Avatar)
 	}
