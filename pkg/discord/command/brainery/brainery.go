@@ -98,9 +98,12 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, err.Error())
 	}
 
+	err = e.view.Brainery().Post(message, result, targetChannelID)
+	if err != nil {
+		return e.view.Error().Raise(message, err.Error())
+	}
 	// 2. render
-	return e.view.Brainery().Post(message, result, targetChannelID)
-
+	return nil
 }
 
 func extractPattern(str string, pattern string) []string {
