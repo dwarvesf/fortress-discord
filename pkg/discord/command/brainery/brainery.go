@@ -37,6 +37,7 @@ var (
 	urlRegexPattern         = `((?:https?://)[^\s]+)`
 	githubRegexPattern      = `gh:(\w+)`
 	descriptionRegexPattern = `d:"(.*?)"`
+	channelRegexParttern    = `<#(\d+)>`
 )
 
 const defaultBraineryReward = "0"
@@ -55,6 +56,7 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 	extractReward := extractPattern(rawFormattedContent, icyRewardRegexPattern)
 	extractGithub := extractPattern(rawFormattedContent, githubRegexPattern)
 	extractDesc := extractPattern(rawFormattedContent, descriptionRegexPattern)
+	extractChannel := extractPattern(rawFormattedContent, channelRegexParttern)
 
 	if len(extractURL) == 0 || len(extractURL) > 1 {
 		return e.view.Error().Raise(message, "There is no URL or more than one URL in your message.")
@@ -81,6 +83,10 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 	desc := ""
 	if len(extractDesc) > 0 {
 		desc = extractDesc[0]
+	}
+
+	if len(extractChannel) > 0 {
+		targetChannelID = extractChannel[0]
 	}
 
 	mbrainery := &brainery.PostInput{
