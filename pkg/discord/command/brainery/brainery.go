@@ -31,14 +31,15 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer, cfg *config.Co
 }
 
 var (
-	discordIDRegexPattern = "<@(\\d+)>"
-	tagRegexPattern       = "#(\\w+)"
-	icyRewardRegexPattern = " (\\d+)"
-	urlRegexPattern       = "((?:https?://)[^\\s]+)"
-	githubRegexPattern    = "gh:(\\w+)"
+	discordIDRegexPattern   = `<@(\d+)>`
+	tagRegexPattern         = `#(\w+)`
+	icyRewardRegexPattern   = ` (\d+)`
+	urlRegexPattern         = `((?:https?://)[^\s]+)`
+	githubRegexPattern      = `gh:(\w+)`
+	descriptionRegexPattern = `d:"(.*?)"`
 )
 
-const defaultBraineryReward = "10"
+const defaultBraineryReward = "0"
 
 func (e *Brainery) Post(message *model.DiscordMessage) error {
 	targetChannelID := constant.DiscordBraineryChannel
@@ -53,6 +54,7 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 	extractTags := extractPattern(rawFormattedContent, tagRegexPattern)
 	extractReward := extractPattern(rawFormattedContent, icyRewardRegexPattern)
 	extractGithub := extractPattern(rawFormattedContent, githubRegexPattern)
+	extractDesc := extractPattern(rawFormattedContent, descriptionRegexPattern)
 
 	if len(extractURL) == 0 || len(extractURL) > 1 {
 		return e.view.Error().Raise(message, "There is no URL or more than one URL in your message.")
@@ -76,9 +78,15 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		gh = extractGithub[0]
 	}
 
+	desc := ""
+	if len(extractDesc) > 0 {
+		desc = extractDesc[0]
+	}
+
 	mbrainery := &brainery.PostInput{
 		URL:         extractURL[0],
 		DiscordID:   extractDiscordID[0],
+		Description: desc,
 		Reward:      reward,
 		PublishedAt: &now,
 		Tags:        extractTags,
