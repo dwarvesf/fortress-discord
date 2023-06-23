@@ -12,7 +12,7 @@ func (e *Brainery) Report(message *model.DiscordMessage) error {
 	targetChannelID := message.ChannelId
 
 	reportView := "weekly"
-	if len(args) > 1 {
+	if len(args) > 2 {
 		reportView = args[2]
 	}
 
