@@ -28,3 +28,22 @@ type CreateBraineryLogRequest struct {
 	PublishedAt string          `json:"publishedAt"`
 	Reward      decimal.Decimal `json:"reward"`
 }
+
+type BraineryMetricItem struct {
+	Title       string          `json:"title"`
+	URL         string          `json:"url"`
+	Reward      decimal.Decimal `json:"reward"`
+	PublishedAt string          `json:"publishedAt"`
+	DiscordID   string          `json:"discordID"`
+}
+
+type BraineryMetric struct {
+	LatestPosts     []BraineryMetricItem `json:"latestPosts"`
+	Tags            []string             `json:"tags"`
+	Contributors    []BraineryMetricItem `json:"contributors"`
+	NewContributors []BraineryMetricItem `json:"newContributors"`
+}
+
+type BraineryMetricResponse struct {
+	Data BraineryMetric `json:"data"`
+}

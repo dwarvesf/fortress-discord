@@ -2,8 +2,10 @@ package brainery
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/shopspring/decimal"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -19,10 +21,12 @@ func New(ses *discordgo.Session) Viewer {
 	}
 }
 
-func (h *Brainery) Help(message *model.DiscordMessage) error {
+func (v *Brainery) Help(message *model.DiscordMessage) error {
 	content := []string{
 		"**?brainery post**・publish new brainery article.",
 		"*Example:* `?brainery post <url> @n #tag1 #tag2 gh:namnhce`",
+		"**?brainery report**・get brainery report by week/month.",
+		"*Example:* `?brainery report weekly`",
 	}
 
 	msg := &discordgo.MessageEmbed{
@@ -30,11 +34,11 @@ func (h *Brainery) Help(message *model.DiscordMessage) error {
 		Description: strings.Join(content, "\n"),
 	}
 
-	return base.SendEmbededMessage(h.ses, message, msg)
+	return base.SendEmbededMessage(v.ses, message, msg)
 }
 
-func (h *Brainery) Post(original *model.DiscordMessage, content *model.Brainery, channelID string) error {
-	author, err := h.ses.GuildMember(original.GuildId, content.DiscordID)
+func (v *Brainery) Post(original *model.DiscordMessage, content *model.Brainery, channelID string) error {
+	author, err := v.ses.GuildMember(original.GuildId, content.DiscordID)
 	if err != nil {
 		return err
 	}
@@ -82,5 +86,77 @@ func (h *Brainery) Post(original *model.DiscordMessage, content *model.Brainery,
 		},
 	}
 
-	return base.SendEmbededMessageWithChannel(h.ses, original, msg, channelID)
+	return base.SendEmbededMessageWithChannel(v.ses, original, msg, channelID)
+}
+
+func (v *Brainery) Report(original *model.DiscordMessage, view string, braineryMetric *model.BraineryMetric, channelID string) error {
+	var messageEmbed []*discordgo.MessageEmbedField
+	totalICY := decimal.NewFromInt(0)
+	latestPost := "This is where we keep track of our **top 10** latest Brainery notes:\n\n"
+	if braineryMetric.LatestPosts != nil {
+		for _, post := range braineryMetric.LatestPosts {
+			latestPost += fmt.Sprintf("•  [%s](%s)\n", post.Title, post.URL)
+		}
+	}
+
+	contributors := ""
+	if len(braineryMetric.Contributors) > 0 {
+		for _, itm := range braineryMetric.Contributors {
+			totalICY = totalICY.Add(itm.Reward)
+			contributors += fmt.Sprintf("• <@%v> - [%s](%s)\n", itm.DiscordID, itm.Title, itm.URL)
+		}
+	}
+
+	if len(contributors) > 0 {
+		latestPost += "**\nContributors**\n"
+		latestPost += contributors
+	}
+
+	newContributor := ""
+	if len(braineryMetric.NewContributors) > 0 {
+		for _, itm := range braineryMetric.NewContributors {
+			totalICY = totalICY.Add(itm.Reward)
+			newContributor += fmt.Sprintf("• <@%v> - [%s](%s)\n", itm.DiscordID, itm.Title, itm.URL)
+		}
+	}
+
+	if len(newContributor) > 0 {
+		latestPost += "\n**New Contributors**\n"
+		latestPost += newContributor
+	}
+
+	if totalICY.GreaterThan(decimal.NewFromInt(0)) {
+		embedField := &discordgo.MessageEmbedField{
+			Name:   "Total ICY Given Out",
+			Value:  totalICY.String() + " ICY 🧊",
+			Inline: false,
+		}
+
+		messageEmbed = append(messageEmbed, embedField)
+	}
+
+	tags := ""
+	if len(braineryMetric.Tags) > 0 {
+		for _, tag := range braineryMetric.Tags {
+			tags += fmt.Sprintf("#%v ", tag)
+		}
+	}
+
+	if len(tags) > 0 {
+		embedField := &discordgo.MessageEmbedField{
+			Name:   "Tags",
+			Value:  tags,
+			Inline: false,
+		}
+
+		messageEmbed = append(messageEmbed, embedField)
+	}
+
+	msg := &discordgo.MessageEmbed{
+		Title:       fmt.Sprintf("BRAINERY %s REPORT ", strings.ToTitle(view)),
+		Fields:      messageEmbed,
+		Description: latestPost,
+	}
+
+	return base.SendEmbededMessageWithChannel(v.ses, original, msg, channelID)
 }
