@@ -11,33 +11,8 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/shopspring/decimal"
 
-	"github.com/dwarvesf/fortress-discord/pkg/adapter"
-	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
-
-type Brainery struct {
-	adapter adapter.IAdapter
-	l       logger.Logger
-}
-
-func New(adapter adapter.IAdapter, l logger.Logger) Service {
-	return &Brainery{
-		adapter: adapter,
-		l:       l,
-	}
-}
-
-type PostInput struct {
-	URL         string
-	Author      string
-	Reward      string
-	Description string
-	PublishedAt *time.Time
-	Tags        []string
-	Github      string
-	DiscordID   string
-}
 
 func (e *Brainery) Post(in *PostInput) (*model.Brainery, error) {
 	title, err := getTitle(in.URL)

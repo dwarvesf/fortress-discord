@@ -18,9 +18,11 @@ func (e *Brainery) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "post":
 		return e.Post(message)
+	case "report":
+		return e.Report(message)
+	default:
+		return e.DefaultCommand(message)
 	}
-
-	return nil
 }
 
 func (e *Brainery) Name() string {

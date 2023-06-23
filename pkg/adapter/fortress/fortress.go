@@ -446,3 +446,32 @@ func (f *Fortress) CreateBraineryPost(post *model.CreateBraineryLogRequest) erro
 
 	return nil
 }
+
+func (f *Fortress) GetBraineryReport(view string) (report *model.BraineryMetric, err error) {
+	req, err := f.makeReq("/api/v1/brainery-logs/metrics", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	q := req.URL.Query()
+	q.Add("view", view)
+	req.URL.RawQuery = q.Encode()
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var braineryMetricResp model.BraineryMetricResponse
+
+	if err := json.NewDecoder(resp.Body).Decode(&braineryMetricResp); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &braineryMetricResp.Data, nil
+}
