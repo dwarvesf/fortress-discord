@@ -3,6 +3,7 @@ package brainery
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/shopspring/decimal"
@@ -76,11 +77,7 @@ func (v *Brainery) Post(original *model.DiscordMessage, content *model.Brainery,
 		URL:         content.URL,
 		Description: content.Description,
 		Fields:      messageEmbed,
-
-		Footer: &discordgo.MessageEmbedFooter{
-			Text: "Added at " + content.PublishedAt.Format("January 2, 2006 3:04 PM") + " 🎉🎉🎉",
-		},
-		Timestamp: "custom",
+		Timestamp:   content.PublishedAt.Format(time.RFC3339),
 		Thumbnail: &discordgo.MessageEmbedThumbnail{
 			URL: avatar,
 		},
