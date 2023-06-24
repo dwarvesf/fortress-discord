@@ -29,6 +29,9 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 	rawFormattedContent := formatString(message.RawContent)
 	now := time.Now()
 
+	loc, _ := time.LoadLocation("Asia/Ho_Chi_Minh")
+	publishedAt := now.In(loc)
+
 	extractURL := extractPattern(rawFormattedContent, urlRegexPattern)
 	extractDiscordID := extractPattern(rawFormattedContent, discordIDRegexPattern)
 	extractTags := extractPattern(rawFormattedContent, tagRegexPattern)
@@ -68,7 +71,7 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		DiscordID:   extractDiscordID[0],
 		Description: desc,
 		Reward:      reward,
-		PublishedAt: &now,
+		PublishedAt: &publishedAt,
 		Tags:        extractTags,
 		Github:      gh,
 	}
