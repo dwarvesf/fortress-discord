@@ -29,10 +29,10 @@ func (e *Brainery) Report(message *model.DiscordMessage) error {
 		targetChannelID = extractChannelID[0]
 	}
 
-	result, err := e.svc.Brainery().Report(reportView)
+	braineryData, err := e.svc.Brainery().Report(reportView)
 	if err != nil {
 		return e.view.Error().Raise(message, err.Error())
 	}
 
-	return e.view.Brainery().Report(message, reportView, result, targetChannelID)
+	return e.view.Brainery().Report(message, reportView, braineryData, targetChannelID)
 }

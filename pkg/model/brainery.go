@@ -37,11 +37,18 @@ type BraineryMetricItem struct {
 	DiscordID   string          `json:"discordID"`
 }
 
+type TopContributor struct {
+	DiscordID string
+	Count     int
+	Ranking   int
+}
+
 type BraineryMetric struct {
 	LatestPosts     []BraineryMetricItem `json:"latestPosts"`
 	Tags            []string             `json:"tags"`
 	Contributors    []BraineryMetricItem `json:"contributors"`
 	NewContributors []BraineryMetricItem `json:"newContributors"`
+	TopContributors []TopContributor     `json:"topContributors"`
 }
 
 type BraineryMetricResponse struct {
