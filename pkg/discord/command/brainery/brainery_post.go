@@ -76,12 +76,11 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		Github:      gh,
 	}
 
-	result, err := e.svc.Brainery().Post(mbrainery)
+	braineryData, err := e.svc.Brainery().Post(mbrainery)
 	if err != nil {
 		return e.view.Error().Raise(message, err.Error())
 	}
-
-	err = e.view.Brainery().Post(message, result, targetChannelID)
+	err = e.view.Brainery().Post(message, braineryData, targetChannelID)
 	if err != nil {
 		return e.view.Error().Raise(message, err.Error())
 	}
