@@ -10,3 +10,5 @@
 
 # Dependencies:-
 vendor
+
+cmd/server/__debug_bin

@@ -4,6 +4,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/deliverymetrics"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/engagement"
@@ -26,43 +27,45 @@ type Service struct {
 }
 
 type subService struct {
-	Earn       earn.EarnServicer
-	Icy        icy.IcyServicer
-	Sum        sum.SumServicer
-	TechRadar  techradar.TechRadarServicer
-	Subscriber subscriber.SubscriberServicer
-	Hiring     hiring.HiringServicer
-	Event      event.EventServicer
-	Staff      staff.StaffServicer
-	Project    project.ProjectServicer
-	Digest     digest.DigestServicer
-	Memo       memo.MemoServicer
-	Treasury   treasury.TreasuryServicer
-	Issue      issue.IssueServicer
-	Changelog  changelog.ChangelogServicer
-	Engagement engagement.EngagementServicer
-	Brainery   brainery.Service
+	Brainery        brainery.Service
+	Changelog       changelog.ChangelogServicer
+	DeliveryMetrics deliverymetrics.DeliveryMetricsServicer
+	Digest          digest.DigestServicer
+	Earn            earn.EarnServicer
+	Engagement      engagement.EngagementServicer
+	Event           event.EventServicer
+	Hiring          hiring.HiringServicer
+	Icy             icy.IcyServicer
+	Issue           issue.IssueServicer
+	Memo            memo.MemoServicer
+	Project         project.ProjectServicer
+	Staff           staff.StaffServicer
+	Subscriber      subscriber.SubscriberServicer
+	Sum             sum.SumServicer
+	TechRadar       techradar.TechRadarServicer
+	Treasury        treasury.TreasuryServicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 	return &Service{
 		subService: subService{
-			Earn:       earn.New(adapter, l),
-			Icy:        icy.New(adapter, l),
-			Sum:        sum.New(adapter, l),
-			TechRadar:  techradar.New(adapter, l),
-			Subscriber: subscriber.New(adapter, l),
-			Hiring:     hiring.New(adapter, l),
-			Event:      event.New(adapter, l),
-			Staff:      staff.New(adapter, l),
-			Project:    project.New(adapter, l),
-			Digest:     digest.New(adapter, l),
-			Memo:       memo.New(adapter, l),
-			Treasury:   treasury.New(adapter, l),
-			Issue:      issue.New(adapter, l),
-			Changelog:  changelog.New(adapter, l),
-			Engagement: engagement.New(adapter, l),
-			Brainery:   brainery.New(adapter, l),
+			Brainery:        brainery.New(adapter, l),
+			Changelog:       changelog.New(adapter, l),
+			DeliveryMetrics: deliverymetrics.New(adapter, l),
+			Digest:          digest.New(adapter, l),
+			Earn:            earn.New(adapter, l),
+			Engagement:      engagement.New(adapter, l),
+			Event:           event.New(adapter, l),
+			Hiring:          hiring.New(adapter, l),
+			Icy:             icy.New(adapter, l),
+			Issue:           issue.New(adapter, l),
+			Memo:            memo.New(adapter, l),
+			Project:         project.New(adapter, l),
+			Staff:           staff.New(adapter, l),
+			Subscriber:      subscriber.New(adapter, l),
+			Sum:             sum.New(adapter, l),
+			TechRadar:       techradar.New(adapter, l),
+			Treasury:        treasury.New(adapter, l),
 		},
 	}
 }
@@ -74,6 +77,10 @@ func (s *Service) Icy() icy.IcyServicer {
 
 func (s *Service) Sum() sum.SumServicer {
 	return s.subService.Sum
+}
+
+func (s *Service) DeliveryMetrics() deliverymetrics.DeliveryMetricsServicer {
+	return s.subService.DeliveryMetrics
 }
 
 func (s *Service) Earn() earn.EarnServicer {
