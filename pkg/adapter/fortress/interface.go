@@ -35,4 +35,8 @@ type FortressAdapter interface {
 
 	CreateBraineryPost(post *model.CreateBraineryLogRequest) error
 	GetBraineryReport(view string) (*model.BraineryMetric, error)
+
+	// Delivery Metrics
+	GetDeliveryMetricsWeeklyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
+	GetDeliveryMetricsMonthlyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
 }

@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/deliverymetrics"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/earn"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/engagement"
@@ -20,20 +21,21 @@ import (
 )
 
 type Servicer interface {
+	Brainery() brainery.Service
+	Changelog() changelog.ChangelogServicer
+	DeliveryMetrics() deliverymetrics.DeliveryMetricsServicer
+	Digest() digest.DigestServicer
 	Earn() earn.EarnServicer
+	Engagement() engagement.EngagementServicer
+	Event() event.EventServicer
+	Hiring() hiring.HiringServicer
 	Icy() icy.IcyServicer
+	Issue() issue.IssueServicer
+	Memo() memo.MemoServicer
+	Project() project.ProjectServicer
+	Staff() staff.StaffServicer
+	Subscriber() subscriber.SubscriberServicer
 	Sum() sum.SumServicer
 	TechRadar() techradar.TechRadarServicer
-	Subscriber() subscriber.SubscriberServicer
-	Hiring() hiring.HiringServicer
-	Event() event.EventServicer
-	Staff() staff.StaffServicer
-	Project() project.ProjectServicer
-	Digest() digest.DigestServicer
-	Changelog() changelog.ChangelogServicer
-	Memo() memo.MemoServicer
 	Treasury() treasury.TreasuryServicer
-	Issue() issue.IssueServicer
-	Engagement() engagement.EngagementServicer
-	Brainery() brainery.Service
 }

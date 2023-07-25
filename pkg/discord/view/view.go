@@ -3,6 +3,7 @@ package view
 import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/deliverymetrics"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
@@ -27,45 +28,47 @@ type View struct {
 }
 
 type subView struct {
-	Earn       earn.EarnViewer
-	Icy        icy.IcyViewer
-	Sum        sum.SumViewer
-	Help       help.HelpViewer
-	Error      errors.ErrorViewer
-	TechRadar  techradar.TechRadarViewer
-	Subscriber subscriber.SubscriberViewer
-	Hiring     hiring.HiringViewer
-	Event      event.EventViewer
-	Staff      staff.StaffViewer
-	Project    project.ProjectViewer
-	Digest     digest.DigestViewer
-	Memo       memo.MemoViewer
-	Done       done.DoneViewer
-	Issue      issue.IssueViewer
-	Changelog  changelog.ChangelogViewer
-	Brainery   brainery.Viewer
+	Brainery        brainery.Viewer
+	Changelog       changelog.ChangelogViewer
+	DeliveryMetrics deliverymetrics.DeliveryMetricsViewer
+	Digest          digest.DigestViewer
+	Done            done.DoneViewer
+	Earn            earn.EarnViewer
+	Error           errors.ErrorViewer
+	Event           event.EventViewer
+	Help            help.HelpViewer
+	Hiring          hiring.HiringViewer
+	Icy             icy.IcyViewer
+	Issue           issue.IssueViewer
+	Memo            memo.MemoViewer
+	Project         project.ProjectViewer
+	Staff           staff.StaffViewer
+	Subscriber      subscriber.SubscriberViewer
+	Sum             sum.SumViewer
+	TechRadar       techradar.TechRadarViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
 	return &View{
 		subView: subView{
-			Earn:       earn.New(ses),
-			Icy:        icy.New(ses),
-			Sum:        sum.New(ses),
-			Help:       help.New(ses),
-			Error:      errors.New(ses),
-			TechRadar:  techradar.New(ses),
-			Subscriber: subscriber.New(ses),
-			Hiring:     hiring.New(ses),
-			Event:      event.New(ses),
-			Staff:      staff.New(ses),
-			Project:    project.New(ses),
-			Digest:     digest.New(ses),
-			Memo:       memo.New(ses),
-			Done:       done.New(ses),
-			Issue:      issue.New(ses),
-			Changelog:  changelog.New(ses),
-			Brainery:   brainery.New(ses),
+			Brainery:        brainery.New(ses),
+			Changelog:       changelog.New(ses),
+			DeliveryMetrics: deliverymetrics.New(ses),
+			Digest:          digest.New(ses),
+			Done:            done.New(ses),
+			Earn:            earn.New(ses),
+			Error:           errors.New(ses),
+			Event:           event.New(ses),
+			Help:            help.New(ses),
+			Hiring:          hiring.New(ses),
+			Icy:             icy.New(ses),
+			Issue:           issue.New(ses),
+			Memo:            memo.New(ses),
+			Project:         project.New(ses),
+			Staff:           staff.New(ses),
+			Subscriber:      subscriber.New(ses),
+			Sum:             sum.New(ses),
+			TechRadar:       techradar.New(ses),
 		},
 	}
 }
@@ -120,6 +123,10 @@ func (v *View) Digest() digest.DigestViewer {
 
 func (v *View) Memo() memo.MemoViewer {
 	return v.subView.Memo
+}
+
+func (v *View) DeliveryMetrics() deliverymetrics.DeliveryMetricsViewer {
+	return v.subView.DeliveryMetrics
 }
 
 func (v *View) Done() done.DoneViewer {

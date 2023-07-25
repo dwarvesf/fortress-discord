@@ -7,6 +7,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/assess"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/changelog"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/deliverymetrics"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
@@ -49,28 +50,29 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 
 	// register all commands here
 	cmd.Add([]base.TextCommander{
-		earn.New(l, svc, view),
-		icy.New(l, svc, view),
-		sum.New(l, svc, view),
-		help.New(l, svc, view),
-		trial.New(l, svc, view),
-		assess.New(l, svc, view),
 		adopt.New(l, svc, view),
-		hold.New(l, svc, view),
-		new.New(l, svc, view),
-		hiring.New(l, svc, view),
-		event.New(l, svc, view),
-		staff.New(l, svc, view),
-		milestone.New(l, svc, view),
-		digest.New(l, svc, view),
-		updates.New(l, svc, view),
-		memo.New(l, svc, view),
-		index.New(l, svc, view),
-		done.New(cfg, l, svc, view),
-		radar.New(l, svc, view),
-		issue.New(l, svc, view),
-		changelog.New(l, svc, view, msgHistory),
+		assess.New(l, svc, view),
 		brainery.New(l, svc, view, cfg),
+		changelog.New(l, svc, view, msgHistory),
+		deliverymetrics.New(l, svc, view, cfg),
+		digest.New(l, svc, view),
+		done.New(cfg, l, svc, view),
+		earn.New(l, svc, view),
+		event.New(l, svc, view),
+		help.New(l, svc, view),
+		hiring.New(l, svc, view),
+		hold.New(l, svc, view),
+		icy.New(l, svc, view),
+		index.New(l, svc, view),
+		issue.New(l, svc, view),
+		memo.New(l, svc, view),
+		milestone.New(l, svc, view),
+		new.New(l, svc, view),
+		radar.New(l, svc, view),
+		staff.New(l, svc, view),
+		sum.New(l, svc, view),
+		trial.New(l, svc, view),
+		updates.New(l, svc, view),
 	})
 
 	return cmd
