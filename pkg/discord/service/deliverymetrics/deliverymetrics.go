@@ -22,7 +22,7 @@ func (e *DeliveryMetricSvc) GetWeeklyReportDiscordMsg() (*discordgo.MessageEmbed
 	// get response from fortress
 	reportAdapter, err := e.adapter.Fortress().GetDeliveryMetricsWeeklyReportDiscordMsg()
 	if err != nil {
-		e.l.Error(err, "can't get open memo from fortress")
+		e.l.Error(err, "can't get WeeklyReportDiscordMsg")
 		return nil, err
 	}
 
@@ -33,9 +33,20 @@ func (e *DeliveryMetricSvc) GetMonthlyReportDiscordMsg() (*discordgo.MessageEmbe
 	// get response from fortress
 	reportAdapter, err := e.adapter.Fortress().GetDeliveryMetricsMonthlyReportDiscordMsg()
 	if err != nil {
-		e.l.Error(err, "can't get open memo from fortress")
+		e.l.Error(err, "can't get MonthlyReportDiscordMsg")
 		return nil, err
 	}
 
 	return reportAdapter.Data, nil
+}
+
+func (e *DeliveryMetricSvc) SyncData() error {
+	// get response from fortress
+	err := e.adapter.Fortress().SyncDeliveryMetricsData()
+	if err != nil {
+		e.l.Error(err, "can't SyncData")
+		return err
+	}
+
+	return nil
 }

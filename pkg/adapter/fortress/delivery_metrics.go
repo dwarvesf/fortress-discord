@@ -49,3 +49,22 @@ func (f *Fortress) GetDeliveryMetricsMonthlyReportDiscordMsg() (msg *model.Adapt
 	}
 	return msg, nil
 }
+
+func (f *Fortress) SyncDeliveryMetricsData() (err error) {
+	req, err := f.makeReq("/cronjobs/sync-delivery-metrics", http.MethodPost, nil)
+	if err != nil {
+		return err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	return nil
+}
