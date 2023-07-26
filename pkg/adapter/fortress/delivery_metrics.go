@@ -51,7 +51,7 @@ func (f *Fortress) GetDeliveryMetricsMonthlyReportDiscordMsg() (msg *model.Adapt
 }
 
 func (f *Fortress) SyncDeliveryMetricsData() (err error) {
-	req, err := f.makeReq("/cronjobs/sync-delivery-metrics", http.MethodPost, nil)
+	req, err := f.makeReq("/api/v1/delivery-metrics/report/sync", http.MethodPost, nil)
 	if err != nil {
 		return err
 	}
