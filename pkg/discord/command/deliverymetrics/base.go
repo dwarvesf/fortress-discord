@@ -20,6 +20,8 @@ func (e *DeliveryMetricsCmd) Execute(message *model.DiscordMessage) error {
 		return e.WeeklyReport(message)
 	case "monthly":
 		return e.MonthlyReport(message)
+	case "sync":
+		return e.SyncRawData(message)
 	case "help":
 		return e.Help(message)
 	default:

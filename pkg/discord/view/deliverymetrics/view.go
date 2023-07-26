@@ -22,9 +22,11 @@ func New(ses *discordgo.Session) DeliveryMetricsViewer {
 func (v *DeliveryMetrics) Help(message *model.DiscordMessage) error {
 	content := []string{
 		"**?delivery <type>** ・get delivery metrics report by week/month.",
+		"**?delivery sync To sync data",
 		"**?dlvy <type>** ・get delivery metrics report by week/month.",
 		"*Example:* `?delivery weekly`",
 		"*Example:* `?dlvy monthly`",
+		"*Example:* `?dlvy sync`",
 	}
 
 	msg := &discordgo.MessageEmbed{

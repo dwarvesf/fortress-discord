@@ -7,4 +7,6 @@ import (
 type DeliveryMetricsServicer interface {
 	GetWeeklyReportDiscordMsg() (*discordgo.MessageEmbed, error)
 	GetMonthlyReportDiscordMsg() (*discordgo.MessageEmbed, error)
+
+	SyncData() error
 }
