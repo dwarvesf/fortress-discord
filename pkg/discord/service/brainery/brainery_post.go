@@ -2,6 +2,7 @@ package brainery
 
 import (
 	"fmt"
+	"gopkg.in/yaml.v2"
 	"io"
 	"net/http"
 	"net/url"
@@ -43,24 +44,20 @@ func (e *Brainery) Post(in *PostInput) (*model.Brainery, error) {
 	metadata := extractMetadata(string(body)[:300])
 	tags := buildTags(in.Tags)
 	if tags == "" {
-		tags = buildTags(strings.Split(strings.ReplaceAll(metadata["tags"], " ", ""), ","))
+		tags = buildTags(metadata.Tags)
 		if tags == "" {
 			return nil, fmt.Errorf("There is no tags in metadata.\nInput tags manually like this format #tag1 #tag2")
 		}
 	}
 
 	if in.Github == "" {
-		in.Github = metadata["github_id"]
-	}
-
-	if in.Reward == "" {
-		in.Github = metadata["github_id"]
+		in.Github = metadata.GithubID
 	}
 
 	if in.Reward == "0" {
 		in.Reward = "10"
-		if metadata["reward"] != "" {
-			in.Reward = metadata["reward"]
+		if metadata.Icy != "" {
+			in.Reward = metadata.Icy
 		}
 
 	}
@@ -146,31 +143,34 @@ func getTitle(url string) (string, error) {
 	return strings.TrimSuffix(doc.Find("title").Text(), " - The Dwarves Brainery"), nil
 }
 
-func extractMetadata(content string) map[string]string {
-	metadata := make(map[string]string)
+type Metadata struct {
+	Tags     []string `yaml:"tags"`
+	Author   string   `yaml:"author"`
+	GithubID string   `yaml:"github_id"`
+	Date     string   `yaml:"date"`
+	Icy      string   `yaml:"icy"`
+}
 
+func extractMetadata(content string) *Metadata {
 	// Find the start and end positions of the metadata section
 	start := strings.Index(content, "---")
 	end := strings.Index(content[start+3:], "---")
 
+	var data Metadata
+
 	if start != -1 && end != -1 {
 		metadataSection := content[start+3 : start+3+end]
 
-		// Split the metadata section into lines
-		lines := strings.Split(metadataSection, "\n")
-
-		// Extract key-value pairs from each line
-		for _, line := range lines {
-			if line != "" && !strings.HasPrefix(line, "-") {
-				parts := strings.SplitN(line, ":", 2)
-				key := strings.TrimSpace(parts[0])
-				value := strings.TrimSpace(parts[1])
-				metadata[key] = value
-			}
+		err := yaml.Unmarshal([]byte(metadataSection), &data)
+		if err != nil {
+			return nil
 		}
+
+		// Split the metadata section into lines
+
 	}
 
-	return metadata
+	return &data
 }
 
 func buildTags(tags []string) string {
