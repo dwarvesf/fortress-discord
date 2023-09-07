@@ -165,9 +165,6 @@ func extractMetadata(content string) *Metadata {
 		if err != nil {
 			return nil
 		}
-
-		// Split the metadata section into lines
-
 	}
 
 	return &data

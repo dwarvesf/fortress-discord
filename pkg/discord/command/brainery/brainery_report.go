@@ -29,6 +29,9 @@ func (e *Brainery) Report(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "There is more than one target channel in your message.")
 	}
 
+	if len(extractChannelID) == 1 {
+		targetChannelID = extractChannelID[0]
+	}
 	extractDate := extractPattern(rawFormattedContent, dateRegexPattern)
 	if len(extractDate) > 0 {
 		parsedDate, err := time.Parse("2006-01-02", extractDate[0])
