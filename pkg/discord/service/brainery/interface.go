@@ -33,5 +33,5 @@ type PostInput struct {
 
 type Service interface {
 	Post(in *PostInput) (*model.Brainery, error)
-	Report(view string) (*model.BraineryMetric, error)
+	Report(view string, date string) (*model.BraineryMetric, error)
 }
