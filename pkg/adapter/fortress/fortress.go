@@ -447,7 +447,7 @@ func (f *Fortress) CreateBraineryPost(post *model.CreateBraineryLogRequest) erro
 	return nil
 }
 
-func (f *Fortress) GetBraineryReport(view string) (report *model.BraineryMetric, err error) {
+func (f *Fortress) GetBraineryReport(view string, date string) (report *model.BraineryMetric, err error) {
 	req, err := f.makeReq("/api/v1/brainery-logs/metrics", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
@@ -455,6 +455,7 @@ func (f *Fortress) GetBraineryReport(view string) (report *model.BraineryMetric,
 
 	q := req.URL.Query()
 	q.Add("view", view)
+	q.Add("date", date)
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := http.DefaultClient.Do(req)

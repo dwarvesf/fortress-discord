@@ -34,7 +34,7 @@ type FortressAdapter interface {
 	UpsertRollupRecord(record *model.EngagementsRollupRecord) error
 
 	CreateBraineryPost(post *model.CreateBraineryLogRequest) error
-	GetBraineryReport(view string) (*model.BraineryMetric, error)
+	GetBraineryReport(view string, date string) (*model.BraineryMetric, error)
 
 	// Delivery Metrics
 	GetDeliveryMetricsWeeklyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
