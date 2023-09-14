@@ -13,12 +13,12 @@ import (
 const (
 	discordChannelIDRegexPattern = `<#(\d+)>`
 	discordIDRegexPattern        = `<@(\d+)>`
-	tagRegexPattern              = `#(\w+)`
-	icyRewardRegexPattern        = ` (\d+)`
-	urlRegexPattern              = `((?:https?://)[^\s]+)`
-	githubRegexPattern           = `gh:(\w+)`
-	descriptionRegexPattern      = `d:"(.*?)"`
-	defaultBraineryReward        = "0"
+	//tagRegexPattern              = `#(\w+)`
+	icyRewardRegexPattern   = ` (\d+)`
+	urlRegexPattern         = `((?:https?://)[^\s]+)`
+	githubRegexPattern      = `gh:(\w+)`
+	descriptionRegexPattern = `d:"(.*?)"`
+	defaultBraineryReward   = "0"
 )
 
 func (e *Brainery) Post(message *model.DiscordMessage) error {
@@ -34,7 +34,8 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 
 	extractURL := extractPattern(rawFormattedContent, urlRegexPattern)
 	extractDiscordID := extractPattern(rawFormattedContent, discordIDRegexPattern)
-	extractTags := extractPattern(rawFormattedContent, tagRegexPattern)
+	// TODO: need to change regex pattern to detect tag without the conflict with channel pattern
+	//extractTags := extractPattern(rawFormattedContent, tagRegexPattern)
 	extractReward := extractPattern(rawFormattedContent, icyRewardRegexPattern)
 	extractGithub := extractPattern(rawFormattedContent, githubRegexPattern)
 	extractDesc := extractPattern(rawFormattedContent, descriptionRegexPattern)
@@ -49,6 +50,15 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 
 	if len(extractDiscordID) == 0 || len(extractDiscordID) > 1 {
 		return e.view.Error().Raise(message, "There is no valid user or more than one user tagged in your message.")
+	}
+
+	extractChannelID := extractPattern(rawFormattedContent, discordChannelIDRegexPattern)
+	if len(extractChannelID) > 1 {
+		return e.view.Error().Raise(message, "There is more than one target channel in your message.")
+	}
+
+	if len(extractChannelID) == 1 {
+		targetChannelID = extractChannelID[0]
 	}
 
 	reward := defaultBraineryReward
@@ -72,8 +82,8 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		Description: desc,
 		Reward:      reward,
 		PublishedAt: &publishedAt,
-		Tags:        extractTags,
-		Github:      gh,
+		//Tags:        extractTags,
+		Github: gh,
 	}
 
 	braineryData, err := e.svc.Brainery().Post(mbrainery)
