@@ -14,6 +14,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
@@ -40,4 +41,5 @@ type Viewer interface {
 	Issue() issue.IssueViewer
 	Changelog() changelog.ChangelogViewer
 	Brainery() brainery.Viewer
+	Profile() profile.Viewer
 }

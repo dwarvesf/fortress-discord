@@ -13,6 +13,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
@@ -38,6 +39,7 @@ type subService struct {
 	Icy             icy.IcyServicer
 	Issue           issue.IssueServicer
 	Memo            memo.MemoServicer
+	Profile         profile.Service
 	Project         project.ProjectServicer
 	Staff           staff.StaffServicer
 	Subscriber      subscriber.SubscriberServicer
@@ -60,6 +62,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Icy:             icy.New(adapter, l),
 			Issue:           issue.New(adapter, l),
 			Memo:            memo.New(adapter, l),
+			Profile:         profile.New(adapter, l),
 			Project:         project.New(adapter, l),
 			Staff:           staff.New(adapter, l),
 			Subscriber:      subscriber.New(adapter, l),
@@ -137,4 +140,8 @@ func (s *Service) Engagement() engagement.EngagementServicer {
 
 func (s *Service) Brainery() brainery.Service {
 	return s.subService.Brainery
+}
+
+func (s *Service) Profile() profile.Service {
+	return s.subService.Profile
 }

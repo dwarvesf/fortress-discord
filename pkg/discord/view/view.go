@@ -2,10 +2,10 @@ package view
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
-	"github.com/dwarvesf/fortress-discord/pkg/discord/view/deliverymetrics"
 
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/deliverymetrics"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
@@ -16,6 +16,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
@@ -41,6 +42,7 @@ type subView struct {
 	Icy             icy.IcyViewer
 	Issue           issue.IssueViewer
 	Memo            memo.MemoViewer
+	Profile         profile.Viewer
 	Project         project.ProjectViewer
 	Staff           staff.StaffViewer
 	Subscriber      subscriber.SubscriberViewer
@@ -64,6 +66,7 @@ func New(ses *discordgo.Session) Viewer {
 			Icy:             icy.New(ses),
 			Issue:           issue.New(ses),
 			Memo:            memo.New(ses),
+			Profile:         profile.New(ses),
 			Project:         project.New(ses),
 			Staff:           staff.New(ses),
 			Subscriber:      subscriber.New(ses),
@@ -143,4 +146,8 @@ func (v *View) Changelog() changelog.ChangelogViewer {
 
 func (v *View) Brainery() brainery.Viewer {
 	return v.subView.Brainery
+}
+
+func (v *View) Profile() profile.Viewer {
+	return v.subView.Profile
 }

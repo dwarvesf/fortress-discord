@@ -476,3 +476,28 @@ func (f *Fortress) GetBraineryReport(view string, date string) (report *model.Br
 
 	return &braineryMetricResp.Data, nil
 }
+
+func (f *Fortress) GetEmployeeByDiscordID(id string) (report *model.Employee, err error) {
+	req, err := f.makeReq("/api/v1/discord/"+id, http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var employeeResp model.FortressEmployeeResponse
+
+	if err := json.NewDecoder(resp.Body).Decode(&employeeResp); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &employeeResp.Data, nil
+}

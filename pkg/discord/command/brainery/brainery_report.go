@@ -4,13 +4,15 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/stringutils"
 )
 
 const dateRegexPattern = `(\d{4}-\d{2}-\d{2})`
 
 func (e *Brainery) Report(message *model.DiscordMessage) error {
-	rawFormattedContent := formatString(message.RawContent)
+	rawFormattedContent := stringutils.FormatString(message.RawContent)
 	args := strings.Split(rawFormattedContent, " ")
 	targetChannelID := message.ChannelId
 	defaultQueryDate := time.Now().Format("2006-01-02")
@@ -24,7 +26,7 @@ func (e *Brainery) Report(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "Report view should be weekly or monthly")
 	}
 
-	extractChannelID := extractPattern(rawFormattedContent, discordChannelIDRegexPattern)
+	extractChannelID := stringutils.ExtractPattern(rawFormattedContent, constant.DiscordChannelIDRegexPattern)
 	if len(extractChannelID) > 1 {
 		return e.view.Error().Raise(message, "There is more than one target channel in your message.")
 	}
@@ -32,7 +34,7 @@ func (e *Brainery) Report(message *model.DiscordMessage) error {
 	if len(extractChannelID) == 1 {
 		targetChannelID = extractChannelID[0]
 	}
-	extractDate := extractPattern(rawFormattedContent, dateRegexPattern)
+	extractDate := stringutils.ExtractPattern(rawFormattedContent, dateRegexPattern)
 	if len(extractDate) > 0 {
 		parsedDate, err := time.Parse("2006-01-02", extractDate[0])
 		if err != nil {
