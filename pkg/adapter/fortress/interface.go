@@ -40,4 +40,6 @@ type FortressAdapter interface {
 	GetDeliveryMetricsWeeklyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
 	GetDeliveryMetricsMonthlyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
 	SyncDeliveryMetricsData() (err error)
+
+	GetEmployeeByDiscordID(id string) (report *model.Employee, err error)
 }

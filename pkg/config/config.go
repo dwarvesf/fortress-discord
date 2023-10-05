@@ -30,9 +30,10 @@ type Endpoint struct {
 }
 
 type Discord struct {
-	SecretToken string
-	Prefix      string
-	ID          DiscordIds
+	SecretToken         string
+	Prefix              string
+	ID                  DiscordIds
+	WhiteListedChannels string
 }
 
 type DiscordIds struct {
@@ -75,6 +76,7 @@ func Generate(v ENV) *Config {
 				DwarvesGuild:      v.GetString("DISCORD_ID_DWARVES_GUILD"),
 				RepostDoneChannel: v.GetString("DISCORD_ID_REPOST_DONE"),
 			},
+			WhiteListedChannels: v.GetString("DISCORD_WHITELISTED_CHANNELS"),
 		},
 	}
 }

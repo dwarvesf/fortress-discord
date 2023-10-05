@@ -1,7 +1,7 @@
 package brainery
 
 import (
-	"regexp"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/stringutils"
 	"strings"
 	"time"
 
@@ -10,35 +10,24 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-const (
-	discordChannelIDRegexPattern = `<#(\d+)>`
-	discordIDRegexPattern        = `<@(\d+)>`
-	//tagRegexPattern              = `#(\w+)`
-	icyRewardRegexPattern   = ` (\d+)`
-	urlRegexPattern         = `((?:https?://)[^\s]+)`
-	githubRegexPattern      = `gh:(\w+)`
-	descriptionRegexPattern = `d:"(.*?)"`
-	defaultBraineryReward   = "0"
-)
-
 func (e *Brainery) Post(message *model.DiscordMessage) error {
 	targetChannelID := constant.DiscordBraineryChannel
 	if e.cfg.Env == "dev" {
 		targetChannelID = constant.DiscordPlayGroundBraineryChannel
 	}
-	rawFormattedContent := formatString(message.RawContent)
+	rawFormattedContent := stringutils.FormatString(message.RawContent)
 	now := time.Now()
 
 	loc, _ := time.LoadLocation("Asia/Ho_Chi_Minh")
 	publishedAt := now.In(loc)
 
-	extractURL := extractPattern(rawFormattedContent, urlRegexPattern)
-	extractDiscordID := extractPattern(rawFormattedContent, discordIDRegexPattern)
+	extractURL := stringutils.ExtractPattern(rawFormattedContent, constant.UrlRegexPattern)
+	extractDiscordID := stringutils.ExtractPattern(rawFormattedContent, constant.DiscordIDRegexPattern)
 	// TODO: need to change regex pattern to detect tag without the conflict with channel pattern
 	//extractTags := extractPattern(rawFormattedContent, tagRegexPattern)
-	extractReward := extractPattern(rawFormattedContent, icyRewardRegexPattern)
-	extractGithub := extractPattern(rawFormattedContent, githubRegexPattern)
-	extractDesc := extractPattern(rawFormattedContent, descriptionRegexPattern)
+	extractReward := stringutils.ExtractPattern(rawFormattedContent, constant.IcyRewardRegexPattern)
+	extractGithub := stringutils.ExtractPattern(rawFormattedContent, constant.GithubRegexPattern)
+	extractDesc := stringutils.ExtractPattern(rawFormattedContent, constant.DescriptionRegexPattern)
 
 	if len(extractURL) == 0 || len(extractURL) > 1 {
 		return e.view.Error().Raise(message, "There is no URL or more than one URL in your message.")
@@ -52,7 +41,7 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "There is no valid user or more than one user tagged in your message.")
 	}
 
-	extractChannelID := extractPattern(rawFormattedContent, discordChannelIDRegexPattern)
+	extractChannelID := stringutils.ExtractPattern(rawFormattedContent, constant.DiscordChannelIDRegexPattern)
 	if len(extractChannelID) > 1 {
 		return e.view.Error().Raise(message, "There is more than one target channel in your message.")
 	}
@@ -61,7 +50,7 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		targetChannelID = extractChannelID[0]
 	}
 
-	reward := defaultBraineryReward
+	reward := constant.DefaultBraineryReward
 	if len(extractReward) > 0 {
 		reward = extractReward[0]
 	}
@@ -96,27 +85,4 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 	}
 	// 2. render
 	return nil
-}
-
-func extractPattern(str string, pattern string) []string {
-	re := regexp.MustCompile(pattern)
-	matches := re.FindAllStringSubmatch(str, -1)
-
-	var result []string
-	for _, match := range matches {
-		result = append(result, match[1])
-	}
-
-	return result
-}
-
-func formatString(str string) string {
-	// Replace spaces with a single space
-	re := regexp.MustCompile(`\s+`)
-	formattedStr := re.ReplaceAllString(str, " ")
-
-	// Remove spaces after the "#" symbol
-	formattedStr = strings.ReplaceAll(formattedStr, "# ", "#")
-
-	return formattedStr
 }
