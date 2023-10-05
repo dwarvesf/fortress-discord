@@ -34,6 +34,7 @@ func (h *Help) Help(message *model.DiscordMessage) error {
 		"**?updates**・list of Dwarves updates",
 		"**?digest**・list of Internal Digests",
 		"**?memos**・list of Team memos",
+		"**?profile**・see dwarf profile",
 	}
 
 	msg := &discordgo.MessageEmbed{
