@@ -35,6 +35,7 @@ func (h *Help) Help(message *model.DiscordMessage) error {
 		"**?digest**・list of Internal Digests",
 		"**?memos**・list of Team memos",
 		"**?profile**・see dwarf profile",
+		"**?mma**・manage MMA score",
 	}
 
 	msg := &discordgo.MessageEmbed{

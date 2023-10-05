@@ -12,6 +12,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
@@ -33,6 +34,7 @@ type Servicer interface {
 	Icy() icy.IcyServicer
 	Issue() issue.IssueServicer
 	Memo() memo.MemoServicer
+	MMA() mma.Service
 	Profile() profile.Service
 	Project() project.ProjectServicer
 	Staff() staff.StaffServicer

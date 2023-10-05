@@ -20,6 +20,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/milestone"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/new"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/radar"
@@ -75,6 +76,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		trial.New(l, svc, view),
 		updates.New(l, svc, view),
 		profile.New(l, svc, view, cfg),
+		mma.New(l, svc, view, cfg),
 	})
 
 	return cmd

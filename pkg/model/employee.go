@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"github.com/shopspring/decimal"
+	"time"
+)
 
 type Employee struct {
 	ID               string      `json:"id"`
@@ -70,4 +73,18 @@ type Employee struct {
 
 type FortressEmployeeResponse struct {
 	Data Employee `json:"data"`
+}
+
+type EmployeeMMAScore struct {
+	EmployeeID    string          `json:"employeeID"`
+	FullName      string          `json:"fullName"`
+	MMAID         string          `json:"mmaID"`
+	MasteryScore  decimal.Decimal `json:"masteryScore"`
+	AutonomyScore decimal.Decimal `json:"autonomyScore"`
+	MeaningScore  decimal.Decimal `json:"meaningScore"`
+	RatedAt       *time.Time      `json:"ratedAt"`
+}
+
+type FortressEmployeeMMAScoreResponse struct {
+	Data []EmployeeMMAScore `json:"data"`
 }

@@ -13,6 +13,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
@@ -46,6 +47,7 @@ type subService struct {
 	Sum             sum.SumServicer
 	TechRadar       techradar.TechRadarServicer
 	Treasury        treasury.TreasuryServicer
+	MMA             mma.Service
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
@@ -69,6 +71,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Sum:             sum.New(adapter, l),
 			TechRadar:       techradar.New(adapter, l),
 			Treasury:        treasury.New(adapter, l),
+			MMA:             mma.New(adapter, l),
 		},
 	}
 }
@@ -144,4 +147,8 @@ func (s *Service) Brainery() brainery.Service {
 
 func (s *Service) Profile() profile.Service {
 	return s.subService.Profile
+}
+
+func (s *Service) MMA() mma.Service {
+	return s.subService.MMA
 }

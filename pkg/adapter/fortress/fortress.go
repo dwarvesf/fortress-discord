@@ -501,3 +501,28 @@ func (f *Fortress) GetEmployeeByDiscordID(id string) (report *model.Employee, er
 
 	return &employeeResp.Data, nil
 }
+
+func (f *Fortress) GetEmployeesWithMMAScore() ([]model.EmployeeMMAScore, error) {
+	req, err := f.makeReq("/api/v1/discord/mma-scores", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var employeeResp model.FortressEmployeeMMAScoreResponse
+
+	if err := json.NewDecoder(resp.Body).Decode(&employeeResp); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return employeeResp.Data, nil
+}

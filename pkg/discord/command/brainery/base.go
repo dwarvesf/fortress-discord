@@ -30,7 +30,7 @@ func (e *Brainery) Name() string {
 }
 
 func (e *Brainery) Help(message *model.DiscordMessage) error {
-	return e.view.Brainery().Help(message)
+	return e.view.Profile().Help(message)
 }
 
 func (e *Brainery) DefaultCommand(message *model.DiscordMessage) error {

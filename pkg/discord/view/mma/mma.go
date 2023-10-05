@@ -1,0 +1,74 @@
+package mma
+
+import (
+	"bytes"
+	"encoding/csv"
+	"github.com/bwmarrin/discordgo"
+	"strings"
+
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
+	"github.com/dwarvesf/fortress-discord/pkg/model"
+)
+
+type MMA struct {
+	ses *discordgo.Session
+}
+
+func New(ses *discordgo.Session) Viewer {
+	return &MMA{
+		ses: ses,
+	}
+}
+
+func (v *MMA) Help(message *model.DiscordMessage) error {
+	content := []string{
+		"**?mma template**・export csv template",
+		"*Example:* `?mma template`",
+	}
+
+	msg := &discordgo.MessageEmbed{
+		Title:       "**Welcome to Fortress Discord bot**",
+		Description: strings.Join(content, "\n"),
+	}
+
+	return base.SendEmbededMessage(v.ses, message, msg)
+}
+
+func (v *MMA) ExportTemplate(original *model.DiscordMessage, employeeMMAScores []model.EmployeeMMAScore) error {
+	var csvData bytes.Buffer
+
+	writer := csv.NewWriter(&csvData)
+
+	// Write the header row
+	header := []string{"employee_id", "full_name", "mastery", "meaning", "autonomy"}
+	writer.Write(header)
+
+	// Write data rows
+	for _, record := range employeeMMAScores {
+		data := []string{
+			record.EmployeeID,
+			record.FullName,
+			record.MasteryScore.String(),
+			record.MeaningScore.String(),
+			record.AutonomyScore.String(),
+		}
+		writer.Write(data)
+	}
+
+	writer.Flush()
+
+	_, err := v.ses.ChannelMessageSendComplex(original.ChannelId, &discordgo.MessageSend{
+		Content: "📝 Here is the MMA template.",
+		Files: []*discordgo.File{
+			{
+				Name:   "mma-template.csv",
+				Reader: &csvData,
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

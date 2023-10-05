@@ -2,6 +2,7 @@ package view
 
 import (
 	"github.com/bwmarrin/discordgo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
@@ -48,6 +49,7 @@ type subView struct {
 	Subscriber      subscriber.SubscriberViewer
 	Sum             sum.SumViewer
 	TechRadar       techradar.TechRadarViewer
+	MMA             mma.Viewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -72,6 +74,7 @@ func New(ses *discordgo.Session) Viewer {
 			Subscriber:      subscriber.New(ses),
 			Sum:             sum.New(ses),
 			TechRadar:       techradar.New(ses),
+			MMA:             mma.New(ses),
 		},
 	}
 }
@@ -150,4 +153,8 @@ func (v *View) Brainery() brainery.Viewer {
 
 func (v *View) Profile() profile.Viewer {
 	return v.subView.Profile
+}
+
+func (v *View) MMA() mma.Viewer {
+	return v.subView.MMA
 }
