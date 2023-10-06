@@ -2,10 +2,12 @@ package profile
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
-	"github.com/dwarvesf/fortress-discord/pkg/constant"
+	"sort"
 	"strings"
 
+	"github.com/bwmarrin/discordgo"
+
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -61,16 +63,23 @@ func (v *Profile) List(original *model.DiscordMessage, employees []model.Employe
 				return err
 			}
 
-			dfRoles := DwarvesRoles(roles)
+			dfRoles := SortRoleByLevel(DwarvesRoles(roles))
 			roleStr := ""
+			previousLevel := -1
+			line := 0
 			for _, r := range dfRoles {
 				for _, ur := range targetUser.Roles {
 					if r.ID == ur {
+						if r.Level != previousLevel {
+							roleStr += fmt.Sprintf("\n`%v.` ", line)
+							previousLevel = r.Level
+							line++
+						}
 						roleStr += fmt.Sprintf("<@&%v> ", r.ID)
 					}
 				}
 			}
-			content += fmt.Sprintf(":four_leaf_clover: `Roles.` %v", strings.TrimSuffix(roleStr, " "))
+			content += fmt.Sprintf("**Roles** %v", strings.TrimSuffix(roleStr, " "))
 		}
 
 		gender := ":woman:"
@@ -146,16 +155,27 @@ func (v *Profile) List(original *model.DiscordMessage, employees []model.Employe
 	return base.SendEmbededMessage(v.ses, original, msg)
 }
 
-func DwarvesRoles(r []*discordgo.Role) []*discordgo.Role {
+func DwarvesRoles(r []*discordgo.Role) []model.DwarvesDiscordRole {
 	roleMap := constant.DwarvesRole
 
-	dwarvesRoles := make([]*discordgo.Role, 0)
+	dwarvesRoles := make([]model.DwarvesDiscordRole, 0)
 	for _, dRole := range r {
-		_, ok := roleMap[dRole.Name]
+		v, ok := roleMap[dRole.Name]
 		if ok {
-			dwarvesRoles = append(dwarvesRoles, dRole)
+			dwarvesRoles = append(dwarvesRoles, model.DwarvesDiscordRole{
+				ID:    dRole.ID,
+				Name:  dRole.Name,
+				Level: v,
+			})
 		}
 	}
 
 	return dwarvesRoles
+}
+
+func SortRoleByLevel(roles []model.DwarvesDiscordRole) []model.DwarvesDiscordRole {
+	sort.Slice(roles, func(i, j int) bool {
+		return roles[i].Level < roles[j].Level
+	})
+	return roles
 }

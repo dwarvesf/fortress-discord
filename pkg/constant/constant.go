@@ -67,22 +67,11 @@ var mapEmojiDev = map[string]string{
 	"CLOCK_NEW":           "<:clock:1133460445257281658>",
 }
 
-var DwarvesRole = map[string]bool{
-	"moderator":  true,
-	"dwarf":      true,
-	"booster":    true,
-	"apprentice": true,
-	"crafter":    true,
-	"specialist": true,
-	"principal":  true,
-	"peeps":      true,
-	"learning":   true,
-	"engagement": true,
-	"delivery":   true,
-	"labs":       true,
-	"baby dwarf": true,
-	"ladies":     true,
-	"sers":       true,
-	"consultant": true,
-	"chad":       true,
+var DwarvesRole = map[string]int{
+	"admin": 0,
+	"smod":  0,
+	"labs":  1,
+	"sers":  1,
+	"chad":  1,
+	"peeps": 2,
 }
