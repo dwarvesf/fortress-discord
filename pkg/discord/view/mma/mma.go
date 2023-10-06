@@ -40,17 +40,17 @@ func (v *MMA) ExportTemplate(original *model.DiscordMessage, employeeMMAScores [
 	writer := csv.NewWriter(&csvData)
 
 	// Write the header row
-	header := []string{"employee_id", "full_name", "mastery", "meaning", "autonomy"}
+	header := []string{"full_name", "employee_id", "mastery_score", "autonomy_score", "meaning_score"}
 	writer.Write(header)
 
 	// Write data rows
 	for _, record := range employeeMMAScores {
 		data := []string{
-			record.EmployeeID,
 			record.FullName,
+			record.EmployeeID,
 			record.MasteryScore.String(),
-			record.MeaningScore.String(),
 			record.AutonomyScore.String(),
+			record.MeaningScore.String(),
 		}
 		writer.Write(data)
 	}
