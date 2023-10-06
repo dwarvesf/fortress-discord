@@ -1,7 +1,6 @@
 package profile
 
 import (
-	"fmt"
 	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -11,7 +10,6 @@ import (
 
 func (e *ProfileCmd) GetProfile(message *model.DiscordMessage) error {
 	rawFormattedContent := stringutils.FormatString(message.RawContent)
-	fmt.Println(rawFormattedContent)
 	extractDiscordID := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternDiscordID)
 	extractEmail := stringutils.ExtractEmailPattern(rawFormattedContent)
 
@@ -37,7 +35,6 @@ func (e *ProfileCmd) GetProfile(message *model.DiscordMessage) error {
 	if err != nil {
 		return e.view.Error().Raise(message, "Failed to get employee profile.")
 	}
-	fmt.Println(employees)
 
 	return e.view.Profile().List(message, employees)
 }
