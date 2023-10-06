@@ -1,24 +1,43 @@
 package profile
 
 import (
+	"fmt"
 	"github.com/dwarvesf/fortress-discord/pkg/constant"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 	"github.com/dwarvesf/fortress-discord/pkg/utils/stringutils"
+	"strings"
 )
 
 func (e *ProfileCmd) GetProfile(message *model.DiscordMessage) error {
 	rawFormattedContent := stringutils.FormatString(message.RawContent)
+	fmt.Println(rawFormattedContent)
+	extractDiscordID := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternDiscordID)
+	extractEmail := stringutils.ExtractEmailPattern(rawFormattedContent)
 
-	extractDiscordID := stringutils.ExtractPattern(rawFormattedContent, constant.DiscordIDRegexPattern)
-
-	if len(extractDiscordID) == 0 || len(extractDiscordID) > 1 {
-		return e.view.Error().Raise(message, "There is no valid user or more than one user tagged in your message.")
+	in := profile.EmployeeSearch{}
+	if len(extractDiscordID) == 1 {
+		in.DiscordID = extractDiscordID[0]
+	} else {
+		discordID := stringutils.ExtractNumber(rawFormattedContent)
+		if len(discordID) > 0 {
+			in.DiscordID = discordID[0]
+		}
 	}
 
-	employee, err := e.svc.Profile().Get(extractDiscordID[0])
+	if len(extractEmail) == 1 {
+		in.Email = extractEmail[0]
+	}
+
+	if in.DiscordID == "" && in.Email == "" {
+		in.Key = strings.Split(rawFormattedContent, " ")[1]
+	}
+
+	employees, err := e.svc.Profile().GetEmployeeList(in)
 	if err != nil {
 		return e.view.Error().Raise(message, "Failed to get employee profile.")
 	}
+	fmt.Println(employees)
 
-	return e.view.Profile().Get(message, employee)
+	return e.view.Profile().List(message, employees)
 }

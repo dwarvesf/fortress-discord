@@ -26,7 +26,7 @@ func (e *Brainery) Report(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "Report view should be weekly or monthly")
 	}
 
-	extractChannelID := stringutils.ExtractPattern(rawFormattedContent, constant.DiscordChannelIDRegexPattern)
+	extractChannelID := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternDiscordChannelID)
 	if len(extractChannelID) > 1 {
 		return e.view.Error().Raise(message, "There is more than one target channel in your message.")
 	}

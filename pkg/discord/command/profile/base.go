@@ -50,5 +50,9 @@ func (e *ProfileCmd) DefaultCommand(message *model.DiscordMessage) error {
 }
 
 func (e *ProfileCmd) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	if e.cfg.Env != "prod" {
+		return true, []string{}
+	}
+
 	return permutil.CheckSmodOrAbove(message.Roles)
 }

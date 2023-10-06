@@ -20,13 +20,18 @@ const (
 )
 
 const (
-	DiscordChannelIDRegexPattern = `<#(\d+)>`
-	DiscordIDRegexPattern        = `<@(\d+)>`
-	IcyRewardRegexPattern        = ` (\d+)`
-	UrlRegexPattern              = `((?:https?://)[^\s]+)`
-	GithubRegexPattern           = `gh:(\w+)`
-	DescriptionRegexPattern      = `d:"(.*?)"`
-	DefaultBraineryReward        = "0"
+	RegexPatternDiscordChannelID = `<#(\d+)>`
+	RegexPatternDiscordID        = `<@(\d+)>`
+	RegexPatternEmail            = `\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\b`
+	RegexPatternIcyReward        = ` (\d+)`
+	RegexPatternNumber           = `\d{18,}`
+	RegexPatternUrl              = `((?:https?://)[^\s]+)`
+	RegexPatternGithub           = `gh:(\w+)`
+	RegexPatternDescription      = `d:"(.*?)"`
+)
+
+const (
+	DefaultBraineryReward = "0"
 )
 
 var mapEmoji = map[string]string{
@@ -60,4 +65,24 @@ var mapEmojiDev = map[string]string{
 	"STAR_ANIMATED":       "<a:star_animated:1133460443550195832>",
 	"INCREASING_ANIMATED": "<a:increasing_animated:1133460451091550289>",
 	"CLOCK_NEW":           "<:clock:1133460445257281658>",
+}
+
+var DwarvesRole = map[string]bool{
+	"moderator":  true,
+	"dwarf":      true,
+	"booster":    true,
+	"apprentice": true,
+	"crafter":    true,
+	"specialist": true,
+	"principal":  true,
+	"peeps":      true,
+	"learning":   true,
+	"engagement": true,
+	"delivery":   true,
+	"labs":       true,
+	"baby dwarf": true,
+	"ladies":     true,
+	"sers":       true,
+	"consultant": true,
+	"chad":       true,
 }

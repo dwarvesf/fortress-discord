@@ -1,6 +1,7 @@
 package profile
 
 import (
+	"github.com/bwmarrin/discordgo"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -9,15 +10,17 @@ import (
 type Profile struct {
 	adapter adapter.IAdapter
 	l       logger.Logger
+	ses     *discordgo.Session
 }
 
-func New(adapter adapter.IAdapter, l logger.Logger) Service {
+func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Service {
 	return &Profile{
 		adapter: adapter,
 		l:       l,
+		ses:     ses,
 	}
 }
 
 type Service interface {
-	Get(id string) (*model.Employee, error)
+	GetEmployeeList(in EmployeeSearch) (rs []model.Employee, err error)
 }

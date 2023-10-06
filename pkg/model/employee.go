@@ -72,7 +72,7 @@ type Employee struct {
 }
 
 type FortressEmployeeResponse struct {
-	Data Employee `json:"data"`
+	Data []Employee `json:"data"`
 }
 
 type EmployeeMMAScore struct {

@@ -36,11 +36,10 @@ type FortressAdapter interface {
 	CreateBraineryPost(post *model.CreateBraineryLogRequest) error
 	GetBraineryReport(view string, date string) (*model.BraineryMetric, error)
 
-	// Delivery Metrics
 	GetDeliveryMetricsWeeklyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
 	GetDeliveryMetricsMonthlyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
 	SyncDeliveryMetricsData() (err error)
 
-	GetEmployeeByDiscordID(id string) (employee *model.Employee, err error)
+	GetEmployees(in EmployeeSearch) (rs []model.Employee, err error)
 	GetEmployeesWithMMAScore() (employees []model.EmployeeMMAScore, err error)
 }

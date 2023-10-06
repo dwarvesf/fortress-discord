@@ -21,13 +21,11 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 	loc, _ := time.LoadLocation("Asia/Ho_Chi_Minh")
 	publishedAt := now.In(loc)
 
-	extractURL := stringutils.ExtractPattern(rawFormattedContent, constant.UrlRegexPattern)
-	extractDiscordID := stringutils.ExtractPattern(rawFormattedContent, constant.DiscordIDRegexPattern)
-	// TODO: need to change regex pattern to detect tag without the conflict with channel pattern
-	//extractTags := extractPattern(rawFormattedContent, tagRegexPattern)
-	extractReward := stringutils.ExtractPattern(rawFormattedContent, constant.IcyRewardRegexPattern)
-	extractGithub := stringutils.ExtractPattern(rawFormattedContent, constant.GithubRegexPattern)
-	extractDesc := stringutils.ExtractPattern(rawFormattedContent, constant.DescriptionRegexPattern)
+	extractURL := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternUrl)
+	extractDiscordID := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternDiscordID)
+	extractReward := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternIcyReward)
+	extractGithub := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternGithub)
+	extractDesc := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternDescription)
 
 	if len(extractURL) == 0 || len(extractURL) > 1 {
 		return e.view.Error().Raise(message, "There is no URL or more than one URL in your message.")
@@ -41,7 +39,7 @@ func (e *Brainery) Post(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "There is no valid user or more than one user tagged in your message.")
 	}
 
-	extractChannelID := stringutils.ExtractPattern(rawFormattedContent, constant.DiscordChannelIDRegexPattern)
+	extractChannelID := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternDiscordChannelID)
 	if len(extractChannelID) > 1 {
 		return e.view.Error().Raise(message, "There is more than one target channel in your message.")
 	}

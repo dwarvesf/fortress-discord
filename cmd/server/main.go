@@ -49,7 +49,7 @@ func main() {
 	msgHistory := history.NewMsgHistory()
 	go msgHistory.GC(60 * time.Second)
 
-	d := discord.New(ses, cfg, l, service.New(adapter, l), view.New(ses), msgHistory)
+	d := discord.New(ses, cfg, l, service.New(adapter, l, ses), view.New(ses), msgHistory)
 
 	session, err := d.ListenAndServe()
 	if err != nil {

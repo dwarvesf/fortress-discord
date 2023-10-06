@@ -477,11 +477,23 @@ func (f *Fortress) GetBraineryReport(view string, date string) (report *model.Br
 	return &braineryMetricResp.Data, nil
 }
 
-func (f *Fortress) GetEmployeeByDiscordID(id string) (report *model.Employee, err error) {
-	req, err := f.makeReq("/api/v1/discord/"+id, http.MethodGet, nil)
+func (f *Fortress) GetEmployees(in EmployeeSearch) ([]model.Employee, error) {
+	req, err := f.makeReq("/api/v1/discords", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	q := req.URL.Query()
+	if in.DiscordID != "" {
+		q.Add("discord_id", in.DiscordID)
+	}
+	if in.Email != "" {
+		q.Add("email", in.Email)
+	}
+	if in.Key != "" {
+		q.Add("key", in.Key)
+	}
+	req.URL.RawQuery = q.Encode()
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -499,11 +511,11 @@ func (f *Fortress) GetEmployeeByDiscordID(id string) (report *model.Employee, er
 		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
 	}
 
-	return &employeeResp.Data, nil
+	return employeeResp.Data, nil
 }
 
 func (f *Fortress) GetEmployeesWithMMAScore() ([]model.EmployeeMMAScore, error) {
-	req, err := f.makeReq("/api/v1/discord/mma-scores", http.MethodGet, nil)
+	req, err := f.makeReq("/api/v1/discords/mma-scores", http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}

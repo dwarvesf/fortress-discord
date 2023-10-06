@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/bwmarrin/discordgo"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
@@ -50,7 +51,7 @@ type subService struct {
 	MMA             mma.Service
 }
 
-func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
+func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Servicer {
 	return &Service{
 		subService: subService{
 			Brainery:        brainery.New(adapter, l),
@@ -64,7 +65,7 @@ func New(adapter adapter.IAdapter, l logger.Logger) Servicer {
 			Icy:             icy.New(adapter, l),
 			Issue:           issue.New(adapter, l),
 			Memo:            memo.New(adapter, l),
-			Profile:         profile.New(adapter, l),
+			Profile:         profile.New(adapter, l, ses),
 			Project:         project.New(adapter, l),
 			Staff:           staff.New(adapter, l),
 			Subscriber:      subscriber.New(adapter, l),
