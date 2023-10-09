@@ -7,10 +7,12 @@ require (
 	github.com/bwmarrin/discordgo v0.26.1
 	github.com/gin-gonic/gin v1.8.2
 	github.com/joho/godotenv v1.4.0
+	github.com/k0kubun/pp/v3 v3.2.0
 	github.com/sashabaranov/go-openai v1.10.1
 	github.com/shopspring/decimal v1.3.1
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.14.0
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -26,6 +28,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -44,6 +47,5 @@ require (
 	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

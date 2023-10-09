@@ -89,10 +89,9 @@ func (v *Profile) List(original *model.DiscordMessage, employees []model.Employe
 		userInfo := ""
 		userInfo += fmt.Sprintf("%v `Full Name. `**%v**\n", gender, employee.FullName)
 		userInfo += fmt.Sprintf(":birthday: `DoB.       `%v\n", employee.Birthday.Format("2006 Jan 02"))
-
-		mmaScores := fmt.Sprintf("%v `Mastery.   `%v\n", constant.GetEmoji("BADGE1"), employee.MmaScore.MasteryScore)
-		mmaScores += fmt.Sprintf("%v `Meaning.   `%v\n", constant.GetEmoji("BADGE2"), employee.MmaScore.MeaningScore)
-		mmaScores += fmt.Sprintf("%v `Autonomy.  `%v\n", constant.GetEmoji("BADGE3"), employee.MmaScore.AutonomyScore)
+		mmaScores := fmt.Sprintf("%v `Mastery.   `%v\n", constant.GetEmoji("BADGE1"), employee.MmaScore.MasteryScore.Round(1))
+		mmaScores += fmt.Sprintf("%v `Meaning.   `%v\n", constant.GetEmoji("BADGE2"), employee.MmaScore.MeaningScore.Round(1))
+		mmaScores += fmt.Sprintf("%v `Autonomy.  `%v\n", constant.GetEmoji("BADGE3"), employee.MmaScore.AutonomyScore.Round(1))
 
 		userInfo += "\n**MMA Scores**\n" + mmaScores
 

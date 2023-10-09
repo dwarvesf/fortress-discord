@@ -64,10 +64,10 @@ type Employee struct {
 		EndDate        interface{}   `json:"endDate"`
 	} `json:"projects"`
 	MmaScore struct {
-		MasteryScore  string    `json:"masteryScore"`
-		AutonomyScore string    `json:"autonomyScore"`
-		MeaningScore  string    `json:"meaningScore"`
-		RatedAt       time.Time `json:"ratedAt"`
+		MasteryScore  decimal.Decimal `json:"masteryScore"`
+		AutonomyScore decimal.Decimal `json:"autonomyScore"`
+		MeaningScore  decimal.Decimal `json:"meaningScore"`
+		RatedAt       time.Time       `json:"ratedAt"`
 	} `json:"mmaScore"`
 }
 
