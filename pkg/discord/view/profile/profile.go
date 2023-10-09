@@ -116,6 +116,11 @@ func (v *Profile) List(original *model.DiscordMessage, employees []model.Employe
 		for _, p := range employee.Projects {
 			projects += fmt.Sprintf("%v, ", p.Name)
 		}
+
+		if projects == "" {
+			projects = "N/A"
+		}
+
 		userInfo += "\n**Projects:**  " + strings.TrimRight(projects, ", ")
 
 		messageEmbed := []*discordgo.MessageEmbedField{
