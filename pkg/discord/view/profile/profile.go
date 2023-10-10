@@ -140,12 +140,17 @@ func (v *Profile) List(original *model.DiscordMessage, employees []model.Employe
 	} else {
 		listUsers := ""
 		for idx, e := range employees {
-			listUsers += fmt.Sprintf("%v. %v - `%v` -`%v`\n", idx+1, e.FullName, e.TeamEmail, e.DiscordID)
+			de, err := v.ses.GuildMember(original.GuildId, e.DiscordID)
+			if err != nil {
+				return err
+			}
+
+			listUsers += fmt.Sprintf("%v. %v - `%v` - `%v`\n", idx+1, e.FullName, e.TeamEmail, de.User.Username)
 		}
 
 		messageEmbed := []*discordgo.MessageEmbedField{
 			{
-				Name:   "Search Result",
+				Name:   "Search Result:",
 				Value:  listUsers,
 				Inline: false,
 			},
