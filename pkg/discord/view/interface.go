@@ -21,6 +21,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/trend"
 )
 
 type Viewer interface {
@@ -44,4 +45,5 @@ type Viewer interface {
 	Brainery() brainery.Viewer
 	Profile() profile.Viewer
 	MMA() mma.Viewer
+	Trend() trend.TrendViewer
 }

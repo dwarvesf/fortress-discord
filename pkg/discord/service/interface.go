@@ -20,6 +20,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/trend"
 )
 
 type Servicer interface {
@@ -42,4 +43,5 @@ type Servicer interface {
 	Sum() sum.SumServicer
 	TechRadar() techradar.TechRadarServicer
 	Treasury() treasury.TreasuryServicer
+	Trend() trend.TrendServicer
 }

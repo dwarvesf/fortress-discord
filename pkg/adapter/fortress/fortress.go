@@ -6,10 +6,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/gocolly/colly"
 )
 
 type Fortress struct {
@@ -537,4 +540,129 @@ func (f *Fortress) GetEmployeesWithMMAScore() ([]model.EmployeeMMAScore, error) 
 	}
 
 	return employeeResp.Data, nil
+}
+func (f *Fortress) GetTrendingRepos(spokenLang string, programLang string, dateRange string) (repos *model.AdapterTrend, err error) {
+	// req, err := f.makeReq("/api/v1/notion/issues", http.MethodGet, nil)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// resp, err := http.DefaultClient.Do(req)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// defer resp.Body.Close()
+	// if resp.StatusCode != http.StatusOK {
+	// 	return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	// }
+	// if err := json.NewDecoder(resp.Body).Decode(&issues); err != nil {
+	// 	return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	// }
+	// return issues, nil
+
+	// For now use built-in funcs, not external API call
+	// TODO: Replace by API call
+	resp, err := crawl(spokenLang, programLang, dateRange)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(resp, &repos); err != nil {
+		return nil, fmt.Errorf("an error occurred when unmarshaling, error %v", err.Error())
+	}
+	return repos, nil
+}
+
+// Parse numerical text "num" to uint16 text, also handle comma-seperated number.
+func parseCommaNumber(num string) (uint16, error) {
+	num = strings.Replace(num, ",", "", -1)
+	parsedNum, err := strconv.Atoi(num)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(parsedNum), nil
+}
+
+// Parse a string in the format '<NUMBER> stars today/last week/last month.' and convert the numerical part into a uint16 value. If the initial portion of the string is not a valid numerical representation, return an error."
+func parseStarGained(s string) (uint16, error) {
+	s = strings.TrimSpace(s)
+	// TODO: handle if empty string
+	s = strings.Split(s, " ")[0]
+	// Try to convert to uint
+	count, err := strconv.Atoi(s)
+	if err != nil {
+		return 0, err
+	}
+	return uint16(count), nil
+}
+
+// Mock API functionality
+type MockAPIResponse struct {
+	Data []*model.Repo
+}
+
+func crawl(spokenLang string, programmingLang string, dateRange string) ([]byte, error) {
+	var (
+		BASE_URL            = "https://github.com"
+		GITHUB_TRENDING_URL = "https://github.com/trending/%s?since=%s&spoken_language_code=%s"
+	)
+	var repos []*model.Repo
+	// Instantiate default collector
+	c := colly.NewCollector(
+		colly.AllowedDomains("github.com", "www.github.com"),
+
+		// Cache responses to prevent multiple download of pages
+		// even if the collector is restarted
+		colly.CacheDir("./github_cache"),
+	)
+
+	// Before making a request print "Visiting ..."
+	c.OnRequest(func(r *colly.Request) {
+		log.Println("visiting", r.URL.String())
+	})
+	c.OnHTML("div.Box > div > article.Box-row", func(e *colly.HTMLElement) {
+		r := model.Repo{}
+		url := BASE_URL + e.ChildAttr("h2 > a", "href")
+
+		starCountText := strings.TrimSpace(e.ChildText("div > span + a"))
+		forkCountText := strings.TrimSpace(e.ChildText("div > span + a + a"))
+		starGainedText := e.ChildText("div > span + a + a + span + span")
+		description := e.ChildText("h2 + p")
+
+		// StarGained: x stars today/last week/last month
+		starGained, _ := parseStarGained(starGainedText)
+		starCount, _ := parseCommaNumber(starCountText)
+		forkCount, _ := parseCommaNumber(forkCountText)
+
+		r.StarGained = starGained
+		r.StarCount = starCount
+		r.ForkCount = forkCount
+		r.ProgrammingLanguage = programmingLang
+		r.DateRange = dateRange
+		r.Description = description
+		r.SpokenLanguage = spokenLang
+		r.URL = url
+		r.Name = strings.Replace(r.URL, BASE_URL+"/", "", -1)
+		repos = append(repos, &r)
+	})
+	// Start scraping on Github Trending
+	c.Visit(
+		fmt.Sprintf(
+			GITHUB_TRENDING_URL,
+			programmingLang, dateRange, spokenLang,
+		),
+	)
+	resp := &MockAPIResponse{}
+	// Limit to maximum of 10 repos
+	if len(repos) < 10 {
+		resp.Data = repos
+	} else {
+		resp.Data = repos[:10]
+	}
+	result, err := json.Marshal(resp)
+	if err != nil {
+		return nil, err
+	}
+	// Return the scraped repos encoded in json
+	return result, nil
 }

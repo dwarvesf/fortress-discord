@@ -42,4 +42,6 @@ type FortressAdapter interface {
 
 	GetEmployees(in EmployeeSearch) (rs []model.Employee, err error)
 	GetEmployeesWithMMAScore() (employees []model.EmployeeMMAScore, err error)
+
+	GetTrendingRepos(spokenLang string, programLang string, dateRange string) (repos *model.AdapterTrend, err error)
 }

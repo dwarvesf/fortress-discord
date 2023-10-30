@@ -26,6 +26,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/radar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/sum"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trend"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/updates"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/history"
@@ -77,6 +78,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		updates.New(l, svc, view),
 		profile.New(l, svc, view, cfg),
 		mma.New(l, svc, view, cfg),
+		trend.New(l, svc, view),
 	})
 
 	return cmd

@@ -23,6 +23,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/trend"
 )
 
 type View struct {
@@ -50,6 +51,7 @@ type subView struct {
 	Sum             sum.SumViewer
 	TechRadar       techradar.TechRadarViewer
 	MMA             mma.Viewer
+	Trend           trend.TrendViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -75,6 +77,7 @@ func New(ses *discordgo.Session) Viewer {
 			Sum:             sum.New(ses),
 			TechRadar:       techradar.New(ses),
 			MMA:             mma.New(ses),
+			Trend:           trend.New(ses),
 		},
 	}
 }
@@ -157,4 +160,7 @@ func (v *View) Profile() profile.Viewer {
 
 func (v *View) MMA() mma.Viewer {
 	return v.subView.MMA
+}
+func (v *View) Trend() trend.TrendViewer {
+	return v.subView.Trend
 }

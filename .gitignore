@@ -12,3 +12,4 @@
 vendor
 
 cmd/server/__debug_bin
+github_cache
