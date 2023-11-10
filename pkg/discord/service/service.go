@@ -22,6 +22,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/trend"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 )
 
@@ -49,6 +50,7 @@ type subService struct {
 	TechRadar       techradar.TechRadarServicer
 	Treasury        treasury.TreasuryServicer
 	MMA             mma.Service
+	Trend           trend.TrendServicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Servicer {
@@ -73,6 +75,7 @@ func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Serv
 			TechRadar:       techradar.New(adapter, l),
 			Treasury:        treasury.New(adapter, l),
 			MMA:             mma.New(adapter, l),
+			Trend:           trend.New(adapter, l),
 		},
 	}
 }
@@ -152,4 +155,7 @@ func (s *Service) Profile() profile.Service {
 
 func (s *Service) MMA() mma.Service {
 	return s.subService.MMA
+}
+func (s *Service) Trend() trend.TrendServicer {
+	return s.subService.Trend
 }
