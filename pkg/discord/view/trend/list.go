@@ -76,35 +76,24 @@ func (e *Trend) List(message *model.DiscordMessage, repos []*model.Repo) error {
 
 func (e *Trend) ListDateRange(message *model.DiscordMessage) error {
 	title := "### :chart_with_upwards_trend: Github Trending Repositories\n"
-	var messageEmbed []*discordgo.MessageEmbedField
+	content := ""
 	for k := range dateRangeStarGainedMap {
-		embedField := &discordgo.MessageEmbedField{
-			Name: k,
-		}
-		messageEmbed = append(messageEmbed, embedField)
+		content += k + "\n"
 	}
 	msg := &discordgo.MessageEmbed{
-		Description: title + "Available value for <date_range> parameter",
-
-		Fields: messageEmbed,
+		Description: title + "Available value for <date_range> parameter\n" + content,
 	}
-
 	return base.SendEmbededMessage(e.ses, message, msg)
 }
 
 func (e *Trend) ListProgramLang(message *model.DiscordMessage) error {
 	title := "### :chart_with_upwards_trend: Github Trending Repositories\n"
-
-	var messageEmbed []*discordgo.MessageEmbedField
+	content := ""
 	for _, v := range programmingLanguages {
-		embedField := &discordgo.MessageEmbedField{
-			Name: v,
-		}
-		messageEmbed = append(messageEmbed, embedField)
+		content += v + "\n"
 	}
 	msg := &discordgo.MessageEmbed{
-		Description: title + "Available value for <lang> parameter",
-		Fields:      messageEmbed,
+		Description: title + "Available value for <lang> parameter\n" + content,
 	}
 
 	return base.SendEmbededMessage(e.ses, message, msg)
@@ -112,17 +101,12 @@ func (e *Trend) ListProgramLang(message *model.DiscordMessage) error {
 
 func (e *Trend) ListSpokenLang(message *model.DiscordMessage) error {
 	title := "### :chart_with_upwards_trend: Github Trending Repositories\n"
-
-	var messageEmbed []*discordgo.MessageEmbedField
+	content := ""
 	for k := range spokenLangMap {
-		embedField := &discordgo.MessageEmbedField{
-			Name: k,
-		}
-		messageEmbed = append(messageEmbed, embedField)
+		content += k + "\n"
 	}
 	msg := &discordgo.MessageEmbed{
-		Description: title + "Available value for <spoken_lang> parameter",
-		Fields:      messageEmbed,
+		Description: title + "Available value for <spoken_lang> parameter\n" + content,
 	}
 
 	return base.SendEmbededMessage(e.ses, message, msg)
