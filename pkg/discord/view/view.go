@@ -3,6 +3,7 @@ package view
 import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/salary"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
@@ -52,6 +53,7 @@ type subView struct {
 	TechRadar       techradar.TechRadarViewer
 	MMA             mma.Viewer
 	Trend           trend.TrendViewer
+	Salary          salary.Viewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -78,6 +80,7 @@ func New(ses *discordgo.Session) Viewer {
 			TechRadar:       techradar.New(ses),
 			MMA:             mma.New(ses),
 			Trend:           trend.New(ses),
+			Salary:          salary.New(ses),
 		},
 	}
 }
@@ -163,4 +166,8 @@ func (v *View) MMA() mma.Viewer {
 }
 func (v *View) Trend() trend.TrendViewer {
 	return v.subView.Trend
+}
+
+func (v *View) Salary() salary.Viewer {
+	return v.subView.Salary
 }

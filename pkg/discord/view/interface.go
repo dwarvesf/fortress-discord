@@ -17,6 +17,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/salary"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/sum"
@@ -46,4 +47,5 @@ type Viewer interface {
 	Profile() profile.Viewer
 	MMA() mma.Viewer
 	Trend() trend.TrendViewer
+	Salary() salary.Viewer
 }

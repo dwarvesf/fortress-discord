@@ -666,3 +666,89 @@ func crawl(spokenLang string, programmingLang string, dateRange string) ([]byte,
 	// Return the scraped repos encoded in json
 	return result, nil
 }
+
+func (f *Fortress) SalaryAdvance(discordID, amount string) (salaryAdvance *model.AdapterSalaryAdvance, err error) {
+	type Request struct {
+		DiscordID string `json:"discord_id"`
+		Amount    string `json:"amount"`
+	}
+
+	type ErrResponse struct {
+		Data  any    `json:"data"`
+		Error string `json:"error"`
+	}
+
+	errResponse := ErrResponse{}
+
+	request := Request{
+		DiscordID: discordID,
+		Amount:    amount,
+	}
+	jsonValue, _ := json.Marshal(request)
+
+	req, err := f.makeReq("/api/v1/discords/advance-salary", http.MethodPost, bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		if err := json.NewDecoder(resp.Body).Decode(&errResponse); err != nil {
+			return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+		}
+		return nil, fmt.Errorf(errResponse.Error)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&salaryAdvance); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return salaryAdvance, nil
+}
+
+func (f *Fortress) CheckAdvanceSalary(discordID string) (salaryAdvance *model.AdapterCheckSalaryAdvance, err error) {
+	type Request struct {
+		DiscordID string `json:"discord_id"`
+	}
+
+	type ErrResponse struct {
+		Data  any    `json:"data"`
+		Error string `json:"error"`
+	}
+
+	errResponse := ErrResponse{}
+
+	request := Request{
+		DiscordID: discordID,
+	}
+	jsonValue, _ := json.Marshal(request)
+
+	req, err := f.makeReq("/api/v1/discords/check-advance-salary", http.MethodPost, bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		if err := json.NewDecoder(resp.Body).Decode(&errResponse); err != nil {
+			return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+		}
+		return nil, fmt.Errorf(errResponse.Error)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&salaryAdvance); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return salaryAdvance, nil
+}

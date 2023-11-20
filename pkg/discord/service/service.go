@@ -17,6 +17,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/salary"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/sum"
@@ -40,6 +41,7 @@ type subService struct {
 	Event           event.EventServicer
 	Hiring          hiring.HiringServicer
 	Icy             icy.IcyServicer
+	Salary          salary.SalaryServicer
 	Issue           issue.IssueServicer
 	Memo            memo.MemoServicer
 	Profile         profile.Service
@@ -76,6 +78,7 @@ func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Serv
 			Treasury:        treasury.New(adapter, l),
 			MMA:             mma.New(adapter, l),
 			Trend:           trend.New(adapter, l),
+			Salary:          salary.New(adapter, l),
 		},
 	}
 }
@@ -158,4 +161,8 @@ func (s *Service) MMA() mma.Service {
 }
 func (s *Service) Trend() trend.TrendServicer {
 	return s.subService.Trend
+}
+
+func (s *Service) Salary() salary.SalaryServicer {
+	return s.subService.Salary
 }

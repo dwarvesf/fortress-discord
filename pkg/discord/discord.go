@@ -48,7 +48,7 @@ func (d *Discord) ListenAndServe() (*discordgo.Session, error) {
 
 	// intents to receive message
 	d.Session.Identify.Intents = discordgo.IntentsGuildMessages |
-		discordgo.IntentsGuildMessageReactions
+		discordgo.IntentsGuildMessageReactions | discordgo.IntentsDirectMessages | discordgo.IntentsDirectMessageReactions
 
 	err := d.Session.Open()
 	if err != nil {
