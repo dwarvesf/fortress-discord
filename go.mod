@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
-	github.com/bwmarrin/discordgo v0.26.1
+	github.com/bwmarrin/discordgo v0.27.1
 	github.com/gin-gonic/gin v1.8.2
 	github.com/gocolly/colly v1.2.0
 	github.com/joho/godotenv v1.4.0

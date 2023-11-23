@@ -4,6 +4,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/base"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/adopt"
+	salary "github.com/dwarvesf/fortress-discord/pkg/discord/command/advance"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/assess"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/changelog"
@@ -79,6 +80,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		profile.New(l, svc, view, cfg),
 		mma.New(l, svc, view, cfg),
 		trend.New(l, svc, view),
+		salary.New(l, svc, view),
 	})
 
 	return cmd

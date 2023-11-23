@@ -44,4 +44,6 @@ type FortressAdapter interface {
 	GetEmployeesWithMMAScore() (employees []model.EmployeeMMAScore, err error)
 
 	GetTrendingRepos(spokenLang string, programLang string, dateRange string) (repos *model.AdapterTrend, err error)
+	SalaryAdvance(discordID, amount string) (salaryAdvance *model.AdapterSalaryAdvance, err error)
+	CheckAdvanceSalary(discordID string) (salaryAdvance *model.AdapterCheckSalaryAdvance, err error)
 }

@@ -7,13 +7,89 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
+	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
 // TODO: generics this to specific packages
 // will do if we have 1 more interaction, right now only support send
 func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	if i.Type == discordgo.InteractionModalSubmit {
+		switch i.ModalSubmitData().CustomID {
+		case "enter_advance_salary_amount_" + i.Interaction.User.ID:
+			userInput := i.ModalSubmitData().Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+
+			go func() {
+				salaryAdvance, err := d.Command.S.Salary().SalaryAdvance(i.Interaction.User.ID, userInput)
+				if err != nil {
+					d.L.Error(err, "can't make advance salary for user "+i.Interaction.User.ID)
+					d.Command.View.Salary().ErrorAdvanceSalary(&model.DiscordMessage{
+						ChannelId: i.ChannelID,
+						Author:    i.Interaction.User,
+					})
+					return
+				}
+
+				err = d.Command.View.Salary().CompleteAdvanceSalary(&model.DiscordMessage{
+					ChannelId: i.ChannelID,
+					Author:    i.Interaction.User,
+				}, *salaryAdvance)
+				if err != nil {
+					d.L.Error(err, "can't send complete message ")
+					return
+				}
+			}()
+
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseUpdateMessage,
+				Data: &discordgo.InteractionResponseData{
+					Embeds: []*discordgo.MessageEmbed{
+						base.Normalize(i.Interaction.User, &discordgo.MessageEmbed{
+							Title: "Your request is submitted\n",
+							Description: fmt.Sprint(
+								"We will send you the receipt after the transaction succeeds.\n",
+								fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s icy**", userInput)),
+								fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", i.Interaction.User.ID)),
+							),
+						}),
+					},
+				},
+			})
+
+			return
+		}
+	}
+
 	if i.Type == discordgo.InteractionMessageComponent {
 		var previewMode bool = !strings.Contains(i.MessageComponentData().CustomID, "--no-preview")
+
+		// check advance salary confirm or abort button
+		switch i.MessageComponentData().CustomID {
+		case "open_advance_salary_button":
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseModal,
+				Data: &discordgo.InteractionResponseData{
+					CustomID: "enter_advance_salary_amount_" + i.Interaction.User.ID,
+					Title:    "Enter amount icy you want to advance",
+					Components: []discordgo.MessageComponent{
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:    "icy_amount",
+									Label:       "Icy Amount",
+									Style:       discordgo.TextInputShort,
+									Placeholder: "100",
+									Required:    true,
+									MinLength:   1,
+									MaxLength:   10,
+								},
+							},
+						},
+					},
+				},
+			})
+			return
+		}
 
 		// check update type, check for "updates--" string in id
 		if !strings.Contains(i.MessageComponentData().CustomID, "updates--") {

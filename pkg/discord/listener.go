@@ -67,7 +67,7 @@ func (d *Discord) parseMessage(m *discordgo.MessageCreate) *model.DiscordMessage
 
 	// we paste the roles to in-app  struct, make sure nil check
 	var roles []string
-	if m.Message.Member.Roles != nil {
+	if m.Message.Member != nil && m.Message.Member.Roles != nil {
 		roles = m.Message.Member.Roles
 	}
 

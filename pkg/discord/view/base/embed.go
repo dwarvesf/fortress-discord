@@ -1,8 +1,9 @@
 package base
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -12,12 +13,12 @@ func SendEmbededMessage(ses *discordgo.Session, original *model.DiscordMessage, 
 }
 
 func SendEmbededMessageWithChannel(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed, channelId string) error {
-	_, err := ses.ChannelMessageSendEmbed(channelId, normalize(original, embed))
+	_, err := ses.ChannelMessageSendEmbed(channelId, Normalize(original.Author, embed))
 	return err
 }
 
-// normalize add some default to embeded message if not set
-func normalize(original *model.DiscordMessage, response *discordgo.MessageEmbed) *discordgo.MessageEmbed {
+// Normalize add some default to embeded message if not set
+func Normalize(user *discordgo.User, response *discordgo.MessageEmbed) *discordgo.MessageEmbed {
 	if response.Timestamp == "" {
 		response.Timestamp = time.Now().Format(time.RFC3339)
 	}
@@ -34,7 +35,7 @@ func normalize(original *model.DiscordMessage, response *discordgo.MessageEmbed)
 	}
 	if response.Footer == nil {
 		response.Footer = &discordgo.MessageEmbedFooter{
-			IconURL: original.Author.AvatarURL("128"),
+			IconURL: user.AvatarURL("128"),
 			Text:    "?help to see all commands",
 		}
 	}
