@@ -13,12 +13,12 @@ func SendEmbededMessage(ses *discordgo.Session, original *model.DiscordMessage, 
 }
 
 func SendEmbededMessageWithChannel(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed, channelId string) error {
-	_, err := ses.ChannelMessageSendEmbed(channelId, Normalize(original.Author, embed))
+	_, err := ses.ChannelMessageSendEmbed(channelId, Normalize(ses, embed))
 	return err
 }
 
 // Normalize add some default to embeded message if not set
-func Normalize(user *discordgo.User, response *discordgo.MessageEmbed) *discordgo.MessageEmbed {
+func Normalize(s *discordgo.Session, response *discordgo.MessageEmbed) *discordgo.MessageEmbed {
 	if response.Timestamp == "" {
 		response.Timestamp = time.Now().Format(time.RFC3339)
 	}
@@ -35,7 +35,7 @@ func Normalize(user *discordgo.User, response *discordgo.MessageEmbed) *discordg
 	}
 	if response.Footer == nil {
 		response.Footer = &discordgo.MessageEmbedFooter{
-			IconURL: user.AvatarURL("128"),
+			IconURL: s.State.User.AvatarURL("128"),
 			Text:    "?help to see all commands",
 		}
 	}

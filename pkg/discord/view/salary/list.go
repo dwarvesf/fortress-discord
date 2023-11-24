@@ -19,9 +19,9 @@ func (e *Salary) EnterAmountAdvanceSalary(original *model.DiscordMessage, checkS
 	if original.ChannelId == channel.ID {
 		message := discordgo.MessageSend{
 			Embeds: []*discordgo.MessageEmbed{
-				base.Normalize(original.Author, &discordgo.MessageEmbed{
-					Title:       "Enter ICY amount you want to borrow",
-					Description: fmt.Sprintf("The maximum ICY you can borrow: :icy: %s ICY ($%s)\nPlease enter the ICY amount :point_down:", checkSalaryAdvance.AmountIcy, checkSalaryAdvance.AmountUSD),
+				base.Normalize(e.ses, &discordgo.MessageEmbed{
+					Title:       "Enter amount",
+					Description: fmt.Sprintf("You can advance a maximum of: <:ICY:1049620715374133288> %s ICY (%s) credit\nthe given credit will be paid automatically in your next pay check.\nEnter the ICY amount :point_down:", checkSalaryAdvance.AmountIcy, checkSalaryAdvance.AmountUSD),
 				}),
 			},
 			Components: []discordgo.MessageComponent{
@@ -46,11 +46,11 @@ func (e *Salary) EnterAmountAdvanceSalary(original *model.DiscordMessage, checkS
 
 	// if public channel
 	msg := &discordgo.MessageEmbed{
-		Title:       "DM Fortress",
-		Description: "?salary advance is only used in DM with Fortress! Please send a message to Fortress bot!",
+		Title:       "Fortress",
+		Description: "?salary advance is a DM-only command. Please slide into our DM and try again.",
 	}
 
-	return base.SendEmbededMessageWithChannel(e.ses, original, msg, channel.ID)
+	return base.SendEmbededMessageWithChannel(e.ses, original, msg, original.ChannelId)
 }
 
 // CompleteAdvanceSalary implements Viewer.
@@ -69,10 +69,10 @@ func (s *Salary) CompleteAdvanceSalary(original *model.DiscordMessage, salaryAdv
 	return base.SendEmbededMessage(s.ses, original, msg)
 }
 
-func (s *Salary) ErrorAdvanceSalary(original *model.DiscordMessage) error {
+func (s *Salary) ErrorAdvanceSalary(original *model.DiscordMessage, err error) error {
 	msg := &discordgo.MessageEmbed{
-		Title:       "Ok",
-		Description: "Ok",
+		Title:       "Salary Advance Error!",
+		Description: err.Error(),
 	}
 
 	return base.SendEmbededMessage(s.ses, original, msg)
