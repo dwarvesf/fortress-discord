@@ -26,7 +26,7 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 					d.Command.View.Salary().ErrorAdvanceSalary(&model.DiscordMessage{
 						ChannelId: i.ChannelID,
 						Author:    i.Interaction.User,
-					})
+					}, err)
 					return
 				}
 
@@ -44,12 +44,13 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 				Type: discordgo.InteractionResponseUpdateMessage,
 				Data: &discordgo.InteractionResponseData{
 					Embeds: []*discordgo.MessageEmbed{
-						base.Normalize(i.Interaction.User, &discordgo.MessageEmbed{
-							Title: "Your request is submitted\n",
+						base.Normalize(s, &discordgo.MessageEmbed{
+							Title: "Request Approved!\n",
 							Description: fmt.Sprint(
-								"We will send you the receipt after the transaction succeeds.\n",
+								"Your ICY credit is on the way, we will send you a notification shortly.\n",
 								fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s icy**", userInput)),
 								fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", i.Interaction.User.ID)),
+								"then try $bals in Mochi app to see your balances.",
 							),
 						}),
 					},
