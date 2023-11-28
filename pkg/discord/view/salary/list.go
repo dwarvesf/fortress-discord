@@ -58,8 +58,8 @@ func (s *Salary) CompleteAdvanceSalary(original *model.DiscordMessage, salaryAdv
 	msg := &discordgo.MessageEmbed{
 		Title: "<a:star_animated:1131862886592024586> Successfully Transaction",
 		Description: fmt.Sprint(
-			fmt.Sprintf("`External Id.    ` %s\n", fmt.Sprintf("[%s](https://mochi.gg/tx/%s)", salaryAdvance.TransactionID, salaryAdvance.TransactionID)),
-			fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s ICY** (%s USD)", salaryAdvance.AmountIcy, salaryAdvance.AmountUSD)),
+			fmt.Sprintf("`TxID.    ` %s\n", fmt.Sprintf("[%s](https://mochi.gg/tx/%s)", salaryAdvance.TransactionHash, salaryAdvance.TransactionHash)),
+			fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s ICY** (%s)", salaryAdvance.AmountIcy, salaryAdvance.AmountUSD)),
 			fmt.Sprintf("`Sender.  ` %s\n", "**Dwarves Foundation**"),
 			fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", original.Author.ID)),
 		),
