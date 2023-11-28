@@ -47,7 +47,7 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 						base.Normalize(s, &discordgo.MessageEmbed{
 							Title: "Request Approved!\n",
 							Description: fmt.Sprint(
-								"Your ICY credit is on the way, we will send you a notification shortly.\n",
+								"Your ICY credit is on the way, we will send you a notification shortly.\n\n",
 								fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s icy**", userInput)),
 								fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", i.Interaction.User.ID)),
 								"then try $bals in Mochi app to see your balances.",
