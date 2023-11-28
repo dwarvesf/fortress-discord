@@ -11,4 +11,5 @@ type TrendViewer interface {
 	GetAvailableProgrammingLang() []string
 	GetAvailableSpokenLangMap() map[string]string
 	GetAvaiableDateRangeMap() map[string]string
+	NotFound(message *model.DiscordMessage) error
 }

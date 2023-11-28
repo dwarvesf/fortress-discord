@@ -5,7 +5,6 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
-	"golang.org/x/exp/slices"
 )
 
 const DEFAULT_SPOKEN_LANGUAGE = "en"
@@ -50,12 +49,7 @@ func (e *Trend) Trend(message *model.DiscordMessage) error {
 		default:
 			spokenLang = DEFAULT_SPOKEN_LANGUAGE
 			dateRange = DEFAULT_DATE_RANGE
-			availableProgrammingLang := e.view.Trend().GetAvailableProgrammingLang()
-			if slices.Contains(availableProgrammingLang, message.ContentArgs[1]) {
-				programmingLang = message.ContentArgs[1]
-			} else {
-				programmingLang = DEFAULT_PROGRAMMING_LANGUAGE
-			}
+			programmingLang = message.ContentArgs[1]
 		}
 	case 3:
 		spokenLang = DEFAULT_SPOKEN_LANGUAGE
@@ -73,6 +67,9 @@ func (e *Trend) Trend(message *model.DiscordMessage) error {
 	if err != nil {
 		e.L.Error(err, "can't get github trending repos")
 		return err
+	}
+	if len(data) == 0 {
+		return e.view.Trend().NotFound(message)
 	}
 	// 2. render
 	return e.view.Trend().List(message, data)
