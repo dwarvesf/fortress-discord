@@ -8,10 +8,10 @@ type AdapterSalaryAdvance struct {
 
 // SalaryAdvance is in-app model, after process from adapters
 type SalaryAdvance struct {
-	AmountIcy       string `json:"amount_icy"`
-	AmountUSD       string `json:"amount_usd"`
-	TransactionID   string `json:"transaction_id"`
-	TransactionHash string `json:"transaction_hash"`
+	AmountICY       string `json:"amountICY"`
+	AmountUSD       string `json:"amountUSD"`
+	TransactionID   string `json:"transactionID"`
+	TransactionHash string `json:"transactionHash"`
 }
 
 type AdapterCheckSalaryAdvance struct {
@@ -20,6 +20,6 @@ type AdapterCheckSalaryAdvance struct {
 }
 
 type CheckSalaryAdvance struct {
-	AmountIcy string `json:"amount_icy"`
-	AmountUSD string `json:"amount_usd"`
+	AmountICY string `json:"amountICY"`
+	AmountUSD string `json:"amountUSD"`
 }

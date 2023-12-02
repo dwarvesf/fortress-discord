@@ -669,7 +669,7 @@ func crawl(spokenLang string, programmingLang string, dateRange string) ([]byte,
 
 func (f *Fortress) SalaryAdvance(discordID, amount string) (salaryAdvance *model.AdapterSalaryAdvance, err error) {
 	type Request struct {
-		DiscordID string `json:"discord_id"`
+		DiscordID string `json:"discordID"`
 		Amount    string `json:"amount"`
 	}
 
@@ -713,7 +713,7 @@ func (f *Fortress) SalaryAdvance(discordID, amount string) (salaryAdvance *model
 
 func (f *Fortress) CheckAdvanceSalary(discordID string) (salaryAdvance *model.AdapterCheckSalaryAdvance, err error) {
 	type Request struct {
-		DiscordID string `json:"discord_id"`
+		DiscordID string `json:"discordID"`
 	}
 
 	type ErrResponse struct {

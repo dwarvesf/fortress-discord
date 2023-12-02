@@ -21,7 +21,7 @@ func (e *Salary) EnterAmountAdvanceSalary(original *model.DiscordMessage, checkS
 			Embeds: []*discordgo.MessageEmbed{
 				base.Normalize(e.ses, &discordgo.MessageEmbed{
 					Title:       "Enter amount",
-					Description: fmt.Sprintf("You can advance a maximum of: <:ICY:1049620715374133288> %s ICY (%s) credit\nthe given credit will be paid automatically in your next pay check.\nEnter the ICY amount :point_down:", checkSalaryAdvance.AmountIcy, checkSalaryAdvance.AmountUSD),
+					Description: fmt.Sprintf("You can advance a maximum of: <:ICY:1049620715374133288> %s ICY (%s) credit\nthe given credit will be paid automatically in your next pay check.\nEnter the ICY amount :point_down:", checkSalaryAdvance.AmountICY, checkSalaryAdvance.AmountUSD),
 				}),
 			},
 			Components: []discordgo.MessageComponent{
@@ -59,7 +59,7 @@ func (s *Salary) CompleteAdvanceSalary(original *model.DiscordMessage, salaryAdv
 		Title: "<a:star_animated:1131862886592024586> Successfully Transaction",
 		Description: fmt.Sprint(
 			fmt.Sprintf("`TxID.    ` %s\n", fmt.Sprintf("[%s](https://mochi.gg/tx/%s)", salaryAdvance.TransactionHash, salaryAdvance.TransactionHash)),
-			fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s ICY** (%s)", salaryAdvance.AmountIcy, salaryAdvance.AmountUSD)),
+			fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s ICY** (%s)", salaryAdvance.AmountICY, salaryAdvance.AmountUSD)),
 			fmt.Sprintf("`Sender.  ` %s\n", "**Dwarves Foundation**"),
 			fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", original.Author.ID)),
 		),
