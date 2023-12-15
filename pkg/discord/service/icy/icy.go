@@ -31,3 +31,27 @@ func (e *Icy) GetWeeklyDistribution() ([]*model.Icy, error) {
 
 	return icys, nil
 }
+
+func (e *Icy) ListUnpaidSalaryAdvances() (*model.SalaryAdvanceReport, error) {
+	// get response from fortress
+	unpaidSalaryAdvances, err := e.adapter.Fortress().SalaryAdvanceReport()
+	if err != nil {
+		e.l.Error(err, "can't get list of unpaid salary advances")
+		return nil, err
+	}
+
+	// normalized into in-app model
+	return unpaidSalaryAdvances.Data, nil
+}
+
+func (e *Icy) GetIcyAccounting() (*model.IcyAccounting, error) {
+	// get response from fortress
+	icyAccounting, err := e.adapter.Fortress().GetIcyAccounting()
+	if err != nil {
+		e.l.Error(err, "can't get icy accounting")
+		return nil, err
+	}
+
+	// normalized into in-app model
+	return icyAccounting.Data, nil
+}

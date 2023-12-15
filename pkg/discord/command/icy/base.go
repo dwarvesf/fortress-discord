@@ -2,6 +2,7 @@ package icy
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/permutil"
 )
 
 func (e *Icy) Prefix() []string {
@@ -19,6 +20,8 @@ func (e *Icy) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "list":
 		return e.List(message)
+	case "accounting":
+		return e.Accounting(message)
 	}
 
 	return nil
@@ -36,6 +39,11 @@ func (e *Icy) DefaultCommand(message *model.DiscordMessage) error {
 	return e.List(message)
 }
 
-func (e *Icy) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+func (u *Icy) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	switch message.ContentArgs[1] {
+	case "accounting":
+		return permutil.CheckSmodOrAbove(message.Roles)
+	}
+
 	return true, []string{}
 }

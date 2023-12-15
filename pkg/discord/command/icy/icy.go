@@ -32,3 +32,23 @@ func (e *Icy) List(message *model.DiscordMessage) error {
 	// 2. render
 	return e.view.Icy().List(message, data)
 }
+
+func (e *Icy) Accounting(message *model.DiscordMessage) error {
+	// 1. get data from service
+	// 1.1 Get icy accounting info
+	icyAccounting, err := e.svc.Icy().GetIcyAccounting()
+	if err != nil {
+		e.L.Error(err, "can't get icy accounting info")
+		return err
+	}
+
+	// 1.2 Get list of unpaid salary advances
+	report, err := e.svc.Icy().ListUnpaidSalaryAdvances()
+	if err != nil {
+		e.L.Error(err, "can't get list of unpaid salary advances")
+		return err
+	}
+
+	// 2. render
+	return e.view.Icy().Accounting(message, icyAccounting, report)
+}

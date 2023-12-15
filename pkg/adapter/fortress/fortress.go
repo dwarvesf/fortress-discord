@@ -752,3 +752,51 @@ func (f *Fortress) CheckAdvanceSalary(discordID string) (salaryAdvance *model.Ad
 
 	return salaryAdvance, nil
 }
+
+func (f *Fortress) SalaryAdvanceReport() (unpaidSalaryAdvances *model.AdapterSalaryAdvanceReport, err error) {
+	req, err := f.makeReq("/api/v1/discords/salary-advance-report?isPaid=false", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&unpaidSalaryAdvances); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return unpaidSalaryAdvances, nil
+}
+
+func (f *Fortress) GetIcyAccounting() (icyAccounting *model.AdapterIcyAccounting, err error) {
+	req, err := f.makeReq("/api/v1/discords/icy-accounting", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&icyAccounting); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return icyAccounting, nil
+}
