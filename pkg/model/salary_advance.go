@@ -23,3 +23,25 @@ type CheckSalaryAdvance struct {
 	AmountICY string `json:"amountICY"`
 	AmountUSD string `json:"amountUSD"`
 }
+
+type AdapterSalaryAdvanceReport struct {
+	Page  int                  `json:"page"`
+	Size  int                  `json:"size"`
+	Total int                  `json:"total"`
+	Sort  string               `json:"sort"`
+	Data  *SalaryAdvanceReport `json:"data"`
+}
+
+type SalaryAdvanceReport struct {
+	TotalICY       int64                     `json:"totalICY"`
+	TotalUSD       float64                   `json:"totalUSD"`
+	SalaryAdvances []AggregatedSalaryAdvance `json:"salaryAdvances"`
+}
+
+type AggregatedSalaryAdvance struct {
+	AmountICY       int64   `json:"amountICY"`
+	AmountUSD       float64 `json:"amountUSD"`
+	DiscordID       string  `json:"discordID"`
+	DiscordUsername string  `json:"discordUsername"`
+	EmployeeID      string  `json:"employeeID"`
+}
