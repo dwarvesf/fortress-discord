@@ -12,13 +12,13 @@ import (
 )
 
 const (
-	discordEmojiIceCube    = ":ice_cube:"
-	discordEmojiContract   = "<:proposal:1087564986504708167>"
-	discordEmojiCash       = "<:cash:1058304283642167319>"
-	discordEmojiAccounting = "<:nft:1090477914388172840>"
-	discordEmojiConversion = "<:conversion:1100681077808443423>"
-	discordEmojiShrugging  = "<a:shrugging:1095990328898637824>"
-	discordEmojiUSDT       = "<:usdt:1113120155568971786>"
+	discordEmojiAccountingIceCube        = ":ice_cube:"
+	discordEmojiAccountingDollar         = ":dollar:"
+	discordEmojiAccountingTitle          = "<:pepenote:885515949673951282>"
+	discordEmojiAccountingContractFund   = "<:pepeMoney:1086173791329210388>"
+	discordEmojiAccountingCirculatingICY = "<:anxinicy:1014483263705862174>"
+	discordEmojiAccountingOffsetUSDT     = "<:anxin:973799916147179550>"
+	discordEmojiAccountingUnpaid         = "<:pepebusiness:885513213687504936>"
 )
 
 func (e *Icy) Accounting(original *model.DiscordMessage, icyAccounting *model.IcyAccounting, report *model.SalaryAdvanceReport) error {
@@ -40,24 +40,24 @@ func (e *Icy) Accounting(original *model.DiscordMessage, icyAccounting *model.Ic
 	}
 
 	contentLines := []string{
-		fmt.Sprintf("%s `Contract Fund.   `%s **%s USDT**", discordEmojiContract, discordEmojiUSDT, formattedContractFund),
-		fmt.Sprintf("%s `Circulating ICY. `%s **%s ICY**", discordEmojiConversion, ":ice_cube:", formattedCirculatingICY),
-		fmt.Sprintf("%s `Offset USDT.     `%s **%s USDT**", discordEmojiCash, discordEmojiUSDT, formattedOffsetUSDT),
+		fmt.Sprintf("%s `Contract Fund.   `%s **%s USDT**", discordEmojiAccountingContractFund, discordEmojiAccountingDollar, formattedContractFund),
+		fmt.Sprintf("%s `Circulating ICY. `%s **%s ICY**", discordEmojiAccountingCirculatingICY, discordEmojiAccountingIceCube, formattedCirculatingICY),
+		fmt.Sprintf("%s `Offset USDT.     `%s **%s USDT**", discordEmojiAccountingOffsetUSDT, discordEmojiAccountingDollar, formattedOffsetUSDT),
 		"",
-		fmt.Sprintf("%s **Unpaid Salary Advances** - %s `%d ICY`", discordEmojiShrugging, discordEmojiIceCube, report.TotalICY),
+		fmt.Sprintf("%s **Unpaid Salary Advances** - %s `%d ICY`", discordEmojiAccountingUnpaid, discordEmojiAccountingIceCube, report.TotalICY),
 	}
 
 	for i, advance := range report.SalaryAdvances {
-		contentLines = append(contentLines, fmt.Sprintf("%d. <@%s> - %s `%d ICY`", i, advance.DiscordID, discordEmojiIceCube, advance.AmountICY))
+		contentLines = append(contentLines, fmt.Sprintf("%d. <@%s> - %s `%d ICY`", i, advance.DiscordID, discordEmojiAccountingIceCube, advance.AmountICY))
 	}
 
 	if icyAccounting.ICY.Address != "" {
 		icyAddress := strings.TrimSpace(icyAccounting.ICY.Address)
-		contentLines = append(contentLines, fmt.Sprintf("\n Fund the contract by transfer USDT to this address `%s` on Polygon", icyAddress))
+		contentLines = append(contentLines, fmt.Sprintf("\nFund the contract by transfer USDT to this address `%s` on Polygon", icyAddress))
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       fmt.Sprintf("%s ICY Accounting", discordEmojiAccounting),
+		Title:       fmt.Sprintf("%s ICY Accounting", discordEmojiAccountingTitle),
 		Description: strings.Join(contentLines, "\n"),
 	}
 
