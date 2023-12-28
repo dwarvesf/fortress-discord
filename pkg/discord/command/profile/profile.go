@@ -36,5 +36,5 @@ func (e *ProfileCmd) GetProfile(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "Failed to get employee profile.")
 	}
 
-	return e.view.Profile().List(message, employees)
+	return e.view.Profile().Render(message, employees)
 }
