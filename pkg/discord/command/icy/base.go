@@ -21,6 +21,9 @@ func (e *Icy) Execute(message *model.DiscordMessage) error {
 	case "list":
 		return e.List(message)
 	case "accounting":
+		if !e.ChannelPermissionCheck(message) {
+			return e.view.Error().Raise(message, "This command is not allowed in this channel.")
+		}
 		return e.Accounting(message)
 	}
 
@@ -39,11 +42,20 @@ func (e *Icy) DefaultCommand(message *model.DiscordMessage) error {
 	return e.List(message)
 }
 
-func (u *Icy) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+func (e *Icy) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
 	switch message.ContentArgs[1] {
 	case "accounting":
 		return permutil.CheckSmodOrAbove(message.Roles)
 	}
 
 	return true, []string{}
+}
+
+func (e *Icy) ChannelPermissionCheck(message *model.DiscordMessage) bool {
+	switch message.ContentArgs[1] {
+	case "accounting":
+		return permutil.CheckWhitelistChannels(e.cfg.Discord.WhiteListedChannels, message.ChannelId)
+	}
+
+	return true
 }
