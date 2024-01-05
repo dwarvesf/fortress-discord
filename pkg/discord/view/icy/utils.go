@@ -55,7 +55,7 @@ func formatTable(data [][]string, msgs []string) string {
 
 			switch col {
 			case 2:
-				formattedCols = append(formattedCols, fmt.Sprintf("%s`%s%s`", discordEmojiIceCube, colData, padding))
+				formattedCols = append(formattedCols, fmt.Sprintf("%s`%s%s`", discordEmojiIcyToken, colData, padding))
 			case 3:
 				formattedCols = append(formattedCols, fmt.Sprintf("%s`%s%s`", discordEmojiDollar, colData, padding))
 			default:

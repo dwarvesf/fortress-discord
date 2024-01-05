@@ -68,7 +68,7 @@ func (e *Icy) PersonalInfo(original *model.DiscordMessage, accounting *model.Icy
 		"",
 		// ICY conversion rate
 		fmt.Sprintf("%s **Conversion Rate**", discordEmojiPepeAhegao),
-		fmt.Sprintf("%s`1 ICY` ~ %s`%.1f USDT`", discordEmojiIceCube, discordEmojiDollar, accounting.ConversionRate),
+		fmt.Sprintf("%s`1 ICY` ~ %s`%.1f USDT`", discordEmojiIcyToken, discordEmojiDollar, accounting.ConversionRate),
 		"",
 		// Contract Fund
 		fmt.Sprintf("%s **Contract Fund**", discordEmojiPepeMoney),
@@ -76,7 +76,7 @@ func (e *Icy) PersonalInfo(original *model.DiscordMessage, accounting *model.Icy
 		"",
 		// Your Earned ICY
 		fmt.Sprintf("%s **Your Earned ICY**", discordEmojiPepeCoolNerd),
-		fmt.Sprintf("%s`%s ICY` ~ %s`%s USDT`", discordEmojiIceCube, formattedTotalEarnedICY, discordEmojiDollar, formattedTotalEarnedUSDT),
+		fmt.Sprintf("%s`%s ICY` ~ %s`%s USDT`", discordEmojiIcyToken, formattedTotalEarnedICY, discordEmojiDollar, formattedTotalEarnedUSDT),
 		"",
 		// Your Last 5 Transactions
 		fmt.Sprintf("%s **Your Last 5 Earns**", discordEmojiAnxinICY),
