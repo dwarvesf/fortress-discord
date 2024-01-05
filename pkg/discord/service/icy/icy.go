@@ -55,3 +55,25 @@ func (e *Icy) GetIcyAccounting() (*model.IcyAccounting, error) {
 	// normalized into in-app model
 	return icyAccounting.Data, nil
 }
+
+func (e *Icy) ListICYEarnedTransactions(discordID string, page, size int) ([]*model.ICYEarnedTransaction, error) {
+	// get response from fortress
+	transactions, err := e.adapter.Fortress().ListICYEarnedTransactions(discordID, page, size)
+	if err != nil {
+		e.l.Error(err, "can't get list icy earned transactions")
+		return nil, err
+	}
+
+	return transactions.Data, nil
+}
+
+func (e *Icy) GetICYTotalEarned(discordID string) (*model.ICYTotalEarned, error) {
+	// get response from fortress
+	total, err := e.adapter.Fortress().GetICYTotalEarned(discordID)
+	if err != nil {
+		e.l.Error(err, "can't get icy total earned")
+		return nil, err
+	}
+
+	return total.Data, nil
+}

@@ -49,4 +49,6 @@ type FortressAdapter interface {
 
 	SalaryAdvanceReport() (unpaidSalaryAdvances *model.AdapterSalaryAdvanceReport, err error)
 	GetIcyAccounting() (icyAccounting *model.AdapterIcyAccounting, err error)
+	ListICYEarnedTransactions(discordID string, page, size int) (*model.AdapterICYEarnedTransactions, error)
+	GetICYTotalEarned(discordID string) (*model.AdapterICYTotalEarned, error)
 }

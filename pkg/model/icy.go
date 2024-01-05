@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 // AdapterIcy is a struct response from adapter, before process to in-app model
 type AdapterIcy struct {
 	Data    []*Icy
@@ -43,4 +45,51 @@ type ContractInfo struct {
 	Name    string `json:"name"`
 	Address string `json:"address"`
 	Chain   string `json:"chain"`
+}
+
+type AdapterICYEarnedTransactions struct {
+	Data []*ICYEarnedTransaction `json:"data"`
+}
+
+type ICYEarnedTransaction struct {
+	ID                 string                 `json:"id"`
+	FromProfileID      string                 `json:"fromProfileID"`
+	OtherProfileID     string                 `json:"otherProfileID"`
+	FromProfileSource  string                 `json:"fromProfileSource"`
+	OtherProfileSource string                 `json:"otherProfileSource"`
+	SourcePlatform     string                 `json:"sourcePlatform"`
+	Amount             string                 `json:"amount"`
+	TokenID            string                 `json:"tokenID"`
+	ChainID            string                 `json:"chainID"`
+	InternalID         int64                  `json:"internalID"`
+	ExternalID         string                 `json:"externalID"`
+	OnchainTxHash      string                 `json:"onchainTxHash"`
+	Type               string                 `json:"type"`
+	Action             string                 `json:"action"`
+	Status             string                 `json:"status"`
+	CreatedAt          time.Time              `json:"createdAt"`
+	UpdatedAt          time.Time              `json:"updatedAt"`
+	ExpiredAt          *time.Time             `json:"expiredAt"`
+	SettledAt          *time.Time             `json:"settledAt"`
+	Token              *MochiToken            `json:"token"`
+	OriginalTxID       string                 `json:"originalTxID"`
+	OtherProfile       *MochiProfile          `json:"otherProfile"`
+	FromProfile        *MochiProfile          `json:"fromProfile"`
+	USDAmount          float64                `json:"usdAmount"`
+	Metadata           map[string]interface{} `json:"metadata"`
+	OtherProfileIds    []string               `json:"otherProfileIds"`
+	TotalAmount        string                 `json:"totalAmount"`
+	FromTokenId        string                 `json:"fromTokenId"`
+	ToTokenId          string                 `json:"toTokenId"`
+	FromAmount         string                 `json:"fromAmount"`
+	ToAmount           string                 `json:"toAmount"`
+}
+
+type AdapterICYTotalEarned struct {
+	Data *ICYTotalEarned `json:"data"`
+}
+
+type ICYTotalEarned struct {
+	TotalEarnsICY string `json:"totalEarnsICY"`
+	TotalEarnsUSD int64  `json:"totalEarnsUSD"`
 }
