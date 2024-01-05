@@ -1,6 +1,7 @@
 package icy
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -11,13 +12,15 @@ type Icy struct {
 	L    logger.Logger
 	svc  service.Servicer
 	view view.Viewer
+	cfg  *config.Config
 }
 
-func New(l logger.Logger, svc service.Servicer, view view.Viewer) EarnCommander {
+func New(l logger.Logger, svc service.Servicer, view view.Viewer, cfg *config.Config) EarnCommander {
 	return &Icy{
 		L:    l,
 		svc:  svc,
 		view: view,
+		cfg:  cfg,
 	}
 }
 

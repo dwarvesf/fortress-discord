@@ -66,7 +66,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		help.New(l, svc, view),
 		hiring.New(l, svc, view),
 		hold.New(l, svc, view),
-		icy.New(l, svc, view),
+		icy.New(l, svc, view, cfg),
 		index.New(l, svc, view),
 		issue.New(l, svc, view),
 		memo.New(l, svc, view),
