@@ -800,3 +800,53 @@ func (f *Fortress) GetIcyAccounting() (icyAccounting *model.AdapterIcyAccounting
 
 	return icyAccounting, nil
 }
+
+func (f *Fortress) ListICYEarnedTransactions(discordID string, page, size int) (*model.AdapterICYEarnedTransactions, error) {
+	req, err := f.makeReq(fmt.Sprintf("/api/v1/discords/%s/earns/transactions?page=%d&size=%d", discordID, page, size), http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var transactions model.AdapterICYEarnedTransactions
+	if err := json.NewDecoder(resp.Body).Decode(&transactions); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &transactions, nil
+}
+
+func (f *Fortress) GetICYTotalEarned(discordID string) (*model.AdapterICYTotalEarned, error) {
+	req, err := f.makeReq(fmt.Sprintf("/api/v1/discords/%s/earns/total", discordID), http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var total model.AdapterICYTotalEarned
+	if err := json.NewDecoder(resp.Body).Decode(&total); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &total, nil
+}

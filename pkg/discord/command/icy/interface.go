@@ -5,7 +5,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-type EarnCommander interface {
+type IcyCommander interface {
 	base.TextCommander
 
 	List(message *model.DiscordMessage) error

@@ -15,7 +15,7 @@ type Icy struct {
 	cfg  *config.Config
 }
 
-func New(l logger.Logger, svc service.Servicer, view view.Viewer, cfg *config.Config) EarnCommander {
+func New(l logger.Logger, svc service.Servicer, view view.Viewer, cfg *config.Config) IcyCommander {
 	return &Icy{
 		L:    l,
 		svc:  svc,
@@ -54,4 +54,31 @@ func (e *Icy) Accounting(message *model.DiscordMessage) error {
 
 	// 2. render
 	return e.view.Icy().Accounting(message, icyAccounting, report)
+}
+
+func (e *Icy) PersonalInfo(message *model.DiscordMessage) error {
+	// 1. get data from service
+	// 1.1 Get icy accounting info
+	icyAccounting, err := e.svc.Icy().GetIcyAccounting()
+	if err != nil {
+		e.L.Error(err, "can't get icy accounting info")
+		return err
+	}
+
+	// 1.2 Get total icy earned
+	totalEarned, err := e.svc.Icy().GetICYTotalEarned(message.Author.ID)
+	if err != nil {
+		e.L.Error(err, "can't get total icy earned")
+		return err
+	}
+
+	// 1.3 Get list last 5 icy transactions
+	earnedTxns, err := e.svc.Icy().ListICYEarnedTransactions(message.Author.ID, 0, 5)
+	if err != nil {
+		e.L.Error(err, "can't get list of last 5 icy transactions")
+		return err
+	}
+
+	// 2. render
+	return e.view.Icy().PersonalInfo(message, icyAccounting, totalEarned, earnedTxns)
 }

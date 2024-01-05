@@ -39,10 +39,14 @@ func (e *Icy) Help(message *model.DiscordMessage) error {
 }
 
 func (e *Icy) DefaultCommand(message *model.DiscordMessage) error {
-	return e.List(message)
+	return e.PersonalInfo(message)
 }
 
 func (e *Icy) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+	if len(message.ContentArgs) == 1 {
+		return true, []string{}
+	}
+
 	switch message.ContentArgs[1] {
 	case "accounting":
 		return permutil.CheckSmodOrAbove(message.Roles)
@@ -52,6 +56,10 @@ func (e *Icy) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
 }
 
 func (e *Icy) ChannelPermissionCheck(message *model.DiscordMessage) bool {
+	if len(message.ContentArgs) == 1 {
+		return true
+	}
+
 	switch message.ContentArgs[1] {
 	case "accounting":
 		return permutil.CheckWhitelistChannels(e.cfg.Discord.WhiteListedChannels, message.ChannelId)
