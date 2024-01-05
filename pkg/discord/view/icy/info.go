@@ -21,6 +21,16 @@ func (e *Icy) PersonalInfo(original *model.DiscordMessage, accounting *model.Icy
 		formattedContractFund = fund
 	}
 
+	var formattedTotalEarnedICY string = "NaN"
+	if totalEarnedICY := cryptoutils.StringBigIntToStringCurrency(totalEarned.TotalEarnsICY, 0); totalEarnedICY != "" {
+		formattedTotalEarnedICY = totalEarnedICY
+	}
+
+	var formattedTotalEarnedUSDT string = "NaN"
+	if totalEarnedUSDT := cryptoutils.StringBigIntToStringCurrency(big.NewFloat(totalEarned.TotalEarnsUSD).String(), 0); totalEarnedUSDT != "" {
+		formattedTotalEarnedUSDT = totalEarnedUSDT
+	}
+
 	last5Txns := [][]string{}
 	last5Msgs := []string{}
 	for _, txn := range earnedTxns {
@@ -66,7 +76,7 @@ func (e *Icy) PersonalInfo(original *model.DiscordMessage, accounting *model.Icy
 		"",
 		// Your Earned ICY
 		fmt.Sprintf("%s **Your Earned ICY**", discordEmojiPepeCoolNerd),
-		fmt.Sprintf("%s`%s ICY` ~ %s`%d USDT`", discordEmojiIceCube, totalEarned.TotalEarnsICY, discordEmojiDollar, totalEarned.TotalEarnsUSD),
+		fmt.Sprintf("%s`%s ICY` ~ %s`%s USDT`", discordEmojiIceCube, formattedTotalEarnedICY, discordEmojiDollar, formattedTotalEarnedUSDT),
 		"",
 		// Your Last 5 Transactions
 		fmt.Sprintf("%s **Your Last 5 Earns**", discordEmojiAnxinICY),
