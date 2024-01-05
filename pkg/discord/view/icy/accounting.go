@@ -31,14 +31,14 @@ func (e *Icy) Accounting(original *model.DiscordMessage, icyAccounting *model.Ic
 
 	contentLines := []string{
 		fmt.Sprintf("%s `Contract Fund.   `%s **%s USDT**", discordEmojiPepeMoney, discordEmojiDollar, formattedContractFund),
-		fmt.Sprintf("%s `Circulating ICY. `%s **%s ICY**", discordEmojiAnxinICY, discordEmojiIceCube, formattedCirculatingICY),
+		fmt.Sprintf("%s `Circulating ICY. `%s **%s ICY**", discordEmojiAnxinICY, discordEmojiIcyToken, formattedCirculatingICY),
 		fmt.Sprintf("%s `Offset USDT.     `%s **%s USDT**", discordEmojiAnxin, discordEmojiDollar, formattedOffsetUSDT),
 		"",
-		fmt.Sprintf("%s **Unpaid Salary Advances** - %s `%d ICY`", discordEmojiPepeBusiness, discordEmojiIceCube, report.TotalICY),
+		fmt.Sprintf("%s **Unpaid Salary Advances** - %s `%d ICY`", discordEmojiPepeBusiness, discordEmojiIcyToken, report.TotalICY),
 	}
 
 	for i, advance := range report.SalaryAdvances {
-		contentLines = append(contentLines, fmt.Sprintf("%d. <@%s> - %s `%d ICY`", i, advance.DiscordID, discordEmojiIceCube, advance.AmountICY))
+		contentLines = append(contentLines, fmt.Sprintf("%d. <@%s> - %s `%d ICY`", i, advance.DiscordID, discordEmojiIcyToken, advance.AmountICY))
 	}
 
 	if icyAccounting.ICY.Address != "" {
