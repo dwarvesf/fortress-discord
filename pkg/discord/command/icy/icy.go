@@ -52,8 +52,15 @@ func (e *Icy) Accounting(message *model.DiscordMessage) error {
 		return err
 	}
 
+	// 1.3 Get total reward 30 days
+	total30DaysReward, err := e.svc.Icy().Get30daysTotalReward()
+	if err != nil {
+		e.L.Error(err, "can't get total reward 30 days")
+		return err
+	}
+
 	// 2. render
-	return e.view.Icy().Accounting(message, icyAccounting, report)
+	return e.view.Icy().Accounting(message, icyAccounting, report, total30DaysReward)
 }
 
 func (e *Icy) PersonalInfo(message *model.DiscordMessage) error {

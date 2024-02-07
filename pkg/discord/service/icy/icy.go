@@ -77,3 +77,14 @@ func (e *Icy) GetICYTotalEarned(discordID string) (*model.ICYTotalEarned, error)
 
 	return total.Data, nil
 }
+
+func (e *Icy) Get30daysTotalReward() (*model.ICYTotalEarned, error) {
+	// get response from fortress
+	total, err := e.adapter.Fortress().Get30daysTotalReward()
+	if err != nil {
+		e.l.Error(err, "can't get 30 days total reward")
+		return nil, err
+	}
+
+	return total.Data, nil
+}
