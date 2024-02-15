@@ -51,4 +51,5 @@ type FortressAdapter interface {
 	GetIcyAccounting() (icyAccounting *model.AdapterIcyAccounting, err error)
 	ListICYEarnedTransactions(discordID string, page, size int) (*model.AdapterICYEarnedTransactions, error)
 	GetICYTotalEarned(discordID string) (*model.AdapterICYTotalEarned, error)
+	Get30daysTotalReward() (*model.AdapterICYTotalEarned, error)
 }

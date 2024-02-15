@@ -850,3 +850,28 @@ func (f *Fortress) GetICYTotalEarned(discordID string) (*model.AdapterICYTotalEa
 
 	return &total, nil
 }
+
+func (f *Fortress) Get30daysTotalReward() (*model.AdapterICYTotalEarned, error) {
+	req, err := f.makeReq("/api/v1/discords/earns/total", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var total model.AdapterICYTotalEarned
+	if err := json.NewDecoder(resp.Body).Decode(&total); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &total, nil
+}

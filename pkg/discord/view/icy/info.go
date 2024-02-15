@@ -89,7 +89,7 @@ func yourEarnedICYContent(totalEarned *model.ICYTotalEarned) (result []string) {
 		if totalEarnedICY := cryptoutils.StringBigIntToStringCurrency(totalEarned.TotalEarnsICY, 0); totalEarnedICY != "" {
 			formattedTotalEarnedICY = totalEarnedICY
 		}
-		if totalEarnedUSDT := cryptoutils.StringBigIntToStringCurrency(big.NewFloat(totalEarned.TotalEarnsUSD).String(), 0); totalEarnedUSDT != "" {
+		if totalEarnedUSDT := cryptoutils.StringBigIntToStringCurrency(totalEarned.TotalEarnsUSD, 0); totalEarnedUSDT != "" {
 			formattedTotalEarnedUSDT = totalEarnedUSDT
 		}
 	}

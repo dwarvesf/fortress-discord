@@ -90,6 +90,6 @@ type AdapterICYTotalEarned struct {
 }
 
 type ICYTotalEarned struct {
-	TotalEarnsICY string  `json:"totalEarnsICY"`
-	TotalEarnsUSD float64 `json:"totalEarnsUSD"`
+	TotalEarnsICY string `json:"totalEarnsICY"`
+	TotalEarnsUSD string `json:"totalEarnsUSD"`
 }
