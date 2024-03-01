@@ -22,6 +22,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/trend"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/withdrawal"
 )
 
 type Servicer interface {
@@ -46,4 +47,5 @@ type Servicer interface {
 	TechRadar() techradar.TechRadarServicer
 	Treasury() treasury.TreasuryServicer
 	Trend() trend.TrendServicer
+	Withdrawal() withdrawal.Servicer
 }

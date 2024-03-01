@@ -2,8 +2,6 @@ package view
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
-	"github.com/dwarvesf/fortress-discord/pkg/discord/view/salary"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
@@ -18,13 +16,16 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/salary"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/trend"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/withdrawal"
 )
 
 type View struct {
@@ -54,6 +55,7 @@ type subView struct {
 	MMA             mma.Viewer
 	Trend           trend.TrendViewer
 	Salary          salary.Viewer
+	Withdraw        withdrawal.Viewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -81,6 +83,7 @@ func New(ses *discordgo.Session) Viewer {
 			MMA:             mma.New(ses),
 			Trend:           trend.New(ses),
 			Salary:          salary.New(ses),
+			Withdraw:        withdrawal.New(ses),
 		},
 	}
 }
@@ -170,4 +173,8 @@ func (v *View) Trend() trend.TrendViewer {
 
 func (v *View) Salary() salary.Viewer {
 	return v.subView.Salary
+}
+
+func (v *View) Withdraw() withdrawal.Viewer {
+	return v.subView.Withdraw
 }

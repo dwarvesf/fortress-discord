@@ -26,7 +26,7 @@ func (t *Index) Search(message *model.DiscordMessage) error {
 	// 1. get data from service
 	data, err := t.svc.TechRadar().GetList(constant.TechRadarAll, &message.ContentArgs[1])
 	if err != nil {
-		t.L.Error(err, "can't get list of Index techradar")
+		t.L.Error(err, "can't get list of Home techradar")
 		return err
 	}
 

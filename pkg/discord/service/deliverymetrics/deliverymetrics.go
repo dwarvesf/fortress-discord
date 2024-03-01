@@ -29,9 +29,9 @@ func (e *DeliveryMetricSvc) GetWeeklyReportDiscordMsg() (*discordgo.MessageEmbed
 	return reportAdapter.Data, nil
 }
 
-func (e *DeliveryMetricSvc) GetMonthlyReportDiscordMsg() (*discordgo.MessageEmbed, error) {
+func (e *DeliveryMetricSvc) GetMonthlyReportDiscordMsg(now bool) (*discordgo.MessageEmbed, error) {
 	// get response from fortress
-	reportAdapter, err := e.adapter.Fortress().GetDeliveryMetricsMonthlyReportDiscordMsg()
+	reportAdapter, err := e.adapter.Fortress().GetDeliveryMetricsMonthlyReportDiscordMsg(now)
 	if err != nil {
 		e.l.Error(err, "can't get MonthlyReportDiscordMsg")
 		return nil, err

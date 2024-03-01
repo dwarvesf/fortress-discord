@@ -14,7 +14,7 @@ func (i *Index) Execute(message *model.DiscordMessage) error {
 }
 
 func (i *Index) Name() string {
-	return "Index Command"
+	return "Home Command"
 }
 
 func (i *Index) Help(message *model.DiscordMessage) error {

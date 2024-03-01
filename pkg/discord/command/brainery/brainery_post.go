@@ -1,13 +1,13 @@
 package brainery
 
 import (
-	"github.com/dwarvesf/fortress-discord/pkg/utils/stringutils"
 	"strings"
 	"time"
 
 	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/stringutils"
 )
 
 func (e *Brainery) Post(message *model.DiscordMessage) error {

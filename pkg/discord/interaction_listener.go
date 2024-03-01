@@ -2,6 +2,7 @@ package discord
 
 import (
 	"fmt"
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"net/http"
 	"strings"
 	"time"
@@ -58,6 +59,70 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 			})
 
 			return
+		case "enter_withdraw_value_btn" + i.Interaction.User.ID:
+			cond, err := d.Command.S.Withdrawal().CheckWithdrawCondition(i.Interaction.User.ID)
+			if err != nil {
+				d.L.Error(err, "failed to check withdraw condition "+i.Interaction.User.ID)
+				d.Command.View.Withdraw().ErrorWithdraw(&model.DiscordMessage{
+					ChannelId: i.ChannelID,
+					Author:    i.Interaction.User,
+				}, err)
+				return
+			}
+
+			bankSwiftCode := i.ModalSubmitData().Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+			bankAccountNumber := i.ModalSubmitData().Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+			bankAccountOwner := i.ModalSubmitData().Components[2].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+			icyAmount := i.ModalSubmitData().Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+
+			fmt.Println(i.Interaction.User.ID)
+			fmt.Println(bankSwiftCode)
+			fmt.Println(bankAccountNumber)
+			fmt.Println(bankAccountOwner)
+			fmt.Println(icyAmount)
+			fmt.Println(cond)
+
+			// TODO: Send this payload to Fortress for transfer request.
+
+			//go func() {
+			//	salaryAdvance, err := d.Command.S.Salary().SalaryAdvance(i.Interaction.User.ID, userInput)
+			//	if err != nil {
+			//		d.L.Error(err, "can't make advance salary for user "+i.Interaction.User.ID)
+			//		d.Command.View.Salary().ErrorAdvanceSalary(&model.DiscordMessage{
+			//			ChannelId: i.ChannelID,
+			//			Author:    i.Interaction.User,
+			//		}, err)
+			//		return
+			//	}
+			//
+			//	err = d.Command.View.Salary().CompleteAdvanceSalary(&model.DiscordMessage{
+			//		ChannelId: i.ChannelID,
+			//		Author:    i.Interaction.User,
+			//	}, *salaryAdvance)
+			//	if err != nil {
+			//		d.L.Error(err, "can't send complete message ")
+			//		return
+			//	}
+			//}()
+
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseUpdateMessage,
+				Data: &discordgo.InteractionResponseData{
+					Embeds: []*discordgo.MessageEmbed{
+						base.Normalize(s, &discordgo.MessageEmbed{
+							Title: "Request Approved!\n",
+							Description: fmt.Sprint(
+								"Your ICY is on the way, we will notify you shortly\n\n",
+								fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("%s **%s ICY**", constant.GetEmoji("ICY"), icyAmount)),
+								fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", i.Interaction.User.ID)),
+								"try $bals in Mochi app to see your balance",
+							),
+						}),
+					},
+				},
+			})
+
+			return
 		}
 	}
 
@@ -71,13 +136,13 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 				Type: discordgo.InteractionResponseModal,
 				Data: &discordgo.InteractionResponseData{
 					CustomID: "enter_advance_salary_amount_" + i.Interaction.User.ID,
-					Title:    "Enter amount icy you want to advance",
+					Title:    "Enter amount ICY you want to advance",
 					Components: []discordgo.MessageComponent{
 						discordgo.ActionsRow{
 							Components: []discordgo.MessageComponent{
 								discordgo.TextInput{
 									CustomID:    "icy_amount",
-									Label:       "Icy Amount",
+									Label:       "ICY Amount",
 									Style:       discordgo.TextInputShort,
 									Placeholder: "100",
 									Required:    true,
@@ -89,6 +154,167 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 					},
 				},
 			})
+			return
+		//case "open_withdraw_form_btn":
+		//	fmt.Println("open_withdraw_form_btn")
+		//	banks, err := d.Command.S.Withdrawal().GetBanks("", "", "")
+		//	if err != nil {
+		//		d.L.Error(err, "failed to check withdraw condition "+i.Interaction.User.ID)
+		//		d.Command.View.Withdraw().ErrorWithdraw(&model.DiscordMessage{
+		//			ChannelId: i.ChannelID,
+		//			Author:    i.Interaction.User,
+		//		}, err)
+		//		return
+		//	}
+		//
+		//	fmt.Println("LIST BANKS")
+		//	fmt.Println(len(banks))
+		//
+		//	// TODO: API TO GET BANK LIST
+		//	// TODO: API TO GET USER BANK ACCOUNT
+		//
+		//	err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		//		Type: discordgo.InteractionResponseModal,
+		//		Data: &discordgo.InteractionResponseData{
+		//			CustomID: "enter_withdraw_value_btn" + i.Interaction.User.ID,
+		//			Title:    "Enter ICY amount to withdraw",
+		//			Components: []discordgo.MessageComponent{
+		//				discordgo.ActionsRow{
+		//					Components: []discordgo.MessageComponent{
+		//						discordgo.TextInput{
+		//							CustomID:    "bank_account_number",
+		//							Label:       "Bank Account Number",
+		//							Style:       discordgo.TextInputShort,
+		//							Placeholder: "Enter the Bank Account Number",
+		//							Required:    true,
+		//							MinLength:   1,
+		//							MaxLength:   256,
+		//						},
+		//					},
+		//				},
+		//				discordgo.ActionsRow{
+		//					Components: []discordgo.MessageComponent{
+		//						discordgo.TextInput{
+		//							CustomID:    "bank_account_owner",
+		//							Label:       "Bank Account Owner",
+		//							Style:       discordgo.TextInputShort,
+		//							Placeholder: "NGUYEN VAN A",
+		//							Required:    true,
+		//							MinLength:   1,
+		//							MaxLength:   256,
+		//						},
+		//					},
+		//				},
+		//				discordgo.ActionsRow{
+		//					Components: []discordgo.MessageComponent{
+		//						discordgo.TextInput{
+		//							CustomID:    "icy_amount",
+		//							Label:       "ICY Amount",
+		//							Style:       discordgo.TextInputShort,
+		//							Placeholder: "100",
+		//							Required:    true,
+		//							MinLength:   1,
+		//							MaxLength:   5,
+		//						},
+		//					},
+		//				},
+		//			},
+		//		},
+		//	})
+		//
+		//	if err != nil {
+		//		fmt.Println(err)
+		//	}
+		//	return
+
+		case "bank_selector":
+			fmt.Println("bank_selector")
+			fmt.Println(i)
+
+			bankInfo := strings.Split(i.MessageComponentData().Values[0], "_")
+
+			fmt.Println(bankInfo)
+
+			err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseModal,
+				Data: &discordgo.InteractionResponseData{
+					CustomID: "enter_withdraw_value_btn" + i.Interaction.User.ID,
+					Title:    "Enter ICY amount to withdraw",
+					Components: []discordgo.MessageComponent{
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:    "bank_swift_code",
+									Label:       "Swift Code",
+									Style:       discordgo.TextInputShort,
+									Placeholder: "Enter Swift Code",
+									Value:       bankInfo[0],
+									Required:    true,
+									MinLength:   1,
+									MaxLength:   256,
+								},
+							},
+						},
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:    "bank_name",
+									Label:       "Bank Name",
+									Style:       discordgo.TextInputShort,
+									Placeholder: "Enter Bank Name",
+									Value:       bankInfo[1],
+									Required:    true,
+									MinLength:   1,
+									MaxLength:   256,
+								},
+							},
+						},
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:    "bank_account_number",
+									Label:       "Bank Account Number",
+									Style:       discordgo.TextInputShort,
+									Placeholder: "Enter the Bank Account Number",
+									Required:    true,
+									MinLength:   1,
+									MaxLength:   256,
+								},
+							},
+						},
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:    "bank_account_owner",
+									Label:       "Bank Account Owner",
+									Style:       discordgo.TextInputShort,
+									Placeholder: "NGUYEN VAN A",
+									Required:    true,
+									MinLength:   1,
+									MaxLength:   256,
+								},
+							},
+						},
+						discordgo.ActionsRow{
+							Components: []discordgo.MessageComponent{
+								discordgo.TextInput{
+									CustomID:    "icy_amount",
+									Label:       "ICY Amount",
+									Style:       discordgo.TextInputShort,
+									Placeholder: "100",
+									Required:    true,
+									MinLength:   1,
+									MaxLength:   5,
+								},
+							},
+						},
+					},
+				},
+			})
+
+			if err != nil {
+				fmt.Println(err)
+			}
 			return
 		}
 

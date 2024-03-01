@@ -28,6 +28,7 @@ const (
 	RegexPatternUrl              = `((?:https?://)[^\s]+)`
 	RegexPatternGithub           = `gh:(\w+)`
 	RegexPatternDescription      = `d:"(.*?)"`
+	RegexPatternTime             = `t:(\w+)`
 )
 
 const (
@@ -45,13 +46,7 @@ var mapEmoji = map[string]string{
 	"STAR_ANIMATED":       "<a:star_animated:1131862886592024586>",
 	"INCREASING_ANIMATED": "<a:increasing_animated:1131862879319097394>",
 	"CLOCK_NEW":           "<:clock_new:1131863089185292428>",
-}
-
-func GetEmoji(emoji string) string {
-	if os.Getenv("ENV") != "prod" {
-		return mapEmojiDev[emoji]
-	}
-	return mapEmoji[emoji]
+	"ICY":                 "<:ICY:1049620715374133288>",
 }
 
 var mapEmojiDev = map[string]string{
@@ -65,6 +60,14 @@ var mapEmojiDev = map[string]string{
 	"STAR_ANIMATED":       "<a:star_animated:1133460443550195832>",
 	"INCREASING_ANIMATED": "<a:increasing_animated:1133460451091550289>",
 	"CLOCK_NEW":           "<:clock:1133460445257281658>",
+	"ICY":                 ":ice_cube:",
+}
+
+func GetEmoji(emoji string) string {
+	if os.Getenv("ENV") != "prod" {
+		return mapEmojiDev[emoji]
+	}
+	return mapEmoji[emoji]
 }
 
 var DwarvesRole = map[string]int{

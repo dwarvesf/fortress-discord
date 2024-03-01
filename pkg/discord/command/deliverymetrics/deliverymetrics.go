@@ -2,45 +2,55 @@ package deliverymetrics
 
 import (
 	"github.com/bwmarrin/discordgo"
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/stringutils"
 )
 
-func (c *DeliveryMetricsCmd) WeeklyReport(message *model.DiscordMessage) error {
+func (e *DeliveryMetricsCmd) WeeklyReport(message *model.DiscordMessage) error {
 	// 1. get data from service
-	r, err := c.svc.DeliveryMetrics().GetWeeklyReportDiscordMsg()
+	r, err := e.svc.DeliveryMetrics().GetWeeklyReportDiscordMsg()
 	if err != nil {
-		c.L.Error(err, "can't get WeeklyReport")
+		e.L.Error(err, "can't get WeeklyReport")
 		return err
 	}
 
 	// 2. render
-	return c.view.DeliveryMetrics().Send(message, r)
+	return e.view.DeliveryMetrics().Send(message, r)
 }
 
-func (c *DeliveryMetricsCmd) MonthlyReport(message *model.DiscordMessage) error {
+func (e *DeliveryMetricsCmd) MonthlyReport(message *model.DiscordMessage) error {
+	rawFormattedContent := stringutils.FormatString(message.RawContent)
+
 	// 1. get data from service
-	r, err := c.svc.DeliveryMetrics().GetMonthlyReportDiscordMsg()
+	times := stringutils.ExtractPattern(rawFormattedContent, constant.RegexPatternTime)
+	now := false
+	if len(times) > 0 {
+		now = times[0] == "now"
+	}
+
+	r, err := e.svc.DeliveryMetrics().GetMonthlyReportDiscordMsg(now)
 	if err != nil {
-		c.L.Error(err, "can't get MonthlyReport")
+		e.L.Error(err, "can't get MonthlyReport")
 		return err
 	}
 
 	// 2. render
-	return c.view.DeliveryMetrics().Send(message, r)
+	return e.view.DeliveryMetrics().Send(message, r)
 }
 
-func (c *DeliveryMetricsCmd) SyncRawData(message *model.DiscordMessage) error {
+func (e *DeliveryMetricsCmd) SyncRawData(message *model.DiscordMessage) error {
 	msg := &discordgo.MessageEmbed{
 		Title:       "**Delivery Sync**",
 		Description: "Sync data successfully \n",
 	}
 
-	err := c.svc.DeliveryMetrics().SyncData()
+	err := e.svc.DeliveryMetrics().SyncData()
 	if err != nil {
-		c.L.Error(err, "can't get SyncRawData response")
+		e.L.Error(err, "can't get SyncRawData response")
 		msg.Description = "Sync data failed " + err.Error() + "\n"
 	}
 
 	// 2. render
-	return c.view.DeliveryMetrics().Send(message, msg)
+	return e.view.DeliveryMetrics().Send(message, msg)
 }

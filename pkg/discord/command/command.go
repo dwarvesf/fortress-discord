@@ -30,6 +30,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trend"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/updates"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/withdraw"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/history"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
@@ -81,6 +82,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		mma.New(l, svc, view, cfg),
 		trend.New(l, svc, view),
 		salary.New(l, svc, view),
+		withdraw.New(l, svc, view),
 	})
 
 	return cmd

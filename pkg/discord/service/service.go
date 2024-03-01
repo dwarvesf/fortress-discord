@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
@@ -24,6 +25,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/trend"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/withdrawal"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 )
 
@@ -53,6 +55,7 @@ type subService struct {
 	Treasury        treasury.TreasuryServicer
 	MMA             mma.Service
 	Trend           trend.TrendServicer
+	Withdrawal      withdrawal.Servicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Servicer {
@@ -79,6 +82,7 @@ func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Serv
 			MMA:             mma.New(adapter, l),
 			Trend:           trend.New(adapter, l),
 			Salary:          salary.New(adapter, l),
+			Withdrawal:      withdrawal.New(adapter, l),
 		},
 	}
 }
@@ -165,4 +169,8 @@ func (s *Service) Trend() trend.TrendServicer {
 
 func (s *Service) Salary() salary.SalaryServicer {
 	return s.subService.Salary
+}
+
+func (s *Service) Withdrawal() withdrawal.Servicer {
+	return s.subService.Withdrawal
 }

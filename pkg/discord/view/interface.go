@@ -23,6 +23,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/trend"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/withdrawal"
 )
 
 type Viewer interface {
@@ -48,4 +49,5 @@ type Viewer interface {
 	MMA() mma.Viewer
 	Trend() trend.TrendViewer
 	Salary() salary.Viewer
+	Withdraw() withdrawal.Viewer
 }

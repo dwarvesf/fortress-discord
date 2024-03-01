@@ -37,7 +37,7 @@ type FortressAdapter interface {
 	GetBraineryReport(view string, date string) (*model.BraineryMetric, error)
 
 	GetDeliveryMetricsWeeklyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
-	GetDeliveryMetricsMonthlyReportDiscordMsg() (msg *model.AdapterDeliveryMetricsReportMsg, err error)
+	GetDeliveryMetricsMonthlyReportDiscordMsg(now bool) (msg *model.AdapterDeliveryMetricsReportMsg, err error)
 	SyncDeliveryMetricsData() (err error)
 
 	GetEmployees(in EmployeeSearch) (rs []model.Employee, err error)
@@ -52,4 +52,7 @@ type FortressAdapter interface {
 	ListICYEarnedTransactions(discordID string, page, size int) (*model.AdapterICYEarnedTransactions, error)
 	GetICYTotalEarned(discordID string) (*model.AdapterICYTotalEarned, error)
 	Get30daysTotalReward() (*model.AdapterICYTotalEarned, error)
+
+	CheckWithdrawCondition(discordID string) (rs *model.AdapterCheckWithdrawCondition, err error)
+	GetBanks(id, bin, swiftCode string) (banks *model.AdapterBank, err error)
 }

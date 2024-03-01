@@ -2,6 +2,7 @@ package salary
 
 import (
 	"fmt"
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 
 	"github.com/bwmarrin/discordgo"
 
@@ -56,10 +57,10 @@ func (e *Salary) EnterAmountAdvanceSalary(original *model.DiscordMessage, checkS
 // CompleteAdvanceSalary implements Viewer.
 func (s *Salary) CompleteAdvanceSalary(original *model.DiscordMessage, salaryAdvance model.SalaryAdvance) error {
 	msg := &discordgo.MessageEmbed{
-		Title: "<a:star_animated:1131862886592024586> Successfully Transaction",
+		Title: constant.GetEmoji("STAR_ANIMATED") + "Successful Transaction",
 		Description: fmt.Sprint(
 			fmt.Sprintf("`TxID.    ` %s\n", fmt.Sprintf("[%s](https://mochi.gg/tx/%s)", salaryAdvance.TransactionHash, salaryAdvance.TransactionHash)),
-			fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("<:ICY:1049620715374133288> **%s ICY** (%s)", salaryAdvance.AmountICY, salaryAdvance.AmountUSD)),
+			fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("%s **%s ICY** (%s)", "<:ICY:1049620715374133288>", salaryAdvance.AmountICY, salaryAdvance.AmountUSD)),
 			fmt.Sprintf("`Sender.  ` %s\n", "**Dwarves Foundation**"),
 			fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", original.Author.ID)),
 		),
