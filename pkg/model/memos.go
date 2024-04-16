@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/shopspring/decimal"
+)
 
 // AdapterMemo is a struct response from adapter, before process to in-app model
 type AdapterMemo struct {
@@ -13,4 +17,44 @@ type Memo struct {
 	Id        string     `json:"id"`
 	Name      string     `json:"name"`
 	CreatedAt *time.Time `json:"created_at"`
+}
+
+type CreateMemoRequest struct {
+	Data []CreateMemoItem `json:"data"`
+}
+
+type CreateMemoItem struct {
+	Title       string          `json:"title"`
+	URL         string          `json:"url"`
+	Author      []Author        `json:"author"`
+	Tags        []string        `json:"tags"`
+	PublishedAt string          `json:"publishedAt"`
+	Reward      decimal.Decimal `json:"reward"`
+}
+
+type Author struct {
+	GithubID  string `json:"githubID"`
+	DiscordID string `json:"discordID"`
+}
+
+type MemoLog struct {
+	ID          string          `json:"id"`
+	Title       string          `json:"title"`
+	URL         string          `json:"url"`
+	Authors     []MemoLogAuthor `json:"authors"`
+	Description string          `json:"description"`
+	PublishedAt *time.Time      `json:"publishedAt"`
+	Reward      decimal.Decimal `json:"reward"`
+}
+
+// MemoLogAuthor is the author of the memo log
+type MemoLogAuthor struct {
+	EmployeeID string `json:"employeeID"`
+	GithubID   string `json:"githubID"`
+	DiscordID  string `json:"discordID"`
+}
+
+// MemoLogsResponse response for memo logs
+type MemoLogsResponse struct {
+	Data []MemoLog `json:"data"`
 }

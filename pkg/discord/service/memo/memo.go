@@ -31,3 +31,28 @@ func (e *Memo) GetMemos() ([]*model.Memo, error) {
 
 	return memos, nil
 }
+
+func (e *Memo) SyncMemoLogs() ([]model.MemoLog, error) {
+	// sync memos from fortress
+	memoLogs, err := e.adapter.Fortress().SyncMemoLogs()
+	if err != nil {
+		e.l.Error(err, "can't sync memo logs")
+		return nil, err
+	}
+
+	// normalized into in-app model
+
+	return memoLogs.Data, nil
+
+}
+
+func (e *Memo) GetMemoLogs() ([]model.MemoLog, error) {
+	// get response from fortress
+	adapterMemoLogs, err := e.adapter.Fortress().GetMemoLogs()
+	if err != nil {
+		e.l.Error(err, "can't get memo logs from fortress")
+		return nil, err
+	}
+
+	return adapterMemoLogs.Data, nil
+}

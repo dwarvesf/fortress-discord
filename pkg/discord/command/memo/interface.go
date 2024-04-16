@@ -9,4 +9,5 @@ type MemoCommander interface {
 	base.TextCommander
 
 	List(message *model.DiscordMessage) error
+	Sync(message *model.DiscordMessage) error
 }

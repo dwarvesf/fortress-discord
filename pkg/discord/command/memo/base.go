@@ -18,7 +18,9 @@ func (e *Memo) Execute(message *model.DiscordMessage) error {
 	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
 	case "list":
-		return e.List(message)
+		return e.ListMemoLogs(message)
+	case "sync":
+		return e.Sync(message)
 	}
 
 	return nil
@@ -33,7 +35,7 @@ func (e *Memo) Help(message *model.DiscordMessage) error {
 }
 
 func (e *Memo) DefaultCommand(message *model.DiscordMessage) error {
-	return e.List(message)
+	return e.ListMemoLogs(message)
 }
 
 func (e *Memo) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

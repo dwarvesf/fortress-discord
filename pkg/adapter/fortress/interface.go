@@ -55,4 +55,7 @@ type FortressAdapter interface {
 
 	CheckWithdrawCondition(discordID string) (rs *model.AdapterCheckWithdrawCondition, err error)
 	GetBanks(id, bin, swiftCode string) (banks *model.AdapterBank, err error)
+
+	SyncMemoLogs() (memos *model.MemoLogsResponse, err error)
+	GetMemoLogs() (memos *model.MemoLogsResponse, err error)
 }
