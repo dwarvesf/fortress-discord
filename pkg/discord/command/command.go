@@ -70,7 +70,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		icy.New(l, svc, view, cfg),
 		index.New(l, svc, view),
 		issue.New(l, svc, view),
-		memo.New(l, svc, view),
+		memo.New(l, svc, view, cfg),
 		milestone.New(l, svc, view),
 		new.New(l, svc, view),
 		radar.New(l, svc, view),

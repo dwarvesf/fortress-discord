@@ -10,7 +10,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (e *Memo) List(original *model.DiscordMessage, memos []*model.Memo) error {
+func (v *Memo) List(original *model.DiscordMessage, memos []*model.Memo) error {
 	var content string
 	for i := range memos {
 		if i <= 10 {
@@ -23,10 +23,10 @@ func (e *Memo) List(original *model.DiscordMessage, memos []*model.Memo) error {
 		Description: content,
 	}
 
-	return base.SendEmbededMessage(e.ses, original, msg)
+	return base.SendEmbededMessage(v.ses, original, msg)
 }
 
-func (e *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLog) error {
+func (v *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLog) error {
 	var content string
 	for i := range memos {
 		if i <= 10 {
@@ -39,5 +39,5 @@ func (e *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLo
 		Description: content,
 	}
 
-	return base.SendEmbededMessage(e.ses, original, msg)
+	return base.SendEmbededMessage(v.ses, original, msg)
 }

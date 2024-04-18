@@ -7,5 +7,5 @@ import (
 type MemoViewer interface {
 	List(original *model.DiscordMessage, subs []*model.Memo) error
 	ListMemoLogs(original *model.DiscordMessage, subs []model.MemoLog) error
-	Sync(original *model.DiscordMessage, subs []model.MemoLog) error
+	Sync(original *model.DiscordMessage, memos []model.MemoLog, channelID, reward string) error
 }

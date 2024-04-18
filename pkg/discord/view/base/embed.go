@@ -17,6 +17,15 @@ func SendEmbededMessageWithChannel(ses *discordgo.Session, original *model.Disco
 	return err
 }
 
+func SendMessage(ses *discordgo.Session, original *model.DiscordMessage, msg *discordgo.Message) error {
+	return SendMessageWithChannel(ses, original, msg, original.ChannelId)
+}
+
+func SendMessageWithChannel(ses *discordgo.Session, original *model.DiscordMessage, msg *discordgo.Message, channelId string) error {
+	_, err := ses.ChannelMessageSend(channelId, msg.Content)
+	return err
+}
+
 // Normalize add some default to embeded message if not set
 func Normalize(s *discordgo.Session, response *discordgo.MessageEmbed) *discordgo.MessageEmbed {
 	if response.Timestamp == "" {
