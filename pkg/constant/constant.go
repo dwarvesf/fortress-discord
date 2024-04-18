@@ -14,9 +14,11 @@ const (
 const (
 	DiscordBraineryBot     = "1020554094705909820"
 	DiscordBraineryChannel = "955015316293972048"
+	DiscordReadingChannel  = "1225085624260759622"
 
 	DiscordPlayGroundBraineryBot     = "1119172751891120208"
 	DiscordPlayGroundBraineryChannel = "1119171172198797393"
+	DiscordPlayGroundReadingChannel  = "1119171172198797393"
 )
 
 const (
@@ -33,6 +35,7 @@ const (
 
 const (
 	DefaultBraineryReward = "0"
+	DefaultMemoReward     = "0"
 )
 
 var mapEmoji = map[string]string{
