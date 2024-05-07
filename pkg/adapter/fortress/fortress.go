@@ -11,8 +11,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/dwarvesf/fortress-discord/pkg/model"
 	"github.com/gocolly/colly"
+
+	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
 type Fortress struct {
@@ -189,6 +190,25 @@ func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
 		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
 	}
 	return events, nil
+}
+
+func (f *Fortress) CreateGuildScheduledEvent(e *model.DiscordEvent) error {
+	jsonValue, err := json.Marshal(e)
+	if err != nil {
+		return err
+	}
+
+	req, err := f.makeReq("/api/v1/discords/scheduled-events", http.MethodPost, bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, err error) {
