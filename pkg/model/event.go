@@ -3,12 +3,14 @@ package model
 import "time"
 
 type Event struct {
-	Id   string `json:"id"`
-	Name string `json:"name"`
-	Date struct {
-		Time    *time.Time `json:"time"`
-		HasTime bool       `json:"has_time"`
-	} `json:"date"`
+	Id   string    `json:"id"`
+	Name string    `json:"name"`
+	Date EventDate `json:"date"`
+}
+
+type EventDate struct {
+	Time    *time.Time `json:"time"`
+	HasTime bool       `json:"has_time"`
 }
 
 type AdapterEvent struct {

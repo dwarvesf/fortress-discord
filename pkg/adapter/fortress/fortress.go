@@ -211,6 +211,72 @@ func (f *Fortress) CreateGuildScheduledEvent(e *model.DiscordEvent) error {
 	return nil
 }
 
+func (f *Fortress) GetGuildScheduledEvents() ([]*model.DiscordEvent, error) {
+	req, err := f.makeReq("/api/v1/discords/scheduled-events", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var body struct {
+		Data []*model.DiscordEvent `json:"data"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return body.Data, nil
+}
+
+func (f *Fortress) SetSpeakers(eventID string, speakers []string) error {
+	type RequestEventSpeaker struct {
+		ID    string `json:"id"`
+		Topic string `json:"topic"`
+	}
+	var message = []RequestEventSpeaker{}
+	for _, speaker := range speakers {
+		speakerSplit := strings.Split(speaker, ":")
+		if len(speakerSplit) != 2 {
+			return errors.New("invalid speaker format")
+		}
+		message = append(message, RequestEventSpeaker{
+			ID:    speakerSplit[0],
+			Topic: strings.TrimSpace(speakerSplit[1]),
+		})
+	}
+
+	jsonValue, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+
+	req, err := f.makeReq(fmt.Sprintf("/api/v1/discords/scheduled-events/%v/speakers", eventID), http.MethodPut, bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return errors.New("invalid call, code " + strconv.Itoa(resp.StatusCode))
+	}
+
+	return nil
+}
+
 func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, err error) {
 	req, err := f.makeReq("/api/v1/notion/staffing-demands", http.MethodGet, nil)
 	if err != nil {

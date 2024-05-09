@@ -19,6 +19,25 @@ func (e *Event) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "list":
 		return e.List(message)
+	case "schedule", "scheduled":
+		// handle command for 3 args input from user, e.g `?event scheduled list` by default
+		if len(message.ContentArgs) == 2 {
+			return e.ListGuildScheduledEvents(message)
+		}
+		switch message.ContentArgs[2] {
+		case "list", "ls":
+			return e.ListGuildScheduledEvents(message)
+		case "set", "s":
+			// default will set speaker, separate by space for multiple speakers, format: <discord_event_id> <@speaker_discord_id>:topic
+			switch message.ContentArgs[3] {
+			case "speaker", "spk":
+				return e.SetSpeakers(message)
+			default:
+				return e.view.Done().MissingContent(message)
+			}
+		}
+	case "help", "h":
+		return e.Help(message)
 	}
 
 	return nil
@@ -29,7 +48,7 @@ func (e *Event) Name() string {
 }
 
 func (e *Event) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Event().Help(message)
 }
 
 func (e *Event) DefaultCommand(message *model.DiscordMessage) error {

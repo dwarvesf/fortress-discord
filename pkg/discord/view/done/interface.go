@@ -7,4 +7,6 @@ type DoneViewer interface {
 
 	MissingContent(original *model.DiscordMessage) error
 	CantSendReward(original *model.DiscordMessage) error
+	Error(original *model.DiscordMessage, msg string) error
+	Success(original *model.DiscordMessage) error
 }

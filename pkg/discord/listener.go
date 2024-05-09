@@ -138,12 +138,12 @@ func (d *Discord) onAllReactionsRemove(s *discordgo.Session, m *discordgo.Messag
 
 func (d *Discord) onGuildScheduledEventCreate(s *discordgo.Session, m *discordgo.GuildScheduledEventCreate) {
 	if err := d.Command.S.Event().CreateGuildScheduledEvent(&model.DiscordEvent{
-		ID:          m.ID,
-		ChannelID:   m.ChannelID,
-		CreatorID:   m.CreatorID,
-		Name:        m.Name,
-		Description: m.Description,
-		Date:        m.ScheduledStartTime,
+		ID:               m.ID,
+		DiscordChannelID: m.ChannelID,
+		DiscordCreatorID: m.CreatorID,
+		Name:             m.Name,
+		Description:      m.Description,
+		Date:             m.ScheduledStartTime,
 	}); err != nil {
 		d.L.Error(err, "failed to create a scheduled event on discord")
 	}
