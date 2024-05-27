@@ -21,7 +21,8 @@ func (e *Event) ListScheduledEvents(original *model.DiscordMessage, events []*mo
 			t = events[i].Date.Time.Format(time.RFC822)
 		}
 
-		content += fmt.Sprintf("%v - **%v** - %s \n", events[i].Id, events[i].Name, t)
+		content += fmt.Sprintf("🔹 `%v` **%v**\n", events[i].Id, events[i].Name)
+		content += fmt.Sprintf("\u2570  `%s`\n", t)
 	}
 
 	if content == "" {

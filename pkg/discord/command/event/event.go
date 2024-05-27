@@ -52,6 +52,7 @@ func (e *Event) ListGuildScheduledEvents(message *model.DiscordMessage) error {
 				Time:    &ev.Date,
 				HasTime: true,
 			},
+			Description: ev.Description,
 		})
 	}
 
@@ -66,5 +67,6 @@ func (e *Event) SetSpeakers(message *model.DiscordMessage) error {
 		e.L.Error(err, "can't set speakers for the scheduled event")
 		return e.view.Done().Error(message, err.Error())
 	}
-	return e.view.Done().Success(message)
+
+	return nil
 }

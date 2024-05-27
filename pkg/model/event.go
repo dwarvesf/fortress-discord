@@ -3,9 +3,10 @@ package model
 import "time"
 
 type Event struct {
-	Id   string    `json:"id"`
-	Name string    `json:"name"`
-	Date EventDate `json:"date"`
+	Id          string    `json:"id"`
+	Name        string    `json:"name"`
+	Date        EventDate `json:"-"`
+	Description string    `json:"description"`
 }
 
 type EventDate struct {

@@ -67,7 +67,7 @@ func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Serv
 			Digest:          digest.New(adapter, l),
 			Earn:            earn.New(adapter, l),
 			Engagement:      engagement.New(adapter, l),
-			Event:           event.New(adapter, l),
+			Event:           event.New(adapter, l, ses),
 			Hiring:          hiring.New(adapter, l),
 			Icy:             icy.New(adapter, l),
 			Issue:           issue.New(adapter, l),
