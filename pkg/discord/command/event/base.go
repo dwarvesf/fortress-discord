@@ -5,7 +5,7 @@ import (
 )
 
 func (e *Event) Prefix() []string {
-	return []string{"event", "events"}
+	return []string{"event", "events", "e"}
 }
 
 // Execute is where we handle logic for each command
@@ -17,30 +17,18 @@ func (e *Event) Execute(message *model.DiscordMessage) error {
 
 	// handle command for 2 args input from user, e.g `?event list`
 	switch message.ContentArgs[1] {
-	case "list":
+	// TODO: notion upcoming events, check if it's still needed
+	case "upcoming":
 		return e.List(message)
-	case "schedule", "scheduled":
-		// handle command for 3 args input from user, e.g `?event scheduled list` by default
-		if len(message.ContentArgs) == 2 {
-			return e.ListGuildScheduledEvents(message)
-		}
-		switch message.ContentArgs[2] {
-		case "list", "ls":
-			return e.ListGuildScheduledEvents(message)
-		case "set", "s":
-			// default will set speaker, separate by space for multiple speakers, format: <discord_event_id> <@speaker_discord_id>:topic
-			switch message.ContentArgs[3] {
-			case "speaker", "spk":
-				return e.SetSpeakers(message)
-			default:
-				return e.view.Done().MissingContent(message)
-			}
-		}
+	case "list", "ls":
+		return e.ListGuildScheduledEvents(message)
 	case "help", "h":
 		return e.Help(message)
+	case "speakerset", "spks":
+		return e.SetSpeakers(message)
+	default:
+		return e.view.Done().MissingContent(message)
 	}
-
-	return nil
 }
 
 func (e *Event) Name() string {

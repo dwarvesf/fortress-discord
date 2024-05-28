@@ -1,6 +1,7 @@
 package event
 
 import (
+	"github.com/bwmarrin/discordgo"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -9,12 +10,14 @@ import (
 type Event struct {
 	adapter adapter.IAdapter
 	l       logger.Logger
+	ses     *discordgo.Session
 }
 
-func New(adapter adapter.IAdapter, l logger.Logger) EventServicer {
+func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) EventServicer {
 	return &Event{
 		adapter: adapter,
 		l:       l,
+		ses:     ses,
 	}
 }
 

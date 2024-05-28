@@ -16,7 +16,7 @@ type FortressAdapter interface {
 	GetUpcomingEvents() (events *model.AdapterEvent, err error)
 	CreateGuildScheduledEvent(ev *model.DiscordEvent) error
 	GetGuildScheduledEvents() ([]*model.DiscordEvent, error)
-	SetSpeakers(eventID string, speakers []string) error
+	SetSpeakers(eventID string, mapSpeakers map[string][]string) (*model.Event, error)
 
 	GetStaffingDemands() (staffs *model.AdapterStaffingDemands, err error)
 

@@ -237,44 +237,53 @@ func (f *Fortress) GetGuildScheduledEvents() ([]*model.DiscordEvent, error) {
 	return body.Data, nil
 }
 
-func (f *Fortress) SetSpeakers(eventID string, speakers []string) error {
+func (f *Fortress) SetSpeakers(eventID string, mapSpeakers map[string][]string) (*model.Event, error) {
 	type RequestEventSpeaker struct {
 		ID    string `json:"id"`
 		Topic string `json:"topic"`
 	}
 	var message = []RequestEventSpeaker{}
-	for _, speaker := range speakers {
-		speakerSplit := strings.Split(speaker, ":")
-		if len(speakerSplit) != 2 {
-			return errors.New("invalid speaker format")
+	for topic, speakers := range mapSpeakers {
+		for _, speaker := range speakers {
+			message = append(message, RequestEventSpeaker{
+				ID:    speaker,
+				Topic: topic,
+			})
+
 		}
-		message = append(message, RequestEventSpeaker{
-			ID:    speakerSplit[0],
-			Topic: strings.TrimSpace(speakerSplit[1]),
-		})
 	}
 
 	jsonValue, err := json.Marshal(message)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	req, err := f.makeReq(fmt.Sprintf("/api/v1/discords/scheduled-events/%v/speakers", eventID), http.MethodPut, bytes.NewBuffer(jsonValue))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return errors.New("invalid call, code " + strconv.Itoa(resp.StatusCode))
+		return nil, errors.New("invalid call, code " + strconv.Itoa(resp.StatusCode))
 	}
 
-	return nil
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result SetSpeakerResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &result.Data, nil
 }
 
 func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, err error) {
