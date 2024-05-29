@@ -11,8 +11,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/dwarvesf/fortress-discord/pkg/model"
 	"github.com/gocolly/colly"
+
+	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
 type Fortress struct {
@@ -189,6 +190,100 @@ func (f *Fortress) GetUpcomingEvents() (events *model.AdapterEvent, err error) {
 		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
 	}
 	return events, nil
+}
+
+func (f *Fortress) CreateGuildScheduledEvent(e *model.DiscordEvent) error {
+	jsonValue, err := json.Marshal(e)
+	if err != nil {
+		return err
+	}
+
+	req, err := f.makeReq("/api/v1/discords/scheduled-events", http.MethodPost, bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return err
+	}
+
+	_, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (f *Fortress) GetGuildScheduledEvents() ([]*model.DiscordEvent, error) {
+	req, err := f.makeReq("/api/v1/discords/scheduled-events", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var body struct {
+		Data []*model.DiscordEvent `json:"data"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return body.Data, nil
+}
+
+func (f *Fortress) SetSpeakers(eventID string, mapSpeakers map[string][]string) (*model.Event, error) {
+	type RequestEventSpeaker struct {
+		ID    string `json:"id"`
+		Topic string `json:"topic"`
+	}
+	var message = []RequestEventSpeaker{}
+	for topic, speakers := range mapSpeakers {
+		for _, speaker := range speakers {
+			message = append(message, RequestEventSpeaker{
+				ID:    speaker,
+				Topic: topic,
+			})
+
+		}
+	}
+
+	jsonValue, err := json.Marshal(message)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := f.makeReq(fmt.Sprintf("/api/v1/discords/scheduled-events/%v/speakers", eventID), http.MethodPut, bytes.NewBuffer(jsonValue))
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("invalid call, code " + strconv.Itoa(resp.StatusCode))
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result SetSpeakerResponse
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &result.Data, nil
 }
 
 func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, err error) {

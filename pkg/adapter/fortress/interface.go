@@ -14,6 +14,9 @@ type FortressAdapter interface {
 	GetOpenPositions() (positions *model.AdapterHiringPosition, err error)
 
 	GetUpcomingEvents() (events *model.AdapterEvent, err error)
+	CreateGuildScheduledEvent(ev *model.DiscordEvent) error
+	GetGuildScheduledEvents() ([]*model.DiscordEvent, error)
+	SetSpeakers(eventID string, mapSpeakers map[string][]string) (*model.Event, error)
 
 	GetStaffingDemands() (staffs *model.AdapterStaffingDemands, err error)
 

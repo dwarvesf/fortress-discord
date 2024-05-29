@@ -1,6 +1,8 @@
 package event
 
 import (
+	"fmt"
+
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -31,4 +33,40 @@ func (e *Event) List(message *model.DiscordMessage) error {
 
 	// 2. render
 	return e.view.Event().List(message, data)
+}
+
+func (e *Event) ListGuildScheduledEvents(message *model.DiscordMessage) error {
+	// 1. get data from service
+	events, err := e.svc.Event().GetGuildScheduledEvents()
+	if err != nil {
+		e.L.Error(err, "can't get list of discord scheduled events")
+		return err
+	}
+
+	var data []*model.Event
+	for _, ev := range events {
+		data = append(data, &model.Event{
+			Id:   ev.DiscordEventID,
+			Name: ev.Name,
+			Date: model.EventDate{
+				Time:    &ev.Date,
+				HasTime: true,
+			},
+			Description: ev.Description,
+		})
+	}
+
+	// 2. render
+	return e.view.Event().ListScheduledEvents(message, data)
+}
+
+func (e *Event) SetSpeakers(message *model.DiscordMessage) error {
+	err := e.svc.Event().SetSpeakers(message)
+	if err != nil {
+		fmt.Println("error", err)
+		e.L.Error(err, "can't set speakers for the scheduled event")
+		return e.view.Done().Error(message, err.Error())
+	}
+
+	return nil
 }

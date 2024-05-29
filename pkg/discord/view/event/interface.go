@@ -5,5 +5,7 @@ import (
 )
 
 type EventViewer interface {
+	Help(original *model.DiscordMessage) error
 	List(original *model.DiscordMessage, subs []*model.Event) error
+	ListScheduledEvents(original *model.DiscordMessage, subs []*model.Event) error
 }

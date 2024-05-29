@@ -5,7 +5,7 @@ import (
 )
 
 func (e *Event) Prefix() []string {
-	return []string{"event", "events"}
+	return []string{"event", "events", "e"}
 }
 
 // Execute is where we handle logic for each command
@@ -17,11 +17,18 @@ func (e *Event) Execute(message *model.DiscordMessage) error {
 
 	// handle command for 2 args input from user, e.g `?event list`
 	switch message.ContentArgs[1] {
-	case "list":
+	// TODO: notion upcoming events, check if it's still needed
+	case "upcoming":
 		return e.List(message)
+	case "list", "ls":
+		return e.ListGuildScheduledEvents(message)
+	case "help", "h":
+		return e.Help(message)
+	case "speakerset", "spks":
+		return e.SetSpeakers(message)
+	default:
+		return e.view.Done().MissingContent(message)
 	}
-
-	return nil
 }
 
 func (e *Event) Name() string {
@@ -29,7 +36,7 @@ func (e *Event) Name() string {
 }
 
 func (e *Event) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Event().Help(message)
 }
 
 func (e *Event) DefaultCommand(message *model.DiscordMessage) error {
