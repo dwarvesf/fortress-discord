@@ -11,4 +11,5 @@ type DiscordEvent struct {
 	DiscordChannelID string    `json:"discord_channel_id"`
 	DiscordCreatorID string    `json:"discord_creator_id"`
 	DiscordMessageID string    `json:"discord_message_id"`
+	IsOver           bool      `json:"is_over"`
 }

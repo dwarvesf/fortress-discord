@@ -7,6 +7,7 @@ type Event struct {
 	Name        string    `json:"name"`
 	Date        EventDate `json:"-"`
 	Description string    `json:"description"`
+	IsOver      bool      `json:"is_over"`
 }
 
 type EventDate struct {

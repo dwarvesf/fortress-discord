@@ -53,6 +53,7 @@ func (e *Event) ListGuildScheduledEvents(message *model.DiscordMessage) error {
 				HasTime: true,
 			},
 			Description: ev.Description,
+			IsOver:      ev.IsOver,
 		})
 	}
 
