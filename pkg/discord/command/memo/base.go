@@ -34,6 +34,7 @@ func (e *Memo) Help(message *model.DiscordMessage) error {
 	return nil
 }
 
+// DefaultCommand handles the default command
 func (e *Memo) DefaultCommand(message *model.DiscordMessage) error {
 	return e.ListMemoLogs(message)
 }

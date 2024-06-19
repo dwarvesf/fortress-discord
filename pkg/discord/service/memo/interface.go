@@ -1,9 +1,13 @@
 package memo
 
-import "github.com/dwarvesf/fortress-discord/pkg/model"
+import (
+	"time"
+
+	"github.com/dwarvesf/fortress-discord/pkg/model"
+)
 
 type MemoServicer interface {
 	GetMemos() ([]*model.Memo, error)
 	SyncMemoLogs() ([]model.MemoLog, error)
-	GetMemoLogs() ([]model.MemoLog, error)
+	GetMemoLogs(from, to *time.Time) ([]model.MemoLog, error)
 }
