@@ -1,6 +1,10 @@
 package fortress
 
-import "github.com/dwarvesf/fortress-discord/pkg/model"
+import (
+	"time"
+
+	"github.com/dwarvesf/fortress-discord/pkg/model"
+)
 
 type FortressAdapter interface {
 	GetIcyWeeklyDistribution() (icys *model.AdapterIcy, err error)
@@ -60,5 +64,5 @@ type FortressAdapter interface {
 	GetBanks(id, bin, swiftCode string) (banks *model.AdapterBank, err error)
 
 	SyncMemoLogs() (memos *model.MemoLogsResponse, err error)
-	GetMemoLogs() (memos *model.MemoLogsResponse, err error)
+	GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsResponse, err error)
 }

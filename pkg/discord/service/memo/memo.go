@@ -1,6 +1,8 @@
 package memo
 
 import (
+	"time"
+
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -46,9 +48,9 @@ func (e *Memo) SyncMemoLogs() ([]model.MemoLog, error) {
 
 }
 
-func (e *Memo) GetMemoLogs() ([]model.MemoLog, error) {
+func (e *Memo) GetMemoLogs(from, to *time.Time) ([]model.MemoLog, error) {
 	// get response from fortress
-	adapterMemoLogs, err := e.adapter.Fortress().GetMemoLogs()
+	adapterMemoLogs, err := e.adapter.Fortress().GetMemoLogs(from, to)
 	if err != nil {
 		e.l.Error(err, "can't get memo logs from fortress")
 		return nil, err
