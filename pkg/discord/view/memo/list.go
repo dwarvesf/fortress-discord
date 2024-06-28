@@ -10,6 +10,16 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
+var (
+	memoCategoryList = []string{memoCategoryFleeting, memoCategoryLiterature, memoCategoryOthers}
+)
+
+const (
+	memoCategoryFleeting   = "00_fleeting"
+	memoCategoryLiterature = "01_literature"
+	memoCategoryOthers     = "others"
+)
+
 func (v *Memo) List(original *model.DiscordMessage, memos []*model.Memo) error {
 	var content string
 	for i := range memos {
@@ -29,17 +39,30 @@ func (v *Memo) List(original *model.DiscordMessage, memos []*model.Memo) error {
 func (v *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLog, timeAmount int, timeUnit string) error {
 	var content string
 
-	memosByCategory := make(map[string][]model.MemoLog)
-	for _, mem := range memos {
-		if len(mem.Category) > 0 {
-			memosByCategory[mem.Category[len(mem.Category)-1]] = append(memosByCategory[mem.Category[len(mem.Category)-1]], mem)
-			continue
-		}
-
-		memosByCategory["others"] = append(memosByCategory["others"], mem)
+	//Group by category
+	memosByCategory := map[string][]model.MemoLog{
+		memoCategoryFleeting:   make([]model.MemoLog, 0),
+		memoCategoryLiterature: make([]model.MemoLog, 0),
+		memoCategoryOthers:     make([]model.MemoLog, 0),
 	}
 
-	for category, memos := range memosByCategory {
+	for _, mem := range memos {
+		isMapped := false
+		for _, category := range mem.Category {
+			if strings.EqualFold(category, memoCategoryFleeting) || strings.EqualFold(category, memoCategoryLiterature) {
+				memosByCategory[category] = append(memosByCategory[category], mem)
+				isMapped = true
+				break
+			}
+		}
+
+		if !isMapped {
+			memosByCategory[memoCategoryOthers] = append(memosByCategory[memoCategoryOthers], mem)
+		}
+	}
+
+	for _, category := range memoCategoryList {
+		memos := memosByCategory[category]
 		content += fmt.Sprintf("🔹 **%s** - %v posts\n", strings.ToUpper(category), len(memos))
 
 		tooLarge := false
