@@ -29,29 +29,44 @@ func (v *Memo) List(original *model.DiscordMessage, memos []*model.Memo) error {
 func (v *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLog, timeAmount int, timeUnit string) error {
 	var content string
 
-	tooLarge := false
-	if len(memos) > 20 {
-		tooLarge = true
-		memos = memos[:20]
-	}
-
-	// TODO: paging (no need currently)
-	for i, memo := range memos {
-		authors := make([]string, 0, len(memo.Authors))
-		for _, author := range memo.Authors {
-			authors = append(authors, fmt.Sprintf("<@%s>", author.DiscordID))
+	memosByCategory := make(map[string][]model.MemoLog)
+	for _, mem := range memos {
+		if len(mem.Category) > 0 {
+			memosByCategory[mem.Category[len(mem.Category)-1]] = append(memosByCategory[mem.Category[len(mem.Category)-1]], mem)
+			continue
 		}
 
-		authorsStr := "<@anonymous>"
-		if len(authors) > 0 {
-			authorsStr = strings.Join(authors, ", ")
-		}
-
-		content += fmt.Sprintf("[[%d](%s)] %s - %s\n", i+1, memo.URL, memo.Title, authorsStr)
+		memosByCategory["others"] = append(memosByCategory["others"], mem)
 	}
 
-	if tooLarge {
-		content += "... and more"
+	for category, memos := range memosByCategory {
+		content += fmt.Sprintf("🔹 **%s** - %v posts\n", strings.ToUpper(category), len(memos))
+
+		tooLarge := false
+		if len(memos) > 20 {
+			tooLarge = true
+			memos = memos[:20]
+		}
+
+		for i, memo := range memos {
+			authors := make([]string, 0, len(memo.Authors))
+			for _, author := range memo.Authors {
+				authors = append(authors, fmt.Sprintf("<@%s>", author.DiscordID))
+			}
+
+			authorsStr := "<@anonymous>"
+			if len(authors) > 0 {
+				authorsStr = strings.Join(authors, ", ")
+			}
+
+			content += fmt.Sprintf("[[%d](%s)] %s - %s\n", i+1, memo.URL, memo.Title, authorsStr)
+		}
+
+		if tooLarge {
+			content += "... and more"
+		}
+
+		content += "\n"
 	}
 
 	msg := &discordgo.MessageEmbed{

@@ -2,6 +2,7 @@ package memo
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -80,6 +81,8 @@ func (e *Memo) ListMemoLogs(message *model.DiscordMessage) error {
 		e.L.Error(err, "can't get list of Memo")
 		return err
 	}
+
+	fmt.Println(data[0].Category)
 
 	// 2. render
 	return e.view.Memo().ListMemoLogs(message, data, timeAmount, timeUnit)

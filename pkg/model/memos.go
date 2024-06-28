@@ -45,6 +45,7 @@ type MemoLog struct {
 	Description string          `json:"description"`
 	PublishedAt *time.Time      `json:"publishedAt"`
 	Reward      decimal.Decimal `json:"reward"`
+	Category    []string        `json:"category"`
 }
 
 // MemoLogAuthor is the author of the memo log
