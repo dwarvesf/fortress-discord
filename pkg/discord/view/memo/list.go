@@ -86,7 +86,7 @@ func (v *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLo
 		}
 
 		if tooLarge {
-			content += "... and more"
+			content += "... more\n"
 		}
 
 		content += "\n"
