@@ -66,9 +66,9 @@ func (v *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLo
 		content += fmt.Sprintf("🔹 **%s** - %v posts\n", strings.ToUpper(category), len(memos))
 
 		tooLarge := false
-		if len(memos) > 20 {
+		if len(memos) > 7 {
 			tooLarge = true
-			memos = memos[:20]
+			memos = memos[:7]
 		}
 
 		for i, memo := range memos {
