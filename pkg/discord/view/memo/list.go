@@ -81,7 +81,7 @@ func (v *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLo
 				authors = append(authors, fmt.Sprintf("<@%s>", author.DiscordID))
 			}
 
-			authorsStr := "<@anonymous>"
+			authorsStr := "**@unknown-user**"
 			if len(authors) > 0 {
 				authorsStr = strings.Join(authors, ", ")
 			}
