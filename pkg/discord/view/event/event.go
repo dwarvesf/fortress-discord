@@ -21,11 +21,10 @@ func New(ses *discordgo.Session) EventViewer {
 
 func (e *Event) Help(message *model.DiscordMessage) error {
 	content := []string{
-		`**?event list**・get events from notion
-		**?event scheduled list/ls**・get discord scheduled events
-		**?event scheduled set/s speaker/spk <discord_event_id> @user1:topic1 @user2:topic2**・set speakers for scheduled events
+		`**?event list/ls**・get discord scheduled events
+		**?event speakerset spks <eventID> <topic1> @user1 @user2 <topic2> @user3**・set speakers for scheduled events
 		`,
-		"*Example:* `?event scheduled s spk 123871623 @nam:topic1 @nam2:topic2 @nam3:topic3`",
+		"*Example:* `?event spks 1256184313876054147 Erlang @bienvh AI-101 @cherry`",
 	}
 
 	msg := &discordgo.MessageEmbed{
