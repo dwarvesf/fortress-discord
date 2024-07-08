@@ -3,8 +3,9 @@ package mma
 import (
 	"bytes"
 	"encoding/csv"
-	"github.com/bwmarrin/discordgo"
 	"strings"
+
+	"github.com/bwmarrin/discordgo"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -27,7 +28,7 @@ func (v *MMA) Help(message *model.DiscordMessage) error {
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       "**Welcome to Fortress Discord bot**",
+		Title:       "**Welcome to Fortress Discord Bot**",
 		Description: strings.Join(content, "\n"),
 	}
 
