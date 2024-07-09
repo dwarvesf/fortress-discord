@@ -33,6 +33,17 @@ func New(cfg *config.Config, l logger.Logger) (Adapter, error) {
 		l.Info("reddit password is empty")
 	}
 
+	if clientID == "" || clientSecret == "" || username == "" || password == "" {
+		client, err := reddit.NewReadonlyClient(nil)
+		if err != nil {
+			return nil, fmt.Errorf("create readonly reddit client failed: %w", err)
+		}
+
+		return &adapter{
+			client: client,
+		}, nil
+	}
+
 	auth := reddit.Credentials{
 		ID:       clientID,
 		Secret:   clientSecret,
