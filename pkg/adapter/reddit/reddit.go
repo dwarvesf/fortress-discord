@@ -34,9 +34,6 @@ func New(cfg *config.Config, l logger.Logger) (Adapter, error) {
 		l.Info("reddit password is empty")
 	}
 
-	// TODO: Just for tracing, remove it immediately after testing
-	l.Infof(username, clientID, clientSecret, password)
-
 	auth := reddit.Credentials{
 		ID:       clientID,
 		Secret:   clientSecret,
