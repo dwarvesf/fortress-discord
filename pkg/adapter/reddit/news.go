@@ -11,10 +11,11 @@ import (
 func (a adapter) FetchNewsBySubreddit(ctx context.Context, sub string) ([]reddit.Post, []reddit.Post, error) {
 	dayAgo := time.Now().Add(-24 * time.Hour)
 
-	newPosts, _, err := a.client.Subreddit.NewPosts(ctx, sub, &reddit.ListOptions{
+	newPosts, redditResp, err := a.client.Subreddit.NewPosts(ctx, sub, &reddit.ListOptions{
 		Limit: 50,
 	})
 	if err != nil {
+		a.l.Errorf(err, "failed to fetch new posts with resp %v", redditResp)
 		return nil, nil, err
 	}
 
@@ -27,10 +28,11 @@ func (a adapter) FetchNewsBySubreddit(ctx context.Context, sub string) ([]reddit
 		newPostsMap[post.ID] = *post
 	}
 
-	risingPosts, _, err := a.client.Subreddit.RisingPosts(ctx, sub, &reddit.ListOptions{
+	risingPosts, redditResp, err := a.client.Subreddit.RisingPosts(ctx, sub, &reddit.ListOptions{
 		Limit: 50,
 	})
 	if err != nil {
+		a.l.Errorf(err, "failed to fetch rising posts with resp %v", redditResp)
 		return nil, nil, err
 	}
 
