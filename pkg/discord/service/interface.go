@@ -13,6 +13,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/mma"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/news"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/salary"
@@ -48,4 +49,5 @@ type Servicer interface {
 	Treasury() treasury.TreasuryServicer
 	Trend() trend.TrendServicer
 	Withdrawal() withdrawal.Servicer
+	News() news.Servicer
 }

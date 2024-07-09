@@ -16,8 +16,16 @@ type Config struct {
 	ApiServer ApiServer
 	OpenAI    OpenAI
 	Discord   Discord
+	Reddit    Reddit
 
 	Endpoint Endpoint
+}
+
+type Reddit struct {
+	ClientID     string
+	ClientSecret string
+	Username     string
+	Password     string
 }
 
 type OpenAI struct {
@@ -77,6 +85,12 @@ func Generate(v ENV) *Config {
 				RepostDoneChannel: v.GetString("DISCORD_ID_REPOST_DONE"),
 			},
 			WhiteListedChannels: v.GetString("DISCORD_WHITELISTED_CHANNELS"),
+		},
+		Reddit: Reddit{
+			ClientID:     v.GetString("REDDIT_CLIENT_ID"),
+			ClientSecret: v.GetString("REDDIT_CLIENT_SECRET"),
+			Username:     v.GetString("REDDIT_USERNAME"),
+			Password:     v.GetString("REDDIT_PASSWORD"),
 		},
 	}
 }

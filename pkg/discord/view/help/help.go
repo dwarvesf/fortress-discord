@@ -39,7 +39,7 @@ func (h *Help) Help(message *model.DiscordMessage) error {
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       "**Welcome to Fortress Discord bot**",
+		Title:       "**Welcome to Fortress Discord Bot**",
 		Description: strings.Join(content, "\n"),
 	}
 

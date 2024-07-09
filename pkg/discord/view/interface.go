@@ -15,6 +15,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/issue"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/news"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/salary"
@@ -50,4 +51,5 @@ type Viewer interface {
 	Trend() trend.TrendViewer
 	Salary() salary.Viewer
 	Withdraw() withdrawal.Viewer
+	News() news.Viewer
 }
