@@ -9,6 +9,7 @@ import (
 )
 
 type adapter struct {
+	l      logger.Logger
 	client *reddit.Client
 }
 
@@ -34,13 +35,14 @@ func New(cfg *config.Config, l logger.Logger) (Adapter, error) {
 	}
 
 	if clientID == "" || clientSecret == "" || username == "" || password == "" {
-		client, err := reddit.NewReadonlyClient(nil)
+		client, err := reddit.NewReadonlyClient(reddit.WithUserAgent("fortress-bot"))
 		if err != nil {
 			return nil, fmt.Errorf("create readonly reddit client failed: %w", err)
 		}
 
 		return &adapter{
 			client: client,
+			l:      l,
 		}, nil
 	}
 
@@ -58,5 +60,6 @@ func New(cfg *config.Config, l logger.Logger) (Adapter, error) {
 
 	return &adapter{
 		client: client,
+		l:      l,
 	}, nil
 }
