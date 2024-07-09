@@ -15,22 +15,22 @@ type adapter struct {
 func New(cfg *config.Config, l logger.Logger) (Adapter, error) {
 	clientID := cfg.Reddit.ClientID
 	if clientID == "" {
-		l.Warn("reddit client id is empty")
+		l.Info("reddit client id is empty")
 	}
 
 	clientSecret := cfg.Reddit.ClientSecret
 	if clientSecret == "" {
-		l.Warn("reddit client secret is empty")
+		l.Info("reddit client secret is empty")
 	}
 
 	username := cfg.Reddit.Username
 	if username == "" {
-		l.Warn("reddit username is empty")
+		l.Info("reddit username is empty")
 	}
 
 	password := cfg.Reddit.Password
 	if password == "" {
-		l.Warn("reddit password is empty")
+		l.Info("reddit password is empty")
 	}
 
 	auth := reddit.Credentials{
