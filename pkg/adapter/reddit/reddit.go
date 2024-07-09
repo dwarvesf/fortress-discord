@@ -14,54 +14,43 @@ type adapter struct {
 }
 
 func New(cfg *config.Config, l logger.Logger) (Adapter, error) {
-	// clientID := cfg.Reddit.ClientID
-	// if clientID == "" {
-	// 	l.Info("reddit client id is empty")
-	// }
+	clientID := cfg.Reddit.ClientID
+	if clientID == "" {
+		l.Info("reddit client id is empty")
+	}
 
-	// clientSecret := cfg.Reddit.ClientSecret
-	// if clientSecret == "" {
-	// 	l.Info("reddit client secret is empty")
-	// }
+	clientSecret := cfg.Reddit.ClientSecret
+	if clientSecret == "" {
+		l.Info("reddit client secret is empty")
+	}
 
-	// username := cfg.Reddit.Username
-	// if username == "" {
-	// 	l.Info("reddit username is empty")
-	// }
+	username := cfg.Reddit.Username
+	if username == "" {
+		l.Info("reddit username is empty")
+	}
 
-	// password := cfg.Reddit.Password
-	// if password == "" {
-	// 	l.Info("reddit password is empty")
-	// }
+	password := cfg.Reddit.Password
+	if password == "" {
+		l.Info("reddit password is empty")
+	}
 
-	// if clientID == "" || clientSecret == "" || username == "" || password == "" {
-	client, err := reddit.NewReadonlyClient(reddit.WithUserAgent("fortress-bot"))
+	// TODO: Just for tracing, remove it immediately after testing
+	l.Infof(username, clientID, clientSecret, password)
+
+	auth := reddit.Credentials{
+		ID:       clientID,
+		Secret:   clientSecret,
+		Username: username,
+		Password: password,
+	}
+
+	client, err := reddit.NewClient(auth, reddit.WithUserAgent("fortress-bot"))
 	if err != nil {
-		return nil, fmt.Errorf("create readonly reddit client failed: %w", err)
+		return nil, fmt.Errorf("create reddit client failed: %w", err)
 	}
 
 	return &adapter{
 		client: client,
 		l:      l,
 	}, nil
-	// }
-
-	// l.Infof("reddit username: %s, reddit client id: %s", username, clientID)
-
-	// auth := reddit.Credentials{
-	// 	ID:       clientID,
-	// 	Secret:   clientSecret,
-	// 	Username: username,
-	// 	Password: password,
-	// }
-
-	// client, err := reddit.NewClient(auth, reddit.WithUserAgent("fortress-bot"))
-	// if err != nil {
-	// 	return nil, fmt.Errorf("create reddit client failed: %w", err)
-	// }
-
-	// return &adapter{
-	// 	client: client,
-	// 	l:      l,
-	// }, nil
 }
