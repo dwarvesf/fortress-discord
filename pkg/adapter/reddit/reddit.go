@@ -46,6 +46,8 @@ func New(cfg *config.Config, l logger.Logger) (Adapter, error) {
 		}, nil
 	}
 
+	l.Infof("reddit username: %s, reddit client id: %s", username, clientID)
+
 	auth := reddit.Credentials{
 		ID:       clientID,
 		Secret:   clientSecret,
