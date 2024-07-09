@@ -21,6 +21,8 @@ func (e *Memo) Execute(message *model.DiscordMessage) error {
 		return e.ListMemoLogs(message)
 	case "sync":
 		return e.Sync(message)
+	case "pr":
+		return e.ListMemoOpenPullRequest(message)
 	}
 
 	return nil

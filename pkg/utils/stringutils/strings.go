@@ -1,9 +1,14 @@
 package stringutils
 
 import (
-	"github.com/dwarvesf/fortress-discord/pkg/constant"
+	"fmt"
+	"golang.org/x/exp/constraints"
 	"regexp"
+	"sort"
 	"strings"
+	"time"
+
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 )
 
 func ExtractPattern(str string, pattern string) []string {
@@ -48,4 +53,42 @@ func FormatString(str string) string {
 	formattedStr = strings.ReplaceAll(formattedStr, "# ", "#")
 
 	return formattedStr
+}
+
+func GetKeysFromMap[K comparable, V any](m map[K]V) []K {
+	keys := make([]K, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
+func ConvertToTimeAgo(t time.Time) string {
+	now := time.Now()
+	duration := now.Sub(t)
+
+	switch {
+	case duration.Seconds() < 60:
+		return fmt.Sprintf("%d seconds ago", int(duration.Seconds()))
+	case duration.Minutes() < 60:
+		return fmt.Sprintf("%d minutes ago", int(duration.Minutes()))
+	case duration.Hours() < 24:
+		return fmt.Sprintf("%d hours ago", int(duration.Hours()))
+	case duration.Hours() < 48:
+		return "yesterday"
+	case duration.Hours() < 24*7:
+		return fmt.Sprintf("%d days ago", int(duration.Hours()/24))
+	case duration.Hours() < 24*30:
+		return fmt.Sprintf("%d weeks ago", int(duration.Hours()/(24*7)))
+	case duration.Hours() < 24*365:
+		return fmt.Sprintf("%d months ago", int(duration.Hours()/(24*30)))
+	default:
+		return fmt.Sprintf("%d years ago", int(duration.Hours()/(24*365)))
+	}
+}
+
+func SortSlice[T constraints.Ordered](s []T) {
+	sort.Slice(s, func(i, j int) bool {
+		return s[i] < s[j]
+	})
 }

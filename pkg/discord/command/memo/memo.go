@@ -88,6 +88,18 @@ func (e *Memo) ListMemoLogs(message *model.DiscordMessage) error {
 	return e.view.Memo().ListMemoLogs(message, data, timeAmount, timeUnit)
 }
 
+func (e *Memo) ListMemoOpenPullRequest(message *model.DiscordMessage) error {
+	// 1. get data from service
+	data, err := e.svc.Memo().GetMemoOpenPullRequest()
+	if err != nil {
+		e.L.Error(err, "can't get list of Memo Open Pull Request")
+		return err
+	}
+
+	// 2. render
+	return e.view.Memo().ListMemoOpenPullRequest(message, *data)
+}
+
 // parseAndCalculateFromDate parses the duration argument and calculates the 'from' date
 func parseAndCalculateFromDate(now time.Time, arg string) (*time.Time, int, string, error) {
 	re := regexp.MustCompile(`(?i)^(\d+)\s*([a-z]+)$`)

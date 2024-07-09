@@ -59,3 +59,20 @@ type MemoLogAuthor struct {
 type MemoLogsResponse struct {
 	Data []MemoLog `json:"data"`
 }
+
+type MemoPullRequest struct {
+	Number         int       `json:"Number"`
+	Message        string    `json:"Message"`
+	DiscordId      string    `json:"DiscordId"`
+	GithubUserName string    `json:"GithubUserName"`
+	GithubUserLink string    `json:"GithubUserLink"`
+	GithubLink     string    `json:"GithubLink"`
+	Timestamp      time.Time `json:"Timestamp"`
+}
+
+type MemoRepoWithPullRequest map[string][]MemoPullRequest
+
+// MemoPullRequestResponse response for memo open pull request
+type MemoPullRequestResponse struct {
+	Data MemoRepoWithPullRequest `json:"data"`
+}
