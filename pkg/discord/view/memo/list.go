@@ -8,6 +8,7 @@ import (
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
+	"github.com/dwarvesf/fortress-discord/pkg/utils/stringutils"
 )
 
 var (
@@ -98,6 +99,37 @@ func (v *Memo) ListMemoLogs(original *model.DiscordMessage, memos []model.MemoLo
 
 	msg := &discordgo.MessageEmbed{
 		Title:       fmt.Sprintf("<:pepeyes:885513213431648266> Last %d %s Memos <:pepeyes:885513213431648266> \n", timeAmount, timeUnit),
+		Description: content,
+	}
+
+	return base.SendEmbededMessage(v.ses, original, msg)
+}
+
+func (v *Memo) ListMemoOpenPullRequest(original *model.DiscordMessage, memoPr model.MemoRepoWithPullRequest) error {
+	content := ""
+
+	// get repo
+	repos := stringutils.GetKeysFromMap(memoPr)
+	stringutils.SortSlice(repos)
+
+	for _, repo := range repos {
+		content += fmt.Sprintf("**%s** \n", repo)
+
+		prs := memoPr[repo]
+
+		for _, pr := range prs {
+			author := fmt.Sprintf("[%s](%s)", pr.GithubUserName, pr.GithubUserLink)
+			if pr.DiscordId != "" {
+				author = fmt.Sprintf("<@%s>", pr.DiscordId)
+			}
+			content += fmt.Sprintf("∟ %s [[#%d](%s)] %s - %s \n", stringutils.ConvertToTimeAgo(pr.Timestamp), pr.Number, pr.GithubLink, pr.Message, author)
+		}
+
+		content += "\n"
+	}
+
+	msg := &discordgo.MessageEmbed{
+		Title:       fmt.Sprintf("<:pepe_ping:1028964391690965012> Memos PR List <:pepe_ping:1028964391690965012>\n"),
 		Description: content,
 	}
 

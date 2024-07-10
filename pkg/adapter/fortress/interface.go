@@ -65,4 +65,5 @@ type FortressAdapter interface {
 
 	SyncMemoLogs() (memos *model.MemoLogsResponse, err error)
 	GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsResponse, err error)
+	GetMemoOpenPullRequest() (memos *model.MemoPullRequestResponse, err error)
 }

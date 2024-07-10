@@ -73,3 +73,26 @@ func (f *Fortress) GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsRespon
 
 	return memos, nil
 }
+
+func (f *Fortress) GetMemoOpenPullRequest() (memos *model.MemoPullRequestResponse, err error) {
+	req, err := f.makeReq("/api/v1/memos/prs", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("[GetMemoOpenPullRequest] invalid call, code %v", resp.StatusCode)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&memos); err != nil {
+		return nil, fmt.Errorf("[GetMemoOpenPullRequest] invalid decoded, error %v", err.Error())
+	}
+
+	return memos, nil
+}

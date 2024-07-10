@@ -58,3 +58,17 @@ func (e *Memo) GetMemoLogs(from, to *time.Time) ([]model.MemoLog, error) {
 
 	return adapterMemoLogs.Data, nil
 }
+
+func (e *Memo) GetMemoOpenPullRequest() (*model.MemoRepoWithPullRequest, error) {
+	// get response from fortress
+	adapterMemos, err := e.adapter.Fortress().GetMemoOpenPullRequest()
+	if err != nil {
+		e.l.Error(err, "can't get open memo from fortress")
+		return nil, err
+	}
+
+	// normalized into in-app model
+	memos := adapterMemos.Data
+
+	return &memos, nil
+}
