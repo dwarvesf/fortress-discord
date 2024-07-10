@@ -13,6 +13,7 @@ import (
 
 var (
 	memoCategoryList = []string{memoCategoryFleeting, memoCategoryLiterature, memoCategoryEarn, memoCategoryOthers}
+	githubUrl        = "https://github.com"
 )
 
 const (
@@ -118,11 +119,11 @@ func (v *Memo) ListMemoOpenPullRequest(original *model.DiscordMessage, memoPr mo
 		prs := memoPr[repo]
 
 		for _, pr := range prs {
-			author := fmt.Sprintf("[%s](%s)", pr.GithubUserName, pr.GithubUserLink)
+			author := fmt.Sprintf("[%s](%s/%s)", pr.GithubUserName, githubUrl, pr.GithubUserName)
 			if pr.DiscordId != "" {
 				author = fmt.Sprintf("<@%s>", pr.DiscordId)
 			}
-			content += fmt.Sprintf("∟ %s [[#%d](%s)] %s - %s \n", stringutils.ConvertToTimeAgo(pr.Timestamp), pr.Number, pr.GithubLink, pr.Message, author)
+			content += fmt.Sprintf("∟ %s [[#%d](%s)] %s - %s \n", stringutils.ConvertToTimeAgo(pr.Timestamp), pr.Number, pr.Url, pr.Title, author)
 		}
 
 		content += "\n"

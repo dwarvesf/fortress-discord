@@ -61,13 +61,12 @@ type MemoLogsResponse struct {
 }
 
 type MemoPullRequest struct {
-	Number         int       `json:"Number"`
-	Message        string    `json:"Message"`
-	DiscordId      string    `json:"DiscordId"`
-	GithubUserName string    `json:"GithubUserName"`
-	GithubUserLink string    `json:"GithubUserLink"`
-	GithubLink     string    `json:"GithubLink"`
-	Timestamp      time.Time `json:"Timestamp"`
+	Number         int       `json:"number"`
+	Title          string    `json:"title"`
+	DiscordId      string    `json:"discord_id"`
+	GithubUserName string    `json:"github_user_name"`
+	Url            string    `json:"url"`
+	Timestamp      time.Time `json:"timestamp"`
 }
 
 type MemoRepoWithPullRequest map[string][]MemoPullRequest
