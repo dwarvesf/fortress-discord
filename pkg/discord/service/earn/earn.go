@@ -31,3 +31,17 @@ func (e *Earn) GetActiveList() ([]*model.Earn, error) {
 
 	return earns, nil
 }
+
+func (e *Earn) ListMemoEarn() ([]model.MemoEarn, error) {
+	// get response from fortress
+	adapterEarns, err := e.adapter.Fortress().GetCommunityMemoEarn()
+	if err != nil {
+		e.l.Error(err, "can't get community earn")
+		return nil, err
+	}
+
+	// normalized into in-app model
+	earns := adapterEarns.Data
+
+	return earns, nil
+}
