@@ -47,12 +47,9 @@ func (e *Earn) ListMemoEarn(original *model.DiscordMessage, earns []model.MemoEa
 		for i := range earn.PICs {
 			pic += fmt.Sprintf("<@%s> ", earn.PICs[i])
 		}
-
-		if len(pic) == 0 {
-			pic = "**unassigned**"
+		if pic != "" {
+			content += fmt.Sprintf(" - %s\n", pic)
 		}
-
-		content += fmt.Sprintf(" - %s\n", pic)
 
 		if strings.EqualFold(earn.Status, "Open") {
 			if lenOpening >= 10 {
