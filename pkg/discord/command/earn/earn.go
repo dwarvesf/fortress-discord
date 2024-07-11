@@ -23,12 +23,12 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) EarnCommander 
 
 func (e *Earn) List(message *model.DiscordMessage) error {
 	// 1. get data from service
-	data, err := e.svc.Earn().GetActiveList()
+	data, err := e.svc.Earn().ListMemoEarn()
 	if err != nil {
 		e.L.Error(err, "can't get list of active earn")
 		return err
 	}
 
 	// 2. render
-	return e.view.Earn().List(message, data)
+	return e.view.Earn().ListMemoEarn(message, data)
 }

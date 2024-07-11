@@ -10,6 +10,7 @@ type FortressAdapter interface {
 	GetIcyWeeklyDistribution() (icys *model.AdapterIcy, err error)
 
 	GetCommunityEarn() (earns *model.AdapterEarn, err error)
+	GetCommunityMemoEarn() (earns *model.AdapterMemoEarn, err error)
 
 	GetTechRadar(ringFilter string, query *string) (techradars *model.AdapterTechRadar, err error)
 
