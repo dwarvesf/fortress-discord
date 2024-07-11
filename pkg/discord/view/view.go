@@ -25,6 +25,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/techradar"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/topic"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/trend"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/withdrawal"
 )
@@ -58,6 +59,7 @@ type subView struct {
 	Salary          salary.Viewer
 	Withdraw        withdrawal.Viewer
 	News            news.Viewer
+	Topic           topic.TopicViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -87,6 +89,7 @@ func New(ses *discordgo.Session) Viewer {
 			Salary:          salary.New(ses),
 			Withdraw:        withdrawal.New(ses),
 			News:            news.New(ses),
+			Topic:           topic.New(ses),
 		},
 	}
 }
@@ -184,4 +187,8 @@ func (v *View) Withdraw() withdrawal.Viewer {
 
 func (v *View) News() news.Viewer {
 	return v.subView.News
+}
+
+func (v *View) Topic() topic.TopicViewer {
+	return v.subView.Topic
 }

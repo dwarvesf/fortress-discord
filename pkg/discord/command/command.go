@@ -28,6 +28,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/radar"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/sum"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/topic"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trend"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/trial"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/updates"
@@ -85,6 +86,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		salary.New(l, svc, view),
 		withdraw.New(l, svc, view),
 		news.New(l, svc, view, cfg),
+		topic.New(l, svc, view, cfg),
 	})
 
 	return cmd

@@ -12,6 +12,18 @@ func SendEmbededMessage(ses *discordgo.Session, original *model.DiscordMessage, 
 	return SendEmbededMessageWithChannel(ses, original, embed, original.ChannelId)
 }
 
+func SendComplexMessage(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed, components []discordgo.MessageComponent) error {
+	return SendComplexMessageWithChannel(ses, original, embed, components, original.ChannelId)
+}
+
+func SendComplexMessageWithChannel(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed, components []discordgo.MessageComponent, channelId string) error {
+	_, err := ses.ChannelMessageSendComplex(channelId, &discordgo.MessageSend{
+		Embed:      Normalize(ses, embed),
+		Components: components,
+	})
+	return err
+}
+
 func SendEmbededMessageWithChannel(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed, channelId string) error {
 	_, err := ses.ChannelMessageSendEmbed(channelId, Normalize(ses, embed))
 	return err

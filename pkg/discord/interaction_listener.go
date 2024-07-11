@@ -2,12 +2,13 @@ package discord
 
 import (
 	"fmt"
-	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -316,6 +317,36 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 				fmt.Println(err)
 			}
 			return
+		}
+
+		if strings.HasPrefix(i.MessageComponentData().CustomID, "topic_") {
+			parts := strings.Split(i.MessageComponentData().CustomID, "_")
+			if len(parts) == 3 {
+				action := parts[1]
+				currentPage, _ := strconv.Atoi(parts[2])
+				var newPage int
+				if action == "prev" {
+					newPage = currentPage - 1
+				} else if action == "next" {
+					newPage = currentPage + 1
+				}
+
+				researchTopic, err := d.Command.S.ResearchTopic().GetDiscordResearchTopics(strconv.Itoa(newPage), d.Cfg.DiscordResearchTopic.Size)
+				if err != nil {
+					d.L.Error(err, "failed to get list research topic "+i.Interaction.User.ID)
+					return
+				}
+				msg, components := d.Command.View.Topic().BuildMessage(strconv.Itoa(newPage), d.Cfg.DiscordResearchTopic.Size, *researchTopic)
+
+				// Respond to the interaction to acknowledge it
+				s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+					Type: discordgo.InteractionResponseUpdateMessage,
+					Data: &discordgo.InteractionResponseData{
+						Embeds:     []*discordgo.MessageEmbed{msg},
+						Components: components,
+					},
+				})
+			}
 		}
 
 		// check update type, check for "updates--" string in id

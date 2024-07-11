@@ -16,6 +16,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/news"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/project"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/researchtopic"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/salary"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/staff"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
@@ -50,4 +51,5 @@ type Servicer interface {
 	Trend() trend.TrendServicer
 	Withdrawal() withdrawal.Servicer
 	News() news.Servicer
+	ResearchTopic() researchtopic.ResearchTopicServicer
 }
