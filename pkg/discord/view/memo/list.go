@@ -114,9 +114,13 @@ func (v *Memo) ListMemoOpenPullRequest(original *model.DiscordMessage, memoPr mo
 	stringutils.SortSlice(repos)
 
 	for _, repo := range repos {
-		content += fmt.Sprintf("**%s** \n", repo)
-
 		prs := memoPr[repo]
+
+		if len(prs) == 0 {
+			continue
+		}
+
+		content += fmt.Sprintf("**%s** \n", repo)
 
 		for _, pr := range prs {
 			author := fmt.Sprintf("[%s](%s/%s)", pr.GithubUserName, githubUrl, pr.GithubUserName)
@@ -127,6 +131,10 @@ func (v *Memo) ListMemoOpenPullRequest(original *model.DiscordMessage, memoPr mo
 		}
 
 		content += "\n"
+	}
+
+	if content == "" {
+		content = "No open PRs found"
 	}
 
 	msg := &discordgo.MessageEmbed{
