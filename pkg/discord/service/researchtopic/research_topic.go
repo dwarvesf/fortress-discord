@@ -2,6 +2,7 @@ package researchtopic
 
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -18,9 +19,13 @@ func New(adapter adapter.IAdapter, l logger.Logger) ResearchTopicServicer {
 	}
 }
 
-func (e *ResearchTopic) GetDiscordResearchTopics(page, size string) (*model.DiscordResearchTopicResponse, error) {
+func (e *ResearchTopic) GetDiscordResearchTopics(timeRange string) (*model.DiscordResearchTopicResponse, error) {
+	if timeRange == constant.AllTime {
+		timeRange = "0"
+	}
+
 	// get response from fortress
-	adapterResearchTopic, err := e.adapter.Fortress().GetDiscordResearchTopics(page, size)
+	adapterResearchTopic, err := e.adapter.Fortress().GetDiscordResearchTopics(timeRange)
 	if err != nil {
 		e.l.Error(err, "can't get memo logs from fortress")
 		return nil, err

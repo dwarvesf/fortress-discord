@@ -25,15 +25,14 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer, cfg *config.Co
 }
 
 func (e *Topic) List(message *model.DiscordMessage) error {
-	page := "1"
-	size := e.cfg.DiscordResearchTopic.Size
+	timeRange := "7"
 
-	data, err := e.svc.ResearchTopic().GetDiscordResearchTopics(page, size)
+	data, err := e.svc.ResearchTopic().GetDiscordResearchTopics(timeRange)
 	if err != nil {
 		e.L.Error(err, "can't get list of discord research topic")
 		return err
 	}
 
 	// 2. render
-	return e.view.Topic().List(message, page, size, *data)
+	return e.view.Topic().List(message, timeRange, *data)
 }

@@ -3,7 +3,6 @@ package discord
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -319,33 +318,33 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 			return
 		}
 
-		if strings.HasPrefix(i.MessageComponentData().CustomID, "topic_") {
-			parts := strings.Split(i.MessageComponentData().CustomID, "_")
-			if len(parts) == 3 {
-				action := parts[1]
-				currentPage, _ := strconv.Atoi(parts[2])
-				var newPage int
-				if action == "prev" {
-					newPage = currentPage - 1
-				} else if action == "next" {
-					newPage = currentPage + 1
-				}
+		if strings.HasPrefix(i.MessageComponentData().CustomID, "time_select") {
+			err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseDeferredMessageUpdate,
+			})
+			if err != nil {
+				fmt.Println("Failed to acknowledge interaction:", err)
+				return
+			}
+			if len(i.MessageComponentData().Values) > 0 {
+				selectedValue := i.MessageComponentData().Values[0]
+				researchTopic, err := d.Command.S.ResearchTopic().GetDiscordResearchTopics(selectedValue)
 
-				researchTopic, err := d.Command.S.ResearchTopic().GetDiscordResearchTopics(strconv.Itoa(newPage), d.Cfg.DiscordResearchTopic.Size)
 				if err != nil {
-					d.L.Error(err, "failed to get list research topic "+i.Interaction.User.ID)
-					return
+					fmt.Println(err)
+					researchTopic = &model.DiscordResearchTopicResponse{}
 				}
-				msg, components := d.Command.View.Topic().BuildMessage(strconv.Itoa(newPage), d.Cfg.DiscordResearchTopic.Size, *researchTopic)
+				msg, components := d.Command.View.Topic().BuildMessage(selectedValue, *researchTopic)
+				msg = base.Normalize(d.Session, msg)
 
-				// Respond to the interaction to acknowledge it
-				s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-					Type: discordgo.InteractionResponseUpdateMessage,
-					Data: &discordgo.InteractionResponseData{
-						Embeds:     []*discordgo.MessageEmbed{msg},
-						Components: components,
-					},
+				// Edit the message using the interaction response edit endpoint
+				_, err = s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
+					Embeds:     &[]*discordgo.MessageEmbed{msg},
+					Components: &components,
 				})
+				if err != nil {
+					fmt.Println("Failed to edit interaction response:", err)
+				}
 			}
 		}
 

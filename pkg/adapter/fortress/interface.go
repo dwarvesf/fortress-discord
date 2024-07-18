@@ -68,7 +68,7 @@ type FortressAdapter interface {
 	GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsResponse, err error)
 	GetMemoOpenPullRequest() (memos *model.MemoPullRequestResponse, err error)
 
-	GetDiscordResearchTopics(page, size string) (data *model.DiscordResearchTopicResponse, err error)
+	GetDiscordResearchTopics(timeRange string) (data *model.DiscordResearchTopicResponse, err error)
 
 	FetchNews(platform, topic string) ([]model.News, []model.News, error)
 }

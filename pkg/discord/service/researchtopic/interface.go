@@ -5,5 +5,5 @@ import (
 )
 
 type ResearchTopicServicer interface {
-	GetDiscordResearchTopics(page, size string) (*model.DiscordResearchTopicResponse, error)
+	GetDiscordResearchTopics(timeRange string) (*model.DiscordResearchTopicResponse, error)
 }
