@@ -15,7 +15,8 @@ func (v view) Help(message *model.DiscordMessage) error {
 		"*Example*: `?news reddit golang`",
 		"",
 		"Currently supported platforms:",
-		"- [Reddit](https://www.reddit.com/)",
+		"- [Reddit](https://www.reddit.com/), check available topics [here](https://www.reddit.com/subreddits)",
+		"- [Lobsters](https://lobste.rs/), check available topics [here](https://lobste.rs/tags)",
 	}
 
 	msg := &discordgo.MessageEmbed{

@@ -13,10 +13,5 @@ func (c command) Reddit(msg *model.DiscordMessage, subreddit string) error {
 		return err
 	}
 
-	if len(popular) == 0 && len(emerging) == 0 {
-		logger.Info("no new Golang news")
-		return nil
-	}
-
 	return c.view.News().Reddit(msg, subreddit, popular, emerging)
 }

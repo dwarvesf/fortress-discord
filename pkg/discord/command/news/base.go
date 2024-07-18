@@ -10,25 +10,26 @@ func (c command) Prefix() []string {
 
 // Execute is where we handle logic for each command
 func (c command) Execute(message *model.DiscordMessage) error {
-	// default command for only 1 args input from user, c.g `?earn`
-	if len(message.ContentArgs) == 1 {
+	switch len(message.ContentArgs) {
+	case 1:
+		return c.DefaultCommand(message)
+	case 2:
+		switch message.ContentArgs[1] {
+		case "help":
+			return c.Help(message)
+		default:
+			return c.DefaultCommand(message)
+		}
+	case 3:
+		switch message.ContentArgs[1] {
+		case "reddit":
+			return c.Reddit(message, message.ContentArgs[2])
+		default:
+			return c.Fetch(message, message.ContentArgs[1], message.ContentArgs[2])
+		}
+	default:
 		return c.DefaultCommand(message)
 	}
-
-	// handle command for 2 args input from user, c.g `?earn list`
-	switch message.ContentArgs[1] {
-	case "help":
-		return c.Help(message)
-	case "reddit":
-		switch len(message.ContentArgs) {
-		case 2:
-			return c.DefaultCommand(message)
-		default:
-			return c.Reddit(message, message.ContentArgs[2])
-		}
-	}
-
-	return nil
 }
 
 func (c command) Name() string {
