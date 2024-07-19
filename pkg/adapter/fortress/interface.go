@@ -69,4 +69,6 @@ type FortressAdapter interface {
 	GetMemoOpenPullRequest() (memos *model.MemoPullRequestResponse, err error)
 
 	GetDiscordResearchTopics(page, size string) (data *model.DiscordResearchTopicResponse, err error)
+
+	FetchNews(platform, topic string) ([]model.News, []model.News, error)
 }

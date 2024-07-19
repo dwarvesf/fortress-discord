@@ -36,6 +36,7 @@ func (h *Help) Help(message *model.DiscordMessage) error {
 		// "**?memos**・list of Team memos",
 		"**?profile**・see dwarf profile",
 		// "**?mma**・manage MMA score",
+		"**?news**・get news from whitelisted platform",
 	}
 
 	msg := &discordgo.MessageEmbed{
