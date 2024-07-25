@@ -8,8 +8,9 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (f *Fortress) GetDiscordResearchTopics(page, size string) (data *model.DiscordResearchTopicResponse, err error) {
-	req, err := f.makeReq(fmt.Sprintf("/api/v1/discords/research-topics?page=%s&size=%s", page, size), http.MethodGet, nil)
+func (f *Fortress) GetDiscordResearchTopics(timeRange string) (data *model.DiscordResearchTopicResponse, err error) {
+	// only get top 5 topic
+	req, err := f.makeReq(fmt.Sprintf("/api/v1/discords/research-topics?days=%s&page=1&size=5", timeRange), http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}

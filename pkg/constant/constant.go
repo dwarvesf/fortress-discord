@@ -38,6 +38,8 @@ const (
 	DefaultMemoReward     = "0"
 )
 
+const AllTime = "all"
+
 var mapEmoji = map[string]string{
 	"ARROW_DOWN_ANIMATED": "<a:arrow_down_animated:1131789144759214171>",
 	"ARROW_UP_ANIMATED":   "<a:arrow_up_animated:1131789319644921936>",

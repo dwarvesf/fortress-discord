@@ -2,30 +2,26 @@ package topic
 
 import (
 	"fmt"
-	"strconv"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (v *Topic) BuildMessage(page, size string, researchTopic model.DiscordResearchTopicResponse) (msg *discordgo.MessageEmbed, components []discordgo.MessageComponent) {
+func (v *Topic) BuildMessage(timeRange string, researchTopic model.DiscordResearchTopicResponse) (msg *discordgo.MessageEmbed, components []discordgo.MessageComponent) {
 	var content string
+	now := time.Now()
 
-	content += "These are most discussed research topic in Dwarves Foundation in the last 7 days.\n\n"
-
-	topicsPerPage, _ := strconv.Atoi(size)
-	pageInt, _ := strconv.Atoi(page)
-	totalTopic := researchTopic.Total
-	totalPages := (totalTopic + topicsPerPage - 1) / topicsPerPage
-	topics := researchTopic.Data
-
-	if pageInt < 1 {
-		pageInt = 1
-	} else if pageInt > totalPages {
-		pageInt = totalPages
+	description := fmt.Sprintf("These are the most discussed research topic in Dwarves Foundation in the last %s days.\n\n", timeRange)
+	if timeRange == constant.AllTime {
+		description = "These are the most discussed research topics in Dwarves Foundation of all time.\n\n"
 	}
+	content += description
+
+	topics := researchTopic.Data
 
 	for _, topic := range topics {
 		content += fmt.Sprintf("%s - %d messages\n", topic.URL, topic.MsgCount)
@@ -44,40 +40,58 @@ func (v *Topic) BuildMessage(page, size string, researchTopic model.DiscordResea
 		Description: content,
 	}
 
-	components = []discordgo.MessageComponent{}
-
-	if totalTopic == 0 {
-		msg.Description = "No active research topics found in the last 7 days."
-		return msg, components
+	if len(topics) == 0 {
+		msgDescription := fmt.Sprintf("There was no active topic in last %s days", timeRange)
+		if timeRange == constant.AllTime {
+			msgDescription = "There was no active topic at all times"
+		}
+		msg.Description = msgDescription
 	}
 
-	// Create pagination buttons
-	if totalTopic > topicsPerPage {
-		components = []discordgo.MessageComponent{
-			discordgo.ActionsRow{
-				Components: []discordgo.MessageComponent{
-					discordgo.Button{
-						Label:    "Previous",
-						Style:    discordgo.PrimaryButton,
-						CustomID: fmt.Sprintf("topic_prev_%d", pageInt),
-						Disabled: pageInt == 1,
-					},
-					discordgo.Button{
-						Label:    "Next",
-						Style:    discordgo.PrimaryButton,
-						CustomID: fmt.Sprintf("topic_next_%d", pageInt),
-						Disabled: pageInt == totalPages,
-					},
-				},
+	mapTimeRangeOption := map[string]string{
+		"7":   "7 days",
+		"30":  "30 days",
+		"all": "All time",
+	}
+
+	selectTimeMenu := discordgo.SelectMenu{
+		CustomID: "time_select",
+		Options: []discordgo.SelectMenuOption{
+			{
+				Label:       "7 days",
+				Value:       "7",
+				Description: fmt.Sprintf("%s - %s", now.AddDate(0, 0, -7).Format("Jan 2, 2006"), now.Format("Jan 2, 2006")),
+				Emoji:       &discordgo.ComponentEmoji{Name: "📅"},
 			},
-		}
+			{
+				Label:       "30 days",
+				Value:       "30",
+				Description: fmt.Sprintf("%s - %s", now.AddDate(0, 0, -30).Format("Jan 2, 2006"), now.Format("Jan 2, 2006")),
+				Emoji:       &discordgo.ComponentEmoji{Name: "📅"},
+			},
+			{
+				Label:       "All time",
+				Value:       "all",
+				Description: "All time",
+				Emoji:       &discordgo.ComponentEmoji{Name: "📅"},
+			},
+		},
+		Placeholder: fmt.Sprintf("📅 %s", mapTimeRangeOption[timeRange]),
+	}
+
+	components = []discordgo.MessageComponent{
+		discordgo.ActionsRow{
+			Components: []discordgo.MessageComponent{
+				selectTimeMenu,
+			},
+		},
 	}
 
 	return msg, components
 }
 
-func (v *Topic) List(original *model.DiscordMessage, page, size string, researchTopic model.DiscordResearchTopicResponse) error {
-	msg, components := v.BuildMessage(page, size, researchTopic)
+func (v *Topic) List(original *model.DiscordMessage, timeRange string, researchTopic model.DiscordResearchTopicResponse) error {
+	msg, components := v.BuildMessage(timeRange, researchTopic)
 
 	return base.SendComplexMessage(v.ses, original, msg, components)
 }

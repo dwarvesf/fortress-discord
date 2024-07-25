@@ -19,8 +19,6 @@ type Config struct {
 	Reddit    Reddit
 
 	Endpoint Endpoint
-
-	DiscordResearchTopic DiscordResearchTopic
 }
 
 type Reddit struct {
@@ -56,10 +54,6 @@ type ApiServer struct {
 	APIKey         string
 	Port           string
 	AllowedOrigins string
-}
-
-type DiscordResearchTopic struct {
-	Size string
 }
 
 type ENV interface {
@@ -98,9 +92,6 @@ func Generate(v ENV) *Config {
 			Username:     v.GetString("REDDIT_USERNAME"),
 			Password:     v.GetString("REDDIT_PASSWORD"),
 		},
-		DiscordResearchTopic: DiscordResearchTopic{
-			Size: v.GetString("RESEARCH_TOPIC_SIZE"),
-		},
 	}
 }
 
@@ -119,7 +110,6 @@ func LoadConfig(loaders []Loader) *Config {
 	v.SetDefault("PORT", "8080")
 	v.SetDefault("ENV", "local")
 	v.SetDefault("DISCORD_PREFIX", "?")
-	v.SetDefault("RESEARCH_TOPIC_SIZE", "5")
 
 	for idx := range loaders {
 		newV, err := loaders[idx].Load(*v)
