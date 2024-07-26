@@ -144,6 +144,7 @@ func (d *Discord) onGuildScheduledEventCreate(s *discordgo.Session, m *discordgo
 		Name:             m.Name,
 		Description:      m.Description,
 		Date:             m.ScheduledStartTime,
+		Image:            m.Image,
 	}); err != nil {
 		d.L.Error(err, "failed to create a scheduled event on discord")
 	}
