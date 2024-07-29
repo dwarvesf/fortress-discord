@@ -48,6 +48,8 @@ type DiscordIds struct {
 	FortressBot       string
 	DwarvesGuild      string
 	RepostDoneChannel string
+	RandomChannel     string
+	DevChannel        string
 }
 
 type ApiServer struct {
@@ -83,6 +85,8 @@ func Generate(v ENV) *Config {
 				FortressBot:       v.GetString("DISCORD_ID_FORTRESS_BOT"),
 				DwarvesGuild:      v.GetString("DISCORD_ID_DWARVES_GUILD"),
 				RepostDoneChannel: v.GetString("DISCORD_ID_REPOST_DONE"),
+				RandomChannel:     v.GetString("DISCORD_ID_RANDOM_CHANNEL"),
+				DevChannel:        v.GetString("DISCORD_ID_DEV_CHANNEL"),
 			},
 			WhiteListedChannels: v.GetString("DISCORD_WHITELISTED_CHANNELS"),
 		},
