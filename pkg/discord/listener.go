@@ -1,6 +1,7 @@
 package discord
 
 import (
+	"log"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -10,6 +11,10 @@ import (
 
 // onMessageCreate is an entry point for discord message create (chat) event
 func (d *Discord) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+
+	// Forward pull request messages from the "dev" channel to the "random" channel
+	d.forwardPullRequestMessage(s, m)
+
 	// this will ignore message send from bot itself
 	if m.Author.ID == s.State.User.ID {
 		return
@@ -147,4 +152,49 @@ func (d *Discord) onGuildScheduledEventCreate(s *discordgo.Session, m *discordgo
 	}); err != nil {
 		d.L.Error(err, "failed to create a scheduled event on discord")
 	}
+}
+
+func (d *Discord) forwardPullRequestMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
+	// Check if message is from the "dev" channel
+	if m.ChannelID != d.Cfg.Discord.ID.DevChannel {
+		return
+	}
+
+	// check message create from bot
+	if m.Author != nil && !m.Author.Bot {
+		return
+	}
+
+	content := getDiscordEmbedTitle(m.Message)
+
+	// Check if message content indicates a new pull request
+	if !strings.Contains(content, "Pull request opened:") {
+		return
+	}
+
+	newMessage := &discordgo.MessageSend{
+		Embeds: m.Embeds,
+	}
+
+	// Send the message to the "random" channel
+	_, err := s.ChannelMessageSendComplex(d.Cfg.Discord.ID.RandomChannel, newMessage)
+	if err != nil {
+		log.Printf("Error sending message to random channel: %v", err)
+	}
+}
+
+func getDiscordEmbedTitle(m *discordgo.Message) string {
+	if len(m.Embeds) == 0 {
+		return ""
+	}
+
+	// Assuming we're interested in the first embed
+	embed := m.Embeds[0]
+
+	// If no description, check for title
+	if embed.Title != "" {
+		return embed.Title
+	}
+
+	return ""
 }
