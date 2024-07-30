@@ -92,3 +92,9 @@ func SortSlice[T constraints.Ordered](s []T) {
 		return s[i] < s[j]
 	})
 }
+
+func EscapeMarkdown(s string) string {
+	// Escape underscores and asterisks
+	s = strings.ReplaceAll(s, "_", "\\_")
+	return s
+}

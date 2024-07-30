@@ -8,6 +8,11 @@ import (
 	"github.com/vartanbeno/go-reddit/v2/reddit"
 )
 
+const (
+	// PostsLimit is the limit of posts
+	PostsLimit = 5
+)
+
 func (a adapter) FetchNewsBySubreddit(ctx context.Context, sub string) ([]reddit.Post, []reddit.Post, error) {
 	dayAgo := time.Now().Add(-24 * time.Hour)
 
@@ -60,17 +65,17 @@ func (a adapter) FetchNewsBySubreddit(ctx context.Context, sub string) ([]reddit
 		return popularPosts[i].NumberOfComments > (popularPosts[j].NumberOfComments)
 	})
 
-	if len(popularPosts) > 10 {
-		emergingPosts = append(emergingPosts, popularPosts[10:]...)
-		popularPosts = popularPosts[:10]
+	if len(popularPosts) > PostsLimit {
+		emergingPosts = append(emergingPosts, popularPosts[PostsLimit:]...)
+		popularPosts = popularPosts[:PostsLimit]
 	}
 
 	sort.Slice(emergingPosts, func(i, j int) bool {
 		return emergingPosts[i].Created.Time.After(emergingPosts[j].Created.Time)
 	})
 
-	if len(emergingPosts) > 10 {
-		emergingPosts = emergingPosts[:10]
+	if len(emergingPosts) > PostsLimit {
+		emergingPosts = emergingPosts[:PostsLimit]
 	}
 
 	return popularPosts, emergingPosts, nil
