@@ -5,6 +5,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/reddit"
+	"github.com/dwarvesf/fortress-discord/pkg/adapter/tono"
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 )
@@ -18,6 +19,7 @@ type subAdapter struct {
 	Mochi    mochi.MochiAdapter
 	OpenAI   openai.OpenAIAdapter
 	Reddit   reddit.Adapter
+	Tono     tono.TonoAdapter
 }
 
 func New(cfg *config.Config, l logger.Logger) IAdapter {
@@ -32,6 +34,7 @@ func New(cfg *config.Config, l logger.Logger) IAdapter {
 			Mochi:    mochi.New(cfg.Endpoint.Mochi),
 			OpenAI:   openai.New(cfg.OpenAI.APIKey),
 			Reddit:   reddit,
+			Tono:     tono.New(cfg),
 		},
 	}
 }
@@ -51,4 +54,8 @@ func (a *Adapter) OpenAI() openai.OpenAIAdapter {
 
 func (a *Adapter) Reddit() reddit.Adapter {
 	return a.subAdapter.Reddit
+}
+
+func (a *Adapter) Tono() tono.TonoAdapter {
+	return a.subAdapter.Tono
 }

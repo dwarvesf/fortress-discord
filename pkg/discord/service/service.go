@@ -25,6 +25,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/tono"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/trend"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/withdrawal"
@@ -60,6 +61,7 @@ type subService struct {
 	Withdrawal      withdrawal.Servicer
 	News            news.Servicer
 	ResearchTopic   researchtopic.ResearchTopicServicer
+	Tono            tono.TonoServicer
 }
 
 func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Servicer {
@@ -89,6 +91,7 @@ func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Serv
 			Withdrawal:      withdrawal.New(adapter, l),
 			News:            news.New(adapter, l),
 			ResearchTopic:   researchtopic.New(adapter, l),
+			Tono:            tono.New(adapter, l),
 		},
 	}
 }
@@ -187,4 +190,8 @@ func (s *Service) News() news.Servicer {
 
 func (s *Service) ResearchTopic() researchtopic.ResearchTopicServicer {
 	return s.subService.ResearchTopic
+}
+
+func (s *Service) Tono() tono.TonoServicer {
+	return s.subService.Tono
 }
