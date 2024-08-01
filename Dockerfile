@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine
+FROM golang:1.20-alpine3.18
 RUN mkdir /build
 WORKDIR /build
 COPY . .
@@ -6,7 +6,7 @@ COPY . .
 ENV GOOS=linux GOARCH=amd64 CGO_ENABLED=0
 RUN go install -v ./...
 
-FROM alpine:3.15.0
+FROM alpine:3.18
 RUN apk add --no-cache \
     ca-certificates \
     tzdata
