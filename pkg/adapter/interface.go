@@ -5,6 +5,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/reddit"
+	"github.com/dwarvesf/fortress-discord/pkg/adapter/tono"
 )
 
 type IAdapter interface {
@@ -12,4 +13,5 @@ type IAdapter interface {
 	Mochi() mochi.MochiAdapter
 	OpenAI() openai.OpenAIAdapter
 	Reddit() reddit.Adapter
+	Tono() tono.TonoAdapter
 }

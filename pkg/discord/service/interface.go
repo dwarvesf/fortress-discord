@@ -22,6 +22,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/subscriber"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/sum"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/techradar"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/tono"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/treasury"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/trend"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/withdrawal"
@@ -52,4 +53,5 @@ type Servicer interface {
 	Withdrawal() withdrawal.Servicer
 	News() news.Servicer
 	ResearchTopic() researchtopic.ResearchTopicServicer
+	Tono() tono.TonoServicer
 }

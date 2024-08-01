@@ -16,6 +16,7 @@ type Discord struct {
 
 	Cfg *config.Config
 	L   logger.Logger
+	Svc service.Servicer
 
 	MessageHistory *history.MsgHistory
 
@@ -29,6 +30,7 @@ func New(ses *discordgo.Session, cfg *config.Config, l logger.Logger, svc servic
 		L:              l,
 		MessageHistory: msgHistory,
 		Command:        command.New(cfg, l, svc, view, msgHistory),
+		Svc:            svc,
 	}
 }
 
@@ -58,6 +60,12 @@ func (d *Discord) ListenAndServe() (*discordgo.Session, error) {
 		return nil, err
 	}
 	d.L.Info("discord session opened")
+
+	// set bot status, ignore return err, keep the bot run
+	err = d.SetStatus()
+	if err != nil {
+		d.L.Error(err, "failed to set bot status")
+	}
 
 	return d.Session, nil
 }
