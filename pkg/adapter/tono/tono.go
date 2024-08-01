@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/dwarvesf/fortress-discord/pkg/config"
@@ -30,7 +30,7 @@ func (m *Tono) GetCommunityTransaction() (*model.ListGuildCommunityTransactionRe
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -40,5 +40,8 @@ func (m *Tono) GetCommunityTransaction() (*model.ListGuildCommunityTransactionRe
 	}
 	data := &model.ListGuildCommunityTransactionResponse{}
 	err = json.Unmarshal(body, &data)
+	if err != nil {
+		return nil, err
+	}
 	return data, nil
 }
