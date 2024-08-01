@@ -22,7 +22,6 @@ func (d *Discord) SetStatus() error {
 		err := d.updateStatus()
 		if err != nil {
 			d.L.Error(err, "failed to set status")
-			return err
 		}
 
 		<-ticker.C
