@@ -1021,26 +1021,26 @@ func (f *Fortress) GetCommunityMemoEarn() (earns *model.AdapterMemoEarn, err err
 	return earns, nil
 }
 
-func (f *Fortress) FetchNews(platform, topic string) ([]model.News, []model.News, error) {
+func (f *Fortress) FetchNews(platform, topic string) ([]model.News, error) {
 	req, err := f.makeReq(fmt.Sprintf("/api/v1/news?platform=%s&topic=%s", platform, topic), http.MethodGet, nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
 	}
 
 	var news model.FetchNewsResponse
 	if err := json.NewDecoder(resp.Body).Decode(&news); err != nil {
-		return nil, nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
 	}
 
-	return news.Data.Popular, news.Data.Emerging, nil
+	return news.Data, nil
 }

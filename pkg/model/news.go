@@ -13,11 +13,6 @@ type News struct {
 	CreatedAt    time.Time `json:"timestamp"`
 }
 
-type ListNews struct {
-	Popular  []News `json:"popular"`
-	Emerging []News `json:"emerging"`
-}
-
 type FetchNewsResponse struct {
-	Data ListNews `json:"data"`
+	Data []News `json:"data"`
 }
