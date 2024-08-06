@@ -21,12 +21,7 @@ func (c command) Execute(message *model.DiscordMessage) error {
 			return c.DefaultCommand(message)
 		}
 	case 3:
-		switch message.ContentArgs[1] {
-		case "reddit":
-			return c.Reddit(message, message.ContentArgs[2])
-		default:
-			return c.Fetch(message, message.ContentArgs[1], message.ContentArgs[2])
-		}
+		return c.Fetch(message, message.ContentArgs[1], message.ContentArgs[2])
 	default:
 		return c.DefaultCommand(message)
 	}

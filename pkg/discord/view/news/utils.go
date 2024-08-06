@@ -10,7 +10,10 @@ func timeAgo(t time.Time) string {
 	now := time.Now()
 	duration := now.Sub(t)
 
-	if duration.Hours() >= 1 {
+	if duration.Hours() >= 24 {
+		days := int(duration.Hours() / 24)
+		return fmt.Sprintf("%d day%s ago", days, pluralize(days))
+	} else if duration.Hours() >= 1 {
 		hours := int(duration.Hours())
 		return fmt.Sprintf("%d hour%s ago", hours, pluralize(hours))
 	} else {

@@ -4,7 +4,6 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/fortress"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
-	"github.com/dwarvesf/fortress-discord/pkg/adapter/reddit"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/tono"
 	"github.com/dwarvesf/fortress-discord/pkg/config"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
@@ -18,22 +17,15 @@ type subAdapter struct {
 	Fortress fortress.FortressAdapter
 	Mochi    mochi.MochiAdapter
 	OpenAI   openai.OpenAIAdapter
-	Reddit   reddit.Adapter
 	Tono     tono.TonoAdapter
 }
 
 func New(cfg *config.Config, l logger.Logger) IAdapter {
-	reddit, err := reddit.New(cfg, l)
-	if err != nil {
-		l.Error(err, "can't create reddit adapter")
-	}
-
 	return &Adapter{
 		subAdapter: subAdapter{
 			Fortress: fortress.New(cfg.Endpoint.Fortress, cfg.ApiServer.APIKey),
 			Mochi:    mochi.New(cfg.Endpoint.Mochi),
 			OpenAI:   openai.New(cfg.OpenAI.APIKey),
-			Reddit:   reddit,
 			Tono:     tono.New(cfg),
 		},
 	}
@@ -50,10 +42,6 @@ func (a *Adapter) Mochi() mochi.MochiAdapter {
 // OpenAI implements IAdapter.
 func (a *Adapter) OpenAI() openai.OpenAIAdapter {
 	return a.subAdapter.OpenAI
-}
-
-func (a *Adapter) Reddit() reddit.Adapter {
-	return a.subAdapter.Reddit
 }
 
 func (a *Adapter) Tono() tono.TonoAdapter {

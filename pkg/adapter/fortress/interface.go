@@ -70,5 +70,5 @@ type FortressAdapter interface {
 
 	GetDiscordResearchTopics(timeRange string) (data *model.DiscordResearchTopicResponse, err error)
 
-	FetchNews(platform, topic string) ([]model.News, []model.News, error)
+	FetchNews(platform, topic string) ([]model.News, error)
 }
