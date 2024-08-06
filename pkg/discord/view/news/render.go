@@ -11,7 +11,7 @@ import (
 
 // Render renders news message to Discord, using for any platform.
 func (v view) Render(original *model.DiscordMessage, platform, topic string, posts []model.News) error {
-	title := fmt.Sprintf(":pepe_ping: %s %s BUZZ!! :pepe_ping:", strings.ToUpper(platform), strings.ToUpper(topic))
+	title := fmt.Sprintf("<:pepe_ping:1028964391690965012> %s %s BUZZ!! <:pepe_ping:1028964391690965012>", strings.ToUpper(platform), strings.ToUpper(topic))
 
 	if len(posts) == 0 {
 		msg := &discordgo.MessageEmbed{
