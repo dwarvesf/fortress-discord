@@ -17,6 +17,7 @@ type Config struct {
 	OpenAI    OpenAI
 	Discord   Discord
 	Reddit    Reddit
+	Dify      Dify
 
 	Endpoint Endpoint
 }
@@ -59,6 +60,10 @@ type ApiServer struct {
 	AllowedOrigins string
 }
 
+type Dify struct {
+	BaseURL            string
+	SummarizerAppToken string
+}
 type ENV interface {
 	GetBool(string) bool
 	GetString(string) string
@@ -97,6 +102,10 @@ func Generate(v ENV) *Config {
 			ClientSecret: v.GetString("REDDIT_CLIENT_SECRET"),
 			Username:     v.GetString("REDDIT_USERNAME"),
 			Password:     v.GetString("REDDIT_PASSWORD"),
+		},
+		Dify: Dify{
+			BaseURL:            v.GetString("DIFY_BASE_URL"),
+			SummarizerAppToken: v.GetString("DIFY_SUMMARIZER_APP_TOKEN"),
 		},
 	}
 }

@@ -1,6 +1,7 @@
 package adapter
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/adapter/dify"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/fortress"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
@@ -18,6 +19,8 @@ type subAdapter struct {
 	Mochi    mochi.MochiAdapter
 	OpenAI   openai.OpenAIAdapter
 	Tono     tono.TonoAdapter
+	Reddit   reddit.Adapter
+	Dify     dify.DifyAdapter
 }
 
 func New(cfg *config.Config, l logger.Logger) IAdapter {
@@ -27,6 +30,8 @@ func New(cfg *config.Config, l logger.Logger) IAdapter {
 			Mochi:    mochi.New(cfg.Endpoint.Mochi),
 			OpenAI:   openai.New(cfg.OpenAI.APIKey),
 			Tono:     tono.New(cfg),
+			Reddit:   reddit,
+			Dify:     dify.New(cfg.Dify.BaseURL, cfg.Dify.SummarizerAppToken),
 		},
 	}
 }
@@ -46,4 +51,8 @@ func (a *Adapter) OpenAI() openai.OpenAIAdapter {
 
 func (a *Adapter) Tono() tono.TonoAdapter {
 	return a.subAdapter.Tono
+}
+
+func (a *Adapter) Dify() dify.DifyAdapter {
+	return a.subAdapter.Dify
 }

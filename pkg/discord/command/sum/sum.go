@@ -26,7 +26,7 @@ func (e *Sum) Sum(message *model.DiscordMessage) error {
 	// 1. get data from service
 	data, err := e.svc.Sum().SummarizeArticle(url)
 	if err != nil {
-		e.L.Error(err, "can't get list of weekly icy distribution")
+		e.L.Error(err, "failed to summarize the given article")
 		return err
 	}
 
