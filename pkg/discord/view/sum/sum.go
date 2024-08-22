@@ -1,8 +1,6 @@
 package sum
 
 import (
-	"fmt"
-
 	"github.com/bwmarrin/discordgo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -20,8 +18,9 @@ func New(ses *discordgo.Session) SumViewer {
 
 func (e *Sum) Sum(original *model.DiscordMessage, summary *model.Sum) error {
 	msg := &discordgo.MessageEmbed{
-		Title:       fmt.Sprintf("%s", summary.Title),
+		Title:       summary.Title,
 		Description: summary.Summary,
+		URL:         summary.URL,
 	}
 
 	return base.SendEmbededMessage(e.ses, original, msg)

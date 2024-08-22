@@ -2,9 +2,8 @@ package sum
 
 import (
 	"fmt"
-	"net/http"
+	"strings"
 
-	"github.com/PuerkitoBio/goquery"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
 	"github.com/dwarvesf/fortress-discord/pkg/logger"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
@@ -23,35 +22,37 @@ func New(adapter adapter.IAdapter, l logger.Logger) SumServicer {
 }
 
 func (e *Sum) SummarizeArticle(url string) (*model.Sum, error) {
-	res, err := http.Get(url)
-
+	data, err := e.adapter.Dify().SummarizeArticle(url)
 	if err != nil {
+		fmt.Printf("failed to summarize the given article. Error: %v\n", err)
 		return nil, err
 	}
-	defer res.Body.Close()
-
-	if res.StatusCode != 200 {
-		return nil, fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
-	}
-
-	// Load the HTML document
-	doc, err := goquery.NewDocumentFromReader(res.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	title := doc.Find("title").Text()
-
-	data, err := e.adapter.OpenAI().SummarizeArticle(url)
-
-	if err != nil {
-		fmt.Printf("ChatCompletion error: %v\n", err)
-		return nil, err
-	}
+	title, summary := extractTitleAndSummary(data)
 
 	return &model.Sum{
 		URL:     url,
 		Title:   title,
-		Summary: data,
+		Summary: summary,
 	}, nil
+}
+
+func extractTitleAndSummary(input string) (string, string) {
+	lines := strings.Split(input, "\n")
+	if len(lines) == 0 {
+		return "", ""
+	}
+
+	title := lines[0]
+
+	// Filter out empty lines
+	var contentLines []string
+	for _, line := range lines[1:] {
+		trimmedLine := strings.TrimSpace(line)
+		if trimmedLine != "" {
+			contentLines = append(contentLines, trimmedLine)
+		}
+	}
+
+	summary := strings.Join(contentLines, "\n")
+	return title, summary
 }

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -60,27 +59,27 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 
 			return
 		case "enter_withdraw_value_btn" + i.Interaction.User.ID:
-			cond, err := d.Command.S.Withdrawal().CheckWithdrawCondition(i.Interaction.User.ID)
-			if err != nil {
-				d.L.Error(err, "failed to check withdraw condition "+i.Interaction.User.ID)
-				d.Command.View.Withdraw().ErrorWithdraw(&model.DiscordMessage{
-					ChannelId: i.ChannelID,
-					Author:    i.Interaction.User,
-				}, err)
-				return
-			}
+			//cond, err := d.Command.S.Withdrawal().CheckWithdrawCondition(i.Interaction.User.ID)
+			//if err != nil {
+			//	d.L.Error(err, "failed to check withdraw condition "+i.Interaction.User.ID)
+			//	d.Command.View.Withdraw().ErrorWithdraw(&model.DiscordMessage{
+			//		ChannelId: i.ChannelID,
+			//		Author:    i.Interaction.User,
+			//	}, err)
+			//	return
+			//}
 
-			bankSwiftCode := i.ModalSubmitData().Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
-			bankAccountNumber := i.ModalSubmitData().Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
-			bankAccountOwner := i.ModalSubmitData().Components[2].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
-			icyAmount := i.ModalSubmitData().Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+			//bankSwiftCode := i.ModalSubmitData().Components[0].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+			//bankAccountNumber := i.ModalSubmitData().Components[1].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+			//bankAccountOwner := i.ModalSubmitData().Components[2].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
+			//icyAmount := i.ModalSubmitData().Components[3].(*discordgo.ActionsRow).Components[0].(*discordgo.TextInput).Value
 
-			fmt.Println(i.Interaction.User.ID)
-			fmt.Println(bankSwiftCode)
-			fmt.Println(bankAccountNumber)
-			fmt.Println(bankAccountOwner)
-			fmt.Println(icyAmount)
-			fmt.Println(cond)
+			//fmt.Println(i.Interaction.User.ID)
+			//fmt.Println(bankSwiftCode)
+			//fmt.Println(bankAccountNumber)
+			//fmt.Println(bankAccountOwner)
+			//fmt.Println(icyAmount)
+			//fmt.Println(cond)
 
 			// TODO: Send this payload to Fortress for transfer request.
 
@@ -105,24 +104,24 @@ func (d *Discord) onInteractionCreate(s *discordgo.Session, i *discordgo.Interac
 			//	}
 			//}()
 
-			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseUpdateMessage,
-				Data: &discordgo.InteractionResponseData{
-					Embeds: []*discordgo.MessageEmbed{
-						base.Normalize(s, &discordgo.MessageEmbed{
-							Title: "Request Approved!\n",
-							Description: fmt.Sprint(
-								"Your ICY is on the way, we will notify you shortly\n\n",
-								fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("%s **%s ICY**", constant.GetEmoji("ICY"), icyAmount)),
-								fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", i.Interaction.User.ID)),
-								"try $bals in Mochi app to see your balance",
-							),
-						}),
-					},
-				},
-			})
-
-			return
+			//s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+			//	Type: discordgo.InteractionResponseUpdateMessage,
+			//	Data: &discordgo.InteractionResponseData{
+			//		Embeds: []*discordgo.MessageEmbed{
+			//			base.Normalize(s, &discordgo.MessageEmbed{
+			//				Title: "Request Approved!\n",
+			//				Description: fmt.Sprint(
+			//					"Your ICY is on the way, we will notify you shortly\n\n",
+			//					fmt.Sprintf("`Amount.  ` %s\n", fmt.Sprintf("%s **%s ICY**", constant.GetEmoji("ICY"), icyAmount)),
+			//					fmt.Sprintf("`Receiver.` %s\n", fmt.Sprintf("<@%s>", i.Interaction.User.ID)),
+			//					"try $bals in Mochi app to see your balance",
+			//				),
+			//			}),
+			//		},
+			//	},
+			//})
+			//
+			//return
 		}
 	}
 

@@ -1,6 +1,7 @@
 package adapter
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/adapter/dify"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/fortress"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
@@ -12,4 +13,6 @@ type IAdapter interface {
 	Mochi() mochi.MochiAdapter
 	OpenAI() openai.OpenAIAdapter
 	Tono() tono.TonoAdapter
+	Reddit() reddit.Adapter
+	Dify() dify.DifyAdapter
 }
