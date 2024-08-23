@@ -13,6 +13,5 @@ type IAdapter interface {
 	Mochi() mochi.MochiAdapter
 	OpenAI() openai.OpenAIAdapter
 	Tono() tono.TonoAdapter
-	Reddit() reddit.Adapter
 	Dify() dify.DifyAdapter
 }
