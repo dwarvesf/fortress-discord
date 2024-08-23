@@ -19,7 +19,6 @@ type subAdapter struct {
 	Mochi    mochi.MochiAdapter
 	OpenAI   openai.OpenAIAdapter
 	Tono     tono.TonoAdapter
-	Reddit   reddit.Adapter
 	Dify     dify.DifyAdapter
 }
 
@@ -30,7 +29,6 @@ func New(cfg *config.Config, l logger.Logger) IAdapter {
 			Mochi:    mochi.New(cfg.Endpoint.Mochi),
 			OpenAI:   openai.New(cfg.OpenAI.APIKey),
 			Tono:     tono.New(cfg),
-			Reddit:   reddit,
 			Dify:     dify.New(cfg.Dify.BaseURL, cfg.Dify.SummarizerAppToken),
 		},
 	}
