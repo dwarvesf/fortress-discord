@@ -18,6 +18,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/news"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/ogif"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/salary"
@@ -60,6 +61,7 @@ type subView struct {
 	Withdraw        withdrawal.Viewer
 	News            news.Viewer
 	Topic           topic.TopicViewer
+	Ogif            ogif.OgifViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -90,6 +92,7 @@ func New(ses *discordgo.Session) Viewer {
 			Withdraw:        withdrawal.New(ses),
 			News:            news.New(ses),
 			Topic:           topic.New(ses),
+			Ogif:            ogif.New(ses),
 		},
 	}
 }
@@ -191,4 +194,8 @@ func (v *View) News() news.Viewer {
 
 func (v *View) Topic() topic.TopicViewer {
 	return v.subView.Topic
+}
+
+func (v *View) Ogif() ogif.OgifViewer {
+	return v.subView.Ogif
 }

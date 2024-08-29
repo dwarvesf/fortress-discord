@@ -16,6 +16,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/memo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/mma"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/news"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/ogif"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/profile"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/project"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/salary"
@@ -54,4 +55,5 @@ type Viewer interface {
 	Withdraw() withdrawal.Viewer
 	News() news.Viewer
 	Topic() topic.TopicViewer
+	Ogif() ogif.OgifViewer
 }
