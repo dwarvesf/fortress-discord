@@ -8,7 +8,8 @@ type AdapterSum struct {
 
 // Sum is in-app model, after process from adapters
 type Sum struct {
-	URL     string `json:"url"`
-	Title   string `json:"title"`
-	Summary string `json:"summary"`
+	URL      string `json:"url"`
+	Title    string `json:"title"`
+	Summary  string `json:"summary"`
+	Template string `json:"template"`
 }
