@@ -23,7 +23,8 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer) SumCommander {
 }
 
 func (e *Sum) Sum(message *model.DiscordMessage) error {
-	var template, url string
+	var template string
+	var url string
 	var data *model.Sum
 	var err error
 
@@ -31,11 +32,19 @@ func (e *Sum) Sum(message *model.DiscordMessage) error {
 	case 2:
 		// Original behavior: ?sum <url>
 		url = message.ContentArgs[1]
-		data, err = e.svc.Sum().SummarizeArticle("", url)
+		data, err = e.svc.Sum().SummarizeArticle(string(model.TemplateSummary), url)
 	case 3:
 		// New behavior: ?sum <template> <url>
 		template = message.ContentArgs[1]
 		url = message.ContentArgs[2]
+		if !model.IsValidTemplateType(template) {
+			errorSummary := &model.Sum{
+				Title:   "Error",
+				Summary: fmt.Sprintf("Invalid template type. Supported types are: %s, %s, %s, %s", 
+					model.TemplateSummary, model.TemplateKeyPoints, model.TemplateNuggets, model.TemplateFacts),
+			}
+			return e.view.Sum().Sum(message, errorSummary)
+		}
 		data, err = e.svc.Sum().SummarizeArticle(template, url)
 	default:
 		errorSummary := &model.Sum{
