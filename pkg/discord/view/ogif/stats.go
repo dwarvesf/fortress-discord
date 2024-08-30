@@ -13,9 +13,10 @@ func (o *Ogif) RenderOgifStats(original *model.DiscordMessage, userID string, st
 	content := ""
 	// Overall stats
 	content += "**Overall OGIF Stats**\n"
-	lastPeriodStr := fmt.Sprintf("Last %d %s OGIFs", timeAmount, timeUnit)
-	content += fmt.Sprintf("`Total OGIFs%*s`: %d\n", len(lastPeriodStr)-len("Total OGIFs"), "", stats.TotalSpeakCount)
-	content += fmt.Sprintf("`%s`: %d\n\n", lastPeriodStr, stats.CurrentSpeakCount)
+	lastPeriodStr := fmt.Sprintf("Last %d %s OGIFs.", timeAmount, timeUnit)
+	totalOfigStr := "Total OGIFs."
+	content += fmt.Sprintf("`%s%*s` %d\n", totalOfigStr, len(lastPeriodStr)-len(totalOfigStr), "", stats.TotalSpeakCount)
+	content += fmt.Sprintf("`%s` %d\n\n", lastPeriodStr, stats.CurrentSpeakCount)
 
 	// User stats
 	userTag := "Your"
@@ -27,13 +28,13 @@ func (o *Ogif) RenderOgifStats(original *model.DiscordMessage, userID string, st
 	if stats.UserAllTimeRank == 0 {
 		allTimeRank = "No Rank"
 	}
-	content += fmt.Sprintf("`Total OGIFs%*s`: %d (Rank: %s)\n", len(lastPeriodStr)-len("Total OGIFs"), "", stats.UserAllTimeSpeaksCount, allTimeRank)
+	content += fmt.Sprintf("`%s%*s` %d (Rank: %s)\n", totalOfigStr, len(lastPeriodStr)-len(totalOfigStr), "", stats.UserAllTimeSpeaksCount, allTimeRank)
 
 	currentRank := fmt.Sprintf("#%d", stats.UserCurrentRank)
 	if stats.UserCurrentRank == 0 {
 		currentRank = "No Rank"
 	}
-	content += fmt.Sprintf("`%s`: %d (Rank: %s)\n\n", lastPeriodStr, stats.UserCurrentSpeaksCount, currentRank)
+	content += fmt.Sprintf("`%s` %d (Rank: %s)\n\n", lastPeriodStr, stats.UserCurrentSpeaksCount, currentRank)
 
 	// OGIF list for the specified time period
 	content += fmt.Sprintf("**%s OGIFs in the last %d %s**\n", userTag, timeAmount, timeUnit)
