@@ -72,3 +72,14 @@ func (e *Memo) GetMemoOpenPullRequest() (*model.MemoRepoWithPullRequest, error) 
 
 	return &memos, nil
 }
+
+func (e *Memo) GetMemosByDiscordID(discordID string) (*model.MemoLogsByDiscordID, error) {
+	// get response from fortress
+	adapterMemoLogs, err := e.adapter.Fortress().GetMemoLogsByDiscordID(discordID)
+	if err != nil {
+		e.l.Error(err, "can't get memos for Discord ID from fortress")
+		return nil, err
+	}
+
+	return &adapterMemoLogs.Data, nil
+}

@@ -18,14 +18,15 @@ func (e *Memo) Execute(message *model.DiscordMessage) error {
 	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
 	case "list":
+
 		return e.ListMemoLogs(message)
 	case "sync":
 		return e.Sync(message)
 	case "pr":
 		return e.ListMemoOpenPullRequest(message)
+	default:
+		return e.ListByDiscordID(message)
 	}
-
-	return nil
 }
 
 func (e *Memo) Name() string {
