@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gocolly/colly"
 
@@ -1043,4 +1044,33 @@ func (f *Fortress) FetchNews(platform, topic string) ([]model.News, error) {
 	}
 
 	return news.Data, nil
+}
+
+func (f *Fortress) GetOgifStats(discordID string, after time.Time) (*model.OgifStatsResponse, error) {
+	req, err := f.makeReq("/api/v1/ogif", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	q := req.URL.Query()
+	q.Add("discordID", discordID)
+	q.Add("after", after.Format(time.RFC3339))
+	req.URL.RawQuery = q.Encode()
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var ogifStats model.OgifStatsResponse
+	if err := json.NewDecoder(resp.Body).Decode(&ogifStats); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return &ogifStats, nil
 }

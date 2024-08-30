@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
@@ -106,4 +107,12 @@ func extractSpeakers(args []string) map[string][]string {
 	}
 
 	return mapSpeakersByTopic
+}
+
+func (e *Event) GetOgifStats(discordID string, after time.Time) (model.OgifStats, error) {
+	resp, err := e.adapter.Fortress().GetOgifStats(discordID, after)
+	if err != nil {
+		return model.OgifStats{}, err
+	}
+	return resp.Data, err
 }

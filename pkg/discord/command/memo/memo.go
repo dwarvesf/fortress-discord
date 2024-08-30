@@ -2,8 +2,6 @@ package memo
 
 import (
 	"errors"
-	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
@@ -65,7 +63,7 @@ func (e *Memo) ListMemoLogs(message *model.DiscordMessage) error {
 			tempFrom *time.Time
 			err      error
 		)
-		tempFrom, timeAmount, timeUnit, err = parseAndCalculateFromDate(now, durationStr)
+		tempFrom, timeAmount, timeUnit, err = stringutils.ParseTimePeriod(now, durationStr)
 		if err != nil {
 			return err
 		}
@@ -95,51 +93,6 @@ func (e *Memo) ListMemoOpenPullRequest(message *model.DiscordMessage) error {
 
 	// 2. render
 	return e.view.Memo().ListMemoOpenPullRequest(message, *data)
-}
-
-// parseAndCalculateFromDate parses the duration argument and calculates the 'from' date
-func parseAndCalculateFromDate(now time.Time, arg string) (*time.Time, int, string, error) {
-	re := regexp.MustCompile(`(?i)^(\d+)\s*([a-z]+)$`)
-	matches := re.FindStringSubmatch(arg)
-	if len(matches) != 3 {
-		return nil, 0, "", errors.New("invalid duration argument format")
-	}
-
-	num, err := strconv.Atoi(matches[1])
-	if err != nil {
-		return nil, 0, "", errors.New("invalid number in duration argument")
-	}
-
-	unit := matches[2]
-	var from time.Time
-	switch strings.ToLower(unit) {
-	case "d", "day", "days":
-		from = now.AddDate(0, 0, -num)
-		if num > 1 {
-			return &from, num, "days", nil
-		}
-		return &from, num, "day", nil
-	case "w", "week", "weeks":
-		from = now.AddDate(0, 0, -7*num)
-		if num > 1 {
-			return &from, num, "weeks", nil
-		}
-		return &from, num, "week", nil
-	case "m", "month", "months":
-		from = now.AddDate(0, -num, 0)
-		if num > 1 {
-			return &from, num, "months", nil
-		}
-		return &from, num, "month", nil
-	case "y", "year", "years":
-		from = now.AddDate(-num, 0, 0)
-		if num > 1 {
-			return &from, num, "years", nil
-		}
-		return &from, num, "year", nil
-	default:
-		return nil, 0, "", errors.New("invalid time duration unit")
-	}
 }
 
 func (e *Memo) Sync(message *model.DiscordMessage) error {
