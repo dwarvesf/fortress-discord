@@ -2,7 +2,6 @@ package memo
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -81,8 +80,6 @@ func (e *Memo) ListMemoLogs(message *model.DiscordMessage) error {
 		e.L.Error(err, "can't get list of Memo")
 		return err
 	}
-
-	fmt.Println(data[0].Category)
 
 	// 2. render
 	return e.view.Memo().ListMemoLogs(message, data, timeAmount, timeUnit)
@@ -172,38 +169,22 @@ func (e *Memo) Sync(message *model.DiscordMessage) error {
 	if err != nil {
 		return e.view.Error().Raise(message, "Could not sync memo logs.")
 	}
-	//data := []model.MemoLog{
-	//	{
-	//		ID:    "36f2f8ca-9722-4267-8337-c2b8edf1fc54",
-	//		Title: "Devbox #1: The world before Docker",
-	//		URL:   "https://memo.d.foundation/playground/_memo/devbox-a-world-before-docker/",
-	//		Authors: []model.MemoLogAuthor{
-	//			{
-	//				EmployeeID: "",
-	//				GithubID:   "",
-	//				DiscordID:  "686038111217909809",
-	//			},
-	//			{
-	//				EmployeeID: "",
-	//				GithubID:   "",
-	//				DiscordID:  "797042642600722473",
-	//			},
-	//		},
-	//		Description: "test description",
-	//		PublishedAt: &time.Time{},
-	//		Reward:      decimal.New(10, 0),
-	//	},
-	//	{
-	//		ID:          "43c82b06-b7dc-48c4-90c0-135d211b22aa",
-	//		Title:       "Design less, present more with Deckset",
-	//		URL:         "https://memo.d.foundation/playground/_memo/design-less-present-more-with-deckset./",
-	//		Authors:     []model.MemoLogAuthor{},
-	//		Description: "In this March, we're eyeing on what's brewing in the tech market, ICY updates in 2024, the first offline meetup and product demo.",
-	//		PublishedAt: &time.Time{},
-	//		Reward:      decimal.New(10, 0),
-	//	},
-	//}
 
 	// 2. render
 	return e.view.Memo().Sync(message, data, targetChannelID, reward)
+}
+
+func (e *Memo) ListByDiscordID(message *model.DiscordMessage) error {
+	discordID := strings.TrimPrefix(message.ContentArgs[1], "<@")
+	discordID = strings.TrimSuffix(discordID, ">")
+
+	// Get memo data for the specified Discord ID
+	data, err := e.svc.Memo().GetMemosByDiscordID(discordID)
+	if err != nil {
+		e.L.Error(err, "can't get memos for Discord ID")
+		return e.view.Error().Raise(message, "Could not fetch memos for the specified Discord ID.")
+	}
+
+	// Render the result
+	return e.view.Memo().ListByDiscordID(message, data, discordID)
 }

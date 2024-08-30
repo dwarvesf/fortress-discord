@@ -53,9 +53,6 @@ func (f *Fortress) GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsRespon
 	if err != nil {
 		return nil, err
 	}
-	if err != nil {
-		return nil, err
-	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -92,6 +89,34 @@ func (f *Fortress) GetMemoOpenPullRequest() (memos *model.MemoPullRequestRespons
 
 	if err := json.NewDecoder(resp.Body).Decode(&memos); err != nil {
 		return nil, fmt.Errorf("[GetMemoOpenPullRequest] invalid decoded, error %v", err.Error())
+	}
+
+	return memos, nil
+}
+
+func (f *Fortress) GetMemoLogsByDiscordID(discordID string) (memos *model.MemoLogsByDiscordIDResponse, err error) {
+	params := url.Values{}
+	if discordID != "" {
+		params.Add("discordID", discordID)
+	}
+
+	req, err := f.makeReq("/api/v1/memos/discords?"+params.Encode(), http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("[GetMemoLogs] invalid call, code %v", resp.StatusCode)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&memos); err != nil {
+		return nil, fmt.Errorf("[GetMemoLogs] invalid decoded, error %v", err.Error())
 	}
 
 	return memos, nil

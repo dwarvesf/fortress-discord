@@ -75,3 +75,21 @@ type MemoRepoWithPullRequest map[string][]MemoPullRequest
 type MemoPullRequestResponse struct {
 	Data MemoRepoWithPullRequest `json:"data"`
 }
+
+// MemoLogsByDiscordIDResponse response for memo logs by discord id
+type MemoLogsByDiscordIDResponse struct {
+	Data MemoLogsByDiscordID `json:"data"`
+}
+
+// AuthorRanking is the rank of the discord account
+type AuthorRanking struct {
+	DiscordID  string `json:"discordID"`
+	TotalMemos int    `json:"totalMemos"`
+	Rank       int    `json:"rank"`
+}
+
+// MemoLogsByDiscordID response for memo logs by discord id
+type MemoLogsByDiscordID struct {
+	MemoLogs []MemoLog     `json:"memoLogs"`
+	Rank     AuthorRanking `json:"rank"`
+}
