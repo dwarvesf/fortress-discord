@@ -54,9 +54,7 @@ type AgentMessage struct {
 func (d *Dify) SummarizeArticle(template, url string) (content string, err error) {
 	// Define the URL and request body
 	requestBody, err := json.Marshal(map[string]interface{}{
-		"inputs": map[string]interface{}{
-			"template": template,
-		},
+		"inputs":          map[string]interface{}{},
 		"query":           fmt.Sprintf("%s %s", template, url),
 		"response_mode":   "streaming",
 		"conversation_id": "",
