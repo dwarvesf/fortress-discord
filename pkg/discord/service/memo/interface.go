@@ -12,4 +12,5 @@ type MemoServicer interface {
 	GetMemoLogs(from, to *time.Time) ([]model.MemoLog, error)
 	GetMemoOpenPullRequest() (*model.MemoRepoWithPullRequest, error)
 	GetMemosByDiscordID(discordID string) (*model.MemoLogsByDiscordID, error)
+	GetTopAuthors() ([]model.AuthorRanking, error)
 }

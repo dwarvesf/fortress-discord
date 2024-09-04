@@ -93,3 +93,8 @@ type MemoLogsByDiscordID struct {
 	MemoLogs []MemoLog     `json:"memoLogs"`
 	Rank     AuthorRanking `json:"rank"`
 }
+
+// MemoTopAuthorsResponse response for memo top authors
+type MemoTopAuthorsResponse struct {
+	Data []AuthorRanking `json:"data"`
+} // @name MemoTopAuthorsResponse

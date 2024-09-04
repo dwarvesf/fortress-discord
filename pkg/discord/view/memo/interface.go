@@ -10,4 +10,5 @@ type MemoViewer interface {
 	Sync(original *model.DiscordMessage, memos []model.MemoLog, channelID, reward string) error
 	ListMemoOpenPullRequest(original *model.DiscordMessage, memoPr model.MemoRepoWithPullRequest) error
 	ListByDiscordID(original *model.DiscordMessage, data *model.MemoLogsByDiscordID, discordID string) error
+	ListTopAuthors(original *model.DiscordMessage, data []model.AuthorRanking) error
 }

@@ -24,6 +24,8 @@ func (e *Memo) Execute(message *model.DiscordMessage) error {
 		return e.Sync(message)
 	case "pr":
 		return e.ListMemoOpenPullRequest(message)
+	case "top":
+		return e.MemoTopAuthors(message)
 	default:
 		return e.ListByDiscordID(message)
 	}
