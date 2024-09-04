@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -21,9 +22,9 @@ func New(ses *discordgo.Session) MemoViewer {
 
 func (v *Memo) ListByDiscordID(original *model.DiscordMessage, data *model.MemoLogsByDiscordID, discordID string) error {
 	content := []string{
-		fmt.Sprintf("**Memos by <@%s>**", discordID),
+		fmt.Sprintf("**Memos created by <@%s>**", discordID),
 		fmt.Sprintf("`Total:  `%v posts", data.Rank.TotalMemos),
-		fmt.Sprintf("`Rank:   `%v", data.Rank.Rank),
+		fmt.Sprintf("`Rank:   `#%v", data.Rank.Rank),
 		"",
 	}
 
@@ -48,7 +49,38 @@ func (v *Memo) ListByDiscordID(original *model.DiscordMessage, data *model.MemoL
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       fmt.Sprintf("<:pepeyes:885513213431648266> Memos <:pepeyes:885513213431648266> \n"),
+		Title:       fmt.Sprintf("<:pepeyes:885513213431648266> Memo Stats <:pepeyes:885513213431648266> \n"),
+		Description: strings.Join(content, "\n"),
+	}
+
+	return base.SendEmbededMessage(v.ses, original, msg)
+}
+
+func (v *Memo) ListTopAuthors(original *model.DiscordMessage, data []model.AuthorRanking) error {
+	emojiMap := map[int]string{
+		1:  constant.GetEmoji("BADGE1"),
+		2:  constant.GetEmoji("BADGE2"),
+		3:  constant.GetEmoji("BADGE3"),
+		4:  ":four:",
+		5:  ":five:",
+		6:  ":six:",
+		7:  ":seven:",
+		8:  ":eight:",
+		9:  ":nine:",
+		10: ":keycap_ten:",
+	}
+	content := []string{}
+
+	for i, author := range data {
+		emoji, ok := emojiMap[i+1]
+		if !ok {
+			emoji = fmt.Sprintf("#%s", i+1)
+		}
+		content = append(content, fmt.Sprintf("%s <@%s> - %v posts", emoji, author.DiscordID, author.TotalMemos))
+	}
+
+	msg := &discordgo.MessageEmbed{
+		Title:       "<:pepeyes:885513213431648266> Memo Leaderboard <:pepeyes:885513213431648266> \n",
 		Description: strings.Join(content, "\n"),
 	}
 

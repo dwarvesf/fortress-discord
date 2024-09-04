@@ -12,6 +12,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
+// SyncMemoLogs sync memos logs
 func (f *Fortress) SyncMemoLogs() (memos *model.MemoLogsResponse, err error) {
 	req, err := f.makeReq("/api/v1/memos/sync", http.MethodPost, nil)
 	if err != nil {
@@ -40,6 +41,7 @@ func (f *Fortress) SyncMemoLogs() (memos *model.MemoLogsResponse, err error) {
 	return memos, nil
 }
 
+// GetMemoLogs get memos logs
 func (f *Fortress) GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsResponse, err error) {
 	params := url.Values{}
 	if from != nil {
@@ -71,6 +73,7 @@ func (f *Fortress) GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsRespon
 	return memos, nil
 }
 
+// GetMemoOpenPullRequest get open pull request
 func (f *Fortress) GetMemoOpenPullRequest() (memos *model.MemoPullRequestResponse, err error) {
 	req, err := f.makeReq("/api/v1/memos/prs", http.MethodGet, nil)
 	if err != nil {
@@ -94,6 +97,7 @@ func (f *Fortress) GetMemoOpenPullRequest() (memos *model.MemoPullRequestRespons
 	return memos, nil
 }
 
+// GetMemoLogsByDiscordID get memos by discordID
 func (f *Fortress) GetMemoLogsByDiscordID(discordID string) (memos *model.MemoLogsByDiscordIDResponse, err error) {
 	params := url.Values{}
 	if discordID != "" {
@@ -120,4 +124,28 @@ func (f *Fortress) GetMemoLogsByDiscordID(discordID string) (memos *model.MemoLo
 	}
 
 	return memos, nil
+}
+
+// GetTopAuthors get top authors
+func (f *Fortress) GetTopAuthors() (topAuthors *model.MemoTopAuthorsResponse, err error) {
+	req, err := f.makeReq("/api/v1/memos/top-authors", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("[GetTopAuthors] invalid call, code %v", resp.StatusCode)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&topAuthors); err != nil {
+		return nil, fmt.Errorf("[GetTopAuthors] invalid decoded, error %v", err.Error())
+	}
+
+	return topAuthors, nil
 }

@@ -141,3 +141,15 @@ func (e *Memo) ListByDiscordID(message *model.DiscordMessage) error {
 	// Render the result
 	return e.view.Memo().ListByDiscordID(message, data, discordID)
 }
+
+func (e *Memo) MemoTopAuthors(message *model.DiscordMessage) error {
+	// 1. get data from service
+	data, err := e.svc.Memo().GetTopAuthors()
+	if err != nil {
+		e.L.Error(err, "can't get top authors")
+		return err
+	}
+
+	// 2. render
+	return e.view.Memo().ListTopAuthors(message, data)
+}

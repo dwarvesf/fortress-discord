@@ -83,3 +83,14 @@ func (e *Memo) GetMemosByDiscordID(discordID string) (*model.MemoLogsByDiscordID
 
 	return &adapterMemoLogs.Data, nil
 }
+
+func (e *Memo) GetTopAuthors() ([]model.AuthorRanking, error) {
+	// get response from fortress
+	adapterAuthors, err := e.adapter.Fortress().GetTopAuthors()
+	if err != nil {
+		e.l.Error(err, "can't get top authors from fortress")
+		return nil, err
+	}
+
+	return adapterAuthors.Data, nil
+}

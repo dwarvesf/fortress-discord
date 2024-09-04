@@ -13,4 +13,5 @@ type MemoCommander interface {
 	ListMemoOpenPullRequest(message *model.DiscordMessage) error
 	Sync(message *model.DiscordMessage) error
 	ListByDiscordID(message *model.DiscordMessage) error
+	MemoTopAuthors(message *model.DiscordMessage) error
 }
