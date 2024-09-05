@@ -116,3 +116,11 @@ func (e *Event) GetOgifStats(discordID string, after time.Time) (model.OgifStats
 	}
 	return resp.Data, err
 }
+
+func (e *Event) GetOgifLeaderboard(after time.Time, limit int) ([]model.OgifLeaderboardRecord, error) {
+	leaderboard, err := e.adapter.Fortress().GetOgifLeaderboard(after, limit)
+	if err != nil {
+		return nil, err
+	}
+	return leaderboard, nil
+}

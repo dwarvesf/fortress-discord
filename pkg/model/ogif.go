@@ -31,3 +31,14 @@ type FortEvent struct {
 	Date   time.Time `json:"date"`
 	IsOver bool      `json:"isOver"`
 }
+
+// OgifLeaderboardRecord represents an element in the OGIF leaderboard
+type OgifLeaderboardRecord struct {
+	DiscordID  string `json:"discordID"`
+	SpeakCount int64  `json:"speakCount"`
+}
+
+// OgifLeaderboardResponse returns get ogif leader board
+type OgifLeaderboardResponse struct {
+	Data []OgifLeaderboardRecord `json:"data"`
+} // @name OgifLeaderboardResponse

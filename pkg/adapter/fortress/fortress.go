@@ -1074,3 +1074,32 @@ func (f *Fortress) GetOgifStats(discordID string, after time.Time) (*model.OgifS
 
 	return &ogifStats, nil
 }
+
+func (f *Fortress) GetOgifLeaderboard(after time.Time, limit int) ([]model.OgifLeaderboardRecord, error) {
+	req, err := f.makeReq("/api/v1/ogif/leaderboard", http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	q := req.URL.Query()
+	q.Add("after", after.Format(time.RFC3339))
+	q.Add("limit", strconv.Itoa(limit))
+	req.URL.RawQuery = q.Encode()
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var leaderboardResp model.OgifLeaderboardResponse
+	if err := json.NewDecoder(resp.Body).Decode(&leaderboardResp); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return leaderboardResp.Data, nil
+}
