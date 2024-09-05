@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -57,26 +56,10 @@ func (v *Memo) ListByDiscordID(original *model.DiscordMessage, data *model.MemoL
 }
 
 func (v *Memo) ListTopAuthors(original *model.DiscordMessage, data []model.AuthorRanking) error {
-	emojiMap := map[int]string{
-		1:  constant.GetEmoji("BADGE1"),
-		2:  constant.GetEmoji("BADGE2"),
-		3:  constant.GetEmoji("BADGE3"),
-		4:  ":four:",
-		5:  ":five:",
-		6:  ":six:",
-		7:  ":seven:",
-		8:  ":eight:",
-		9:  ":nine:",
-		10: ":keycap_ten:",
-	}
-	content := []string{}
+	var content []string
 
 	for i, author := range data {
-		emoji, ok := emojiMap[i+1]
-		if !ok {
-			emoji = fmt.Sprintf("#%s", i+1)
-		}
-		content = append(content, fmt.Sprintf("%s <@%s> - %v posts", emoji, author.DiscordID, author.TotalMemos))
+		content = append(content, fmt.Sprintf("[[%v]](%s) <@%s> - %v posts", i+1, fmt.Sprintf("https://memo.d.foundation/contributor/%s", author.MemoUsername), author.DiscordID, author.TotalMemos))
 	}
 
 	msg := &discordgo.MessageEmbed{

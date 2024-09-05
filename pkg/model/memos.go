@@ -83,9 +83,11 @@ type MemoLogsByDiscordIDResponse struct {
 
 // AuthorRanking is the rank of the discord account
 type AuthorRanking struct {
-	DiscordID  string `json:"discordID"`
-	TotalMemos int    `json:"totalMemos"`
-	Rank       int    `json:"rank"`
+	DiscordID       string `json:"discordID"`
+	DiscordUsername string `json:"discordUsername"`
+	MemoUsername    string `json:"memoUsername"`
+	TotalMemos      int    `json:"totalMemos"`
+	Rank            int    `json:"rank"`
 }
 
 // MemoLogsByDiscordID response for memo logs by discord id
