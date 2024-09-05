@@ -74,4 +74,5 @@ type FortressAdapter interface {
 
 	FetchNews(platform, topic string) ([]model.News, error)
 	GetOgifStats(discordID string, after time.Time) (*model.OgifStatsResponse, error)
+	GetOgifLeaderboard(after time.Time, limit int) ([]model.OgifLeaderboardRecord, error)
 }

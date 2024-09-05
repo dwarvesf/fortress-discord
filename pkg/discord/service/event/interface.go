@@ -12,4 +12,5 @@ type EventServicer interface {
 	CreateGuildScheduledEvent(*model.DiscordEvent) error
 	SetSpeakers(message *model.DiscordMessage) error
 	GetOgifStats(discordID string, after time.Time) (model.OgifStats, error)
+	GetOgifLeaderboard(after time.Time, limit int) ([]model.OgifLeaderboardRecord, error)
 }

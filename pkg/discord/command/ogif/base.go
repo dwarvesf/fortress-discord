@@ -15,26 +15,30 @@ func (c command) Prefix() []string {
 // Execute is where we handle logic for each command
 func (c command) Execute(message *model.DiscordMessage) error {
 	now := time.Now()
-	userID := message.Author.ID
 	timePeriod := "30d"
-	isUserOmitted := false
+	isLeaderboard := false
 
 	if len(message.ContentArgs) > 1 {
 		if message.ContentArgs[1] == "help" {
 			return c.Help(message)
 		}
 
-		extractedID := stringutils.ExtractDiscordID(message.ContentArgs[1])
-		if extractedID != "" {
-			userID = extractedID
+		if message.ContentArgs[1] == "top" {
+			timePeriod = "10y"
+			isLeaderboard = true
+			if len(message.ContentArgs) > 2 {
+				timePeriod = strings.Join(message.ContentArgs[2:], "")
+			}
 		} else {
-			isUserOmitted = true
-			timePeriod = strings.Join(message.ContentArgs[1:], "")
+			userID := stringutils.ExtractDiscordID(message.ContentArgs[1])
+			if userID != "" {
+				if len(message.ContentArgs) > 2 {
+					timePeriod = strings.Join(message.ContentArgs[2:], "")
+				}
+			} else {
+				timePeriod = strings.Join(message.ContentArgs[1:], "")
+			}
 		}
-	}
-
-	if len(message.ContentArgs) > 2 && !isUserOmitted {
-		timePeriod = strings.Join(message.ContentArgs[2:], "")
 	}
 
 	after, timeAmount, timeUnit, err := stringutils.ParseTimePeriod(now, timePeriod)
@@ -42,7 +46,11 @@ func (c command) Execute(message *model.DiscordMessage) error {
 		return err
 	}
 
-	return c.FetchOgifStats(message, userID, *after, timeAmount, timeUnit)
+	if isLeaderboard {
+		return c.GetOgifLeaderboard(message, *after, timeAmount, timeUnit)
+	}
+
+	return c.FetchOgifStats(message, message.Author.ID, *after, timeAmount, timeUnit)
 }
 
 func (c command) Name() string {
