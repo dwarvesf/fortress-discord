@@ -29,7 +29,7 @@ func New(cfg *config.Config, l logger.Logger) IAdapter {
 			Mochi:    mochi.New(cfg.Endpoint.Mochi),
 			OpenAI:   openai.New(cfg.OpenAI.APIKey),
 			Tono:     tono.New(cfg),
-			Dify:     dify.New(cfg.Dify.BaseURL, cfg.Dify.SummarizerAppToken),
+			Dify:     dify.New(cfg.Dify.BaseURL, cfg.Dify.SummarizerAppToken, cfg.Dify.ProcessAIAppToken),
 		},
 	}
 }

@@ -63,6 +63,7 @@ type ApiServer struct {
 type Dify struct {
 	BaseURL            string
 	SummarizerAppToken string
+	ProcessAIAppToken  string
 }
 type ENV interface {
 	GetBool(string) bool
@@ -106,6 +107,7 @@ func Generate(v ENV) *Config {
 		Dify: Dify{
 			BaseURL:            v.GetString("DIFY_BASE_URL"),
 			SummarizerAppToken: v.GetString("DIFY_SUMMARIZER_APP_TOKEN"),
+			ProcessAIAppToken:  v.GetString("DIFY_PROCESS_AI_APP_TOKEN"),
 		},
 	}
 }

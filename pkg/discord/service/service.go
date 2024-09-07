@@ -4,6 +4,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 
 	"github.com/dwarvesf/fortress-discord/pkg/adapter"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/ai"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/deliverymetrics"
@@ -37,6 +38,7 @@ type Service struct {
 }
 
 type subService struct {
+	AI              ai.AIServicer
 	Brainery        brainery.Service
 	Changelog       changelog.ChangelogServicer
 	DeliveryMetrics deliverymetrics.DeliveryMetricsServicer
@@ -67,6 +69,7 @@ type subService struct {
 func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Servicer {
 	return &Service{
 		subService: subService{
+			AI:              ai.New(adapter, l),
 			Brainery:        brainery.New(adapter, l),
 			Changelog:       changelog.New(adapter, l),
 			DeliveryMetrics: deliverymetrics.New(adapter, l),
@@ -94,6 +97,10 @@ func New(adapter adapter.IAdapter, l logger.Logger, ses *discordgo.Session) Serv
 			Tono:            tono.New(adapter, l),
 		},
 	}
+}
+
+func (s *Service) AI() ai.AIServicer {
+	return s.subService.AI
 }
 
 // Icy implements Servicer.

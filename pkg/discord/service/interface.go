@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/discord/service/ai"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service/deliverymetrics"
@@ -29,6 +30,7 @@ import (
 )
 
 type Servicer interface {
+	AI() ai.AIServicer
 	Brainery() brainery.Service
 	Changelog() changelog.ChangelogServicer
 	DeliveryMetrics() deliverymetrics.DeliveryMetricsServicer

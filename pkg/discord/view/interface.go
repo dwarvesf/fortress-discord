@@ -1,6 +1,7 @@
 package view
 
 import (
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/ai"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/deliverymetrics"
@@ -30,6 +31,7 @@ import (
 )
 
 type Viewer interface {
+	AI() ai.AIViewer
 	Earn() earn.EarnViewer
 	Icy() icy.IcyViewer
 	Sum() sum.SumViewer
