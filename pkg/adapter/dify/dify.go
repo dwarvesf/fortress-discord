@@ -13,13 +13,15 @@ import (
 type Dify struct {
 	BaseURL            string
 	SummarizerAppToken string
+	ProcessAIAppToken  string
 }
 
 // New function return dify service
-func New(baseURL, summarizerAppToken string) DifyAdapter {
+func New(baseURL, summarizerAppToken, processAIAppToken string) *Dify {
 	return &Dify{
 		BaseURL:            baseURL,
 		SummarizerAppToken: summarizerAppToken,
+		ProcessAIAppToken:  processAIAppToken,
 	}
 }
 
@@ -64,14 +66,36 @@ func (d *Dify) SummarizeArticle(url string) (content string, err error) {
 		return "", err
 	}
 
+	return d.processDifyRequest(requestBody, d.SummarizerAppToken)
+}
+
+// ProcessAIText processes any text input using the Dify API
+func (d *Dify) ProcessAIText(input string) (content string, err error) {
+	// Define the URL and request body
+	requestBody, err := json.Marshal(map[string]interface{}{
+		"inputs":          map[string]interface{}{},
+		"query":           input,
+		"response_mode":   "streaming",
+		"conversation_id": "",
+		"user":            "fortress",
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return d.processDifyRequest(requestBody, d.ProcessAIAppToken)
+}
+
+// processDifyRequest handles the common logic for making requests to the Dify API
+func (d *Dify) processDifyRequest(requestBody []byte, token string) (content string, err error) {
 	// Create the HTTP request
 	req, err := http.NewRequest(http.MethodPost, d.BaseURL, bytes.NewBuffer(requestBody))
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	// Set the required headers
-	req.Header.Set("Authorization", "Bearer "+d.SummarizerAppToken)
+	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{
@@ -89,16 +113,38 @@ func (d *Dify) SummarizeArticle(url string) (content string, err error) {
 		return "", fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 
-	// Handle streaming response
+	thoughts, err := d.handleStreamingResponse(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	// get the last event
+	if len(thoughts) == 0 {
+		return "", fmt.Errorf("no thought found")
+	}
+
+	for i := len(thoughts) - 1; i >= 0; i-- {
+		if thoughts[i].Thought != "" {
+			content = thoughts[i].Thought
+			break
+		}
+	}
+
+	return content, nil
+}
+
+// handleStreamingResponse processes the streaming response from the Dify API
+func (d *Dify) handleStreamingResponse(body io.ReadCloser) ([]AgentThought, error) {
 	var thoughts []AgentThought
-	reader := bufio.NewReader(resp.Body)
+	reader := bufio.NewReader(body)
+
 	for {
 		line, err := reader.ReadBytes('\n')
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
-			return "", err
+			return nil, err
 		}
 
 		// Remove the "data: " prefix
@@ -138,17 +184,5 @@ func (d *Dify) SummarizeArticle(url string) (content string, err error) {
 		}
 	}
 
-	// get the last event
-	if len(thoughts) == 0 {
-		return "", fmt.Errorf("no thought found")
-	}
-
-	for i := len(thoughts) - 1; i >= 0; i-- {
-		if thoughts[i].Thought != "" {
-			content = thoughts[i].Thought
-			break
-		}
-	}
-
-	return content, nil
+	return thoughts, nil
 }

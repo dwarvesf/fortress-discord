@@ -3,6 +3,7 @@ package view
 import (
 	"github.com/bwmarrin/discordgo"
 
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/ai"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/deliverymetrics"
@@ -36,6 +37,7 @@ type View struct {
 }
 
 type subView struct {
+	AI              ai.AIViewer
 	Brainery        brainery.Viewer
 	Changelog       changelog.ChangelogViewer
 	DeliveryMetrics deliverymetrics.DeliveryMetricsViewer
@@ -67,6 +69,7 @@ type subView struct {
 func New(ses *discordgo.Session) Viewer {
 	return &View{
 		subView: subView{
+			AI:              ai.New(ses),
 			Brainery:        brainery.New(ses),
 			Changelog:       changelog.New(ses),
 			DeliveryMetrics: deliverymetrics.New(ses),
@@ -95,6 +98,10 @@ func New(ses *discordgo.Session) Viewer {
 			Ogif:            ogif.New(ses),
 		},
 	}
+}
+
+func (v *View) AI() ai.AIViewer {
+	return v.subView.AI
 }
 
 func (v *View) Icy() icy.IcyViewer {
@@ -176,6 +183,7 @@ func (v *View) Profile() profile.Viewer {
 func (v *View) MMA() mma.Viewer {
 	return v.subView.MMA
 }
+
 func (v *View) Trend() trend.TrendViewer {
 	return v.subView.Trend
 }
