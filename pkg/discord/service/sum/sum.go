@@ -21,8 +21,8 @@ func New(adapter adapter.IAdapter, l logger.Logger) SumServicer {
 	}
 }
 
-func (e *Sum) SummarizeArticle(url string) (*model.Sum, error) {
-	data, err := e.adapter.Dify().SummarizeArticle(url)
+func (e *Sum) SummarizeArticle(template, url string) (*model.Sum, error) {
+	data, err := e.adapter.Dify().SummarizeArticle(template, url)
 	if err != nil {
 		fmt.Printf("failed to summarize the given article. Error: %v\n", err)
 		return nil, err
@@ -30,9 +30,10 @@ func (e *Sum) SummarizeArticle(url string) (*model.Sum, error) {
 	title, summary := extractTitleAndSummary(data)
 
 	return &model.Sum{
-		URL:     url,
-		Title:   title,
-		Summary: summary,
+		URL:      url,
+		Title:    title,
+		Summary:  summary,
+		Template: template,
 	}, nil
 }
 

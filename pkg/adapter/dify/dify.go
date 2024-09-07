@@ -51,11 +51,11 @@ type AgentMessage struct {
 	Answer string `json:"answer,omitempty"`
 }
 
-func (d *Dify) SummarizeArticle(url string) (content string, err error) {
+func (d *Dify) SummarizeArticle(template, url string) (content string, err error) {
 	// Define the URL and request body
 	requestBody, err := json.Marshal(map[string]interface{}{
 		"inputs":          map[string]interface{}{},
-		"query":           url,
+		"query":           fmt.Sprintf("%s %s", template, url),
 		"response_mode":   "streaming",
 		"conversation_id": "",
 		"user":            "fortress",
