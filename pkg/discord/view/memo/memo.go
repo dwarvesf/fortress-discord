@@ -29,6 +29,11 @@ func (v *Memo) ListByDiscordID(original *model.DiscordMessage, data *model.MemoL
 
 	postStr := "**Latest Memos**\n"
 	for i, memo := range data.MemoLogs {
+		// TODO: limit the number of posts
+		if i > 4 {
+			break
+		}
+
 		authors := make([]string, 0, len(memo.Authors))
 		for _, author := range memo.Authors {
 			authors = append(authors, fmt.Sprintf("<@%s>", author.DiscordID))
@@ -48,7 +53,7 @@ func (v *Memo) ListByDiscordID(original *model.DiscordMessage, data *model.MemoL
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       fmt.Sprintf("<:pepeyes:885513213431648266> Memo Stats <:pepeyes:885513213431648266> \n"),
+		Title:       "<:pepeyes:885513213431648266> Memo Stats <:pepeyes:885513213431648266> \n",
 		Description: strings.Join(content, "\n"),
 	}
 
