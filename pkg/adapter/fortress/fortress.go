@@ -1103,3 +1103,27 @@ func (f *Fortress) GetOgifLeaderboard(after time.Time, limit int) ([]model.OgifL
 
 	return leaderboardResp.Data, nil
 }
+
+func (f *Fortress) GetProjectCommissionModels(projectID string) ([]model.ProjectCommissionModel, error) {
+	req, err := f.makeReq(fmt.Sprintf("/api/v1/projects/%s/commission-models", projectID), http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+
+	var cm model.ProjectCommissionModelsResponse
+	if err := json.NewDecoder(resp.Body).Decode(&cm); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+
+	return cm.Data, nil
+}
