@@ -57,5 +57,14 @@ func (e *ProjectCmd) PermissionCheck(message *model.DiscordMessage) (bool, []str
 		return true, []string{}
 	}
 
-	return permutil.CheckSmodOrAbove(message.Roles)
+	userRoles, err := e.svc.Profile().GetDiscordRoles(e.cfg.Discord.ID.DwarvesGuild, message.Author.ID)
+	if err != nil {
+		return false, []string{}
+	}
+
+	var roles []string
+	roles = append(roles, userRoles...)
+	roles = append(roles, message.Roles...)
+
+	return permutil.CheckSmodOrAbove(roles)
 }
