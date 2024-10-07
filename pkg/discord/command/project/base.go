@@ -15,6 +15,8 @@ func (e *ProjectCmd) Prefix() []string {
 func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 	allowedList := []string{
 		"1072722777687199744",
+		"1177538072531980318",
+		"1136175977236549693", // dev-channel
 	}
 
 	whiteListedChannels := strings.Split(e.cfg.Discord.WhiteListedChannels, ",")

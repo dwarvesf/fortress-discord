@@ -1,9 +1,10 @@
 package profile
 
 import (
+	"strings"
+
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 	"github.com/dwarvesf/fortress-discord/pkg/utils/permutil"
-	"strings"
 )
 
 func (e *ProfileCmd) Prefix() []string {
