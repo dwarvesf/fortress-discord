@@ -74,3 +74,14 @@ type ProjectCommissionModel struct {
 type ProjectCommissionModelsResponse struct {
 	Data []ProjectCommissionModel `json:"data"`
 }
+
+type Project struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Code   string `json:"code"`
+	Status string `json:"status"`
+}
+
+type ProjectListResponse struct {
+	Data []Project `json:"data"`
+}

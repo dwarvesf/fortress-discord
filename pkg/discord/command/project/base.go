@@ -53,9 +53,18 @@ func (e *ProjectCmd) DefaultCommand(message *model.DiscordMessage) error {
 }
 
 func (e *ProjectCmd) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
-	if e.cfg.Env != "prod" {
+	if e.cfg.Env == "prod" {
 		return true, []string{}
 	}
 
-	return permutil.CheckSmodOrAbove(message.Roles)
+	userRoles, err := e.svc.Profile().GetDiscordRoles(e.cfg.Discord.ID.DwarvesGuild, message.Author.ID)
+	if err != nil {
+		return false, []string{}
+	}
+
+	var roles []string
+	roles = append(roles, userRoles...)
+	roles = append(roles, message.Roles...)
+
+	return permutil.CheckSmodOrAbove(userRoles)
 }
