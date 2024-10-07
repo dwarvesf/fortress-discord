@@ -54,3 +54,23 @@ type BraineryMetric struct {
 type BraineryMetricResponse struct {
 	Data BraineryMetric `json:"data"`
 }
+
+type BasicEmployeeInfo struct {
+	ID          string `json:"id"`
+	FullName    string `json:"fullName"`
+	DisplayName string `json:"displayName"`
+	Avatar      string `json:"avatar"`
+	Username    string `json:"username"`
+}
+
+type ProjectCommissionModel struct {
+	Beneficiary    BasicEmployeeInfo       `json:"beneficiary"`
+	CommissionType string                  `json:"type"`
+	CommissionRate decimal.Decimal         `json:"commissionRate"`
+	Description    string                  `json:"description"`
+	Sub            *ProjectCommissionModel `json:"sub"`
+}
+
+type ProjectCommissionModelsResponse struct {
+	Data []ProjectCommissionModel `json:"data"`
+}
