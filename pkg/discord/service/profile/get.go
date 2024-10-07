@@ -23,3 +23,11 @@ func (e *Profile) GetEmployeeList(in EmployeeSearch) ([]model.Employee, error) {
 
 	return rs, nil
 }
+
+func (e *Profile) GetDiscordRoles(guildID string, userID string) (rs []string, err error) {
+	gm, err := e.ses.GuildMember(guildID, userID)
+	if err != nil {
+		return nil, err
+	}
+	return gm.Roles, nil
+}

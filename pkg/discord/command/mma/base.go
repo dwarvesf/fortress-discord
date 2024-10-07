@@ -56,6 +56,7 @@ func (e *MMACmd) DefaultCommand(message *model.DiscordMessage) error {
 }
 
 func (e *MMACmd) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
+
 	if e.cfg.Env != "prod" {
 		return true, nil
 	}

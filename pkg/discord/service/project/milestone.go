@@ -31,3 +31,7 @@ func (e *Project) GetListMilestone(q string) ([]*model.ProjectMilestone, error) 
 
 	return milestones, nil
 }
+
+func (e *Project) GetProjectList() ([]model.Project, error) {
+	return nil, nil
+}
