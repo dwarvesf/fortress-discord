@@ -14,3 +14,13 @@ func (e *ProjectCmd) GetProjectCommissionModels(message *model.DiscordMessage) e
 
 	return e.view.Project().CommissionModels(message, commissionModels)
 }
+
+func (e *ProjectCmd) GetProjectPnL(message *model.DiscordMessage) error {
+	// using curl to get project pnls
+	pnls, err := e.svc.Project().GetProjectPnLs()
+	if err != nil {
+		return e.view.Error().Raise(message, "Failed to get project PnLs.")
+	}
+
+	return e.view.Project().PnL(message, pnls)
+}

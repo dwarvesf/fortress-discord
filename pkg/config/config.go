@@ -33,10 +33,15 @@ type OpenAI struct {
 	APIKey string
 }
 
+type IR struct {
+	Url    string
+	APIKey string
+}
 type Endpoint struct {
 	Fortress string
 	Mochi    string
 	Tono     string
+	IR       IR
 }
 
 type Discord struct {
@@ -82,6 +87,7 @@ func Generate(v ENV) *Config {
 			Fortress: v.GetString("FORTRESS_ENDPOINT"),
 			Mochi:    v.GetString("MOCHI_ENDPOINT"),
 			Tono:     v.GetString("TONO_ENDPOINT"),
+			IR:       IR{Url: v.GetString("IR_ENDPOINT"), APIKey: v.GetString("IR_API_KEY")},
 		},
 		OpenAI: OpenAI{
 			APIKey: v.GetString("OPENAI_API_KEY"),
