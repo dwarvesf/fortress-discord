@@ -6,4 +6,5 @@ type ProjectServicer interface {
 	GetListMilestone(q string) ([]*model.ProjectMilestone, error)
 	GetCommissionModels(projectID string) ([]model.ProjectCommissionModel, error)
 	GetProjectList() ([]model.Project, error)
+	GetProjectPnLs() ([]model.ProjectPnL, error)
 }

@@ -3,6 +3,7 @@ package adapter
 import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/dify"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/fortress"
+	"github.com/dwarvesf/fortress-discord/pkg/adapter/ir"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/tono"
@@ -20,6 +21,7 @@ type subAdapter struct {
 	OpenAI   openai.OpenAIAdapter
 	Tono     tono.TonoAdapter
 	Dify     dify.DifyAdapter
+	IR       ir.IRAdapter
 }
 
 func New(cfg *config.Config, l logger.Logger) IAdapter {
@@ -30,6 +32,7 @@ func New(cfg *config.Config, l logger.Logger) IAdapter {
 			OpenAI:   openai.New(cfg.OpenAI.APIKey),
 			Tono:     tono.New(cfg),
 			Dify:     dify.New(cfg.Dify.BaseURL, cfg.Dify.SummarizerAppToken, cfg.Dify.ProcessAIAppToken),
+			IR:       ir.New(cfg),
 		},
 	}
 }
@@ -53,4 +56,8 @@ func (a *Adapter) Tono() tono.TonoAdapter {
 
 func (a *Adapter) Dify() dify.DifyAdapter {
 	return a.subAdapter.Dify
+}
+
+func (a *Adapter) IR() ir.IRAdapter {
+	return a.subAdapter.IR
 }

@@ -16,7 +16,7 @@ func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 	allowedList := []string{
 		"1072722777687199744",
 		"1177538072531980318",
-		"1136175977236549693", // dev-channel
+		"1136175977236549693", "1064460652720160808", // dev-channel
 	}
 
 	whiteListedChannels := strings.Split(e.cfg.Discord.WhiteListedChannels, ",")
@@ -37,7 +37,17 @@ func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 		return e.DefaultCommand(message)
 	}
 
-	return e.GetProjectCommissionModels(message)
+	// handle command for 2 args input from user, e.g `?project list`
+	switch message.ContentArgs[1] {
+	case "pnl":
+		return e.GetProjectPnL(message)
+	case "commission", "com":
+		return e.GetProjectCommissionModels(message)
+	case "help", "h":
+		return e.Help(message)
+	default:
+		return e.GetProjectCommissionModels(message)
+	}
 }
 
 func (e *ProjectCmd) Name() string {
