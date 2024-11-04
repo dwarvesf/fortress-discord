@@ -56,6 +56,7 @@ type DiscordIds struct {
 	DwarvesGuild      string
 	RepostDoneChannel string
 	RandomChannel     string
+	BraineryChannel   string
 	DevChannel        string
 }
 
@@ -100,6 +101,7 @@ func Generate(v ENV) *Config {
 				DwarvesGuild:      v.GetString("DISCORD_ID_DWARVES_GUILD"),
 				RepostDoneChannel: v.GetString("DISCORD_ID_REPOST_DONE"),
 				RandomChannel:     v.GetString("DISCORD_ID_RANDOM_CHANNEL"),
+				BraineryChannel:   v.GetString("DISCORD_ID_BRAINERY_CHANNEL"),
 				DevChannel:        v.GetString("DISCORD_ID_DEV_CHANNEL"),
 			},
 			WhiteListedChannels: v.GetString("DISCORD_WHITELISTED_CHANNELS"),

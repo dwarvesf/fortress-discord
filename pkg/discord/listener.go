@@ -177,9 +177,12 @@ func (d *Discord) forwardPullRequestMessage(s *discordgo.Session, m *discordgo.M
 	}
 
 	// Send the message to the "random" channel
-	_, err := s.ChannelMessageSendComplex(d.Cfg.Discord.ID.RandomChannel, newMessage)
-	if err != nil {
+	if _, err := s.ChannelMessageSendComplex(d.Cfg.Discord.ID.RandomChannel, newMessage); err != nil {
 		log.Printf("Error sending message to random channel: %v", err)
+	}
+	// fwd message to brainery channel
+	if _, err := s.ChannelMessageSendComplex(d.Cfg.Discord.ID.BraineryChannel, newMessage); err != nil {
+		log.Printf("Error sending message to brainery channel: %v", err)
 	}
 }
 
