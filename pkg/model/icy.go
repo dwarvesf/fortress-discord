@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"math/big"
+	"time"
+)
 
 // AdapterIcy is a struct response from adapter, before process to in-app model
 type AdapterIcy struct {
@@ -92,4 +95,31 @@ type AdapterICYTotalEarned struct {
 type ICYTotalEarned struct {
 	TotalEarnsICY string `json:"totalEarnsICY"`
 	TotalEarnsUSD string `json:"totalEarnsUSD"`
+}
+
+type IcyWeb3BigIntResponse struct {
+	Data IcyWeb3BigInt `json:"data"`
+}
+
+type IcyWeb3BigInt struct {
+	Value   string `json:"value"`
+	Decimal int    `json:"decimal"`
+}
+
+func (i *IcyWeb3BigInt) Float64() float64 {
+	value, ok := new(big.Float).SetString(i.Value)
+	if !ok {
+		return 0
+	}
+
+	divisor := new(big.Float).SetInt(new(big.Int).Exp(
+		big.NewInt(10),
+		big.NewInt(int64(i.Decimal)),
+		nil,
+	))
+
+	result := new(big.Float).Quo(value, divisor)
+
+	f64, _ := result.Float64()
+	return f64
 }

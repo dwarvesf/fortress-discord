@@ -31,6 +31,7 @@ func (m *Tono) GetCommunityTransaction() (*model.ListGuildCommunityTransactionRe
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
+	fmt.Println(string(body))
 	if err != nil {
 		return nil, err
 	}

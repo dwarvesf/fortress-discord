@@ -9,4 +9,6 @@ type IcyServicer interface {
 	ListICYEarnedTransactions(discordID string, page, size int) ([]*model.ICYEarnedTransaction, error)
 	GetICYTotalEarned(discordID string) (*model.ICYTotalEarned, error)
 	Get30daysTotalReward() (*model.ICYTotalEarned, error)
+	GetBTCTreasury() (*model.IcyWeb3BigIntResponse, error)
+	GetIcyRate() (*model.IcyWeb3BigIntResponse, error)
 }
