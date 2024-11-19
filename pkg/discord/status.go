@@ -12,6 +12,8 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+
+	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
 func (d *Discord) SetStatus() error {
@@ -30,9 +32,22 @@ func (d *Discord) SetStatus() error {
 
 func (d *Discord) updateStatus() error {
 	// Get total volume ICY issue
-	data, err := d.Svc.Tono().GetCommunityTransaction()
+	// data, err := d.Svc.Tono().GetCommunityTransaction()
+	// if err != nil {
+	// 	return fmt.Errorf("failed to get community transaction: %w", err)
+	// }
+	data := &model.ListGuildCommunityTransaction{
+		TotalRewardVolume: 1001,
+	}
+
+	btcTreasury, err := d.Svc.Icy().GetBTCTreasury()
 	if err != nil {
-		return fmt.Errorf("failed to get community transaction: %w", err)
+		return fmt.Errorf("failed to get BTC treasury: %w", err)
+	}
+
+	icyRate, err := d.Svc.Icy().GetIcyRate()
+	if err != nil {
+		return fmt.Errorf("failed to get Icy rate: %w", err)
 	}
 
 	// Get USDC balance
@@ -45,11 +60,13 @@ func (d *Discord) updateStatus() error {
 	statusMessages := []string{
 		fmt.Sprintf("Contract Fund • %s USDC", fm.FormatTokenAmount(balance.String(), 6)),
 		fmt.Sprintf("Issued ICY • %2.f ICY", data.TotalRewardVolume),
+		fmt.Sprintf("BTC Treasury • %s BTC", fm.FormatTokenAmount(btcTreasury.Data.Value, btcTreasury.Data.Decimal)),
+		fmt.Sprintf("Rate • %2.f", icyRate.Data.Float64()),
 	}
 
 	// Rotate through status messages
 	currentTime := time.Now()
-	index := currentTime.Minute() / 30 % len(statusMessages)
+	index := currentTime.Minute() / 15 % len(statusMessages)
 
 	err = d.Session.UpdateStatusComplex(discordgo.UpdateStatusData{
 		IdleSince: nil,

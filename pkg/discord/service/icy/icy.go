@@ -88,3 +88,11 @@ func (e *Icy) Get30daysTotalReward() (*model.ICYTotalEarned, error) {
 
 	return total.Data, nil
 }
+
+func (e *Icy) GetBTCTreasury() (*model.IcyWeb3BigIntResponse, error) {
+	return e.adapter.Icy().GetBTCTreasury()
+}
+
+func (e *Icy) GetIcyRate() (*model.IcyWeb3BigIntResponse, error) {
+	return e.adapter.Icy().GetIcyRate()
+}

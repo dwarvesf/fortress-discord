@@ -42,6 +42,7 @@ type Endpoint struct {
 	Mochi    string
 	Tono     string
 	IR       IR
+	Icy      string
 }
 
 type Discord struct {
@@ -89,6 +90,7 @@ func Generate(v ENV) *Config {
 			Mochi:    v.GetString("MOCHI_ENDPOINT"),
 			Tono:     v.GetString("TONO_ENDPOINT"),
 			IR:       IR{Url: v.GetString("IR_ENDPOINT"), APIKey: v.GetString("IR_API_KEY")},
+			Icy:      v.GetString("ICY_BASE_URL"),
 		},
 		OpenAI: OpenAI{
 			APIKey: v.GetString("OPENAI_API_KEY"),
