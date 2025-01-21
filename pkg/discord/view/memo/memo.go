@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -17,6 +18,31 @@ func New(ses *discordgo.Session) MemoViewer {
 	return &Memo{
 		ses: ses,
 	}
+}
+
+func (v *Memo) Help(message *model.DiscordMessage) error {
+	content := []string{
+		"**Memo Commands**",
+		"",
+		"`?memo` - Show memo logs from the last 7 days",
+		"`?memo list [duration]` - Show memo logs for a specific duration (e.g. 7d, 2w, 1m)",
+		"`?memo sync` - Sync memo logs",
+		"`?memo pr` - Show open pull requests",
+		"`?memo top [duration]` - Show top memo authors for a specific duration",
+		"  - Default: last 90 days",
+		"  - Duration format examples:",
+		"    • `7d` or `7 days` - Last 7 days",
+		"    • `2w` or `2 weeks` - Last 2 weeks",
+		"    • `1m` or `1 month` - Last month",
+		"`?memo @user` - Show memos by a specific user",
+	}
+
+	msg := &discordgo.MessageEmbed{
+		Title:       "**Welcome to Fortress Discord Bot**",
+		Description: strings.Join(content, "\n"),
+	}
+
+	return base.SendEmbededMessage(v.ses, message, msg)
 }
 
 func (v *Memo) ListByDiscordID(original *model.DiscordMessage, data *model.MemoLogsByDiscordID, discordID string) error {
@@ -60,16 +86,35 @@ func (v *Memo) ListByDiscordID(original *model.DiscordMessage, data *model.MemoL
 	return base.SendEmbededMessage(v.ses, original, msg)
 }
 
-func (v *Memo) ListTopAuthors(original *model.DiscordMessage, data []model.AuthorRanking) error {
+func (v *Memo) ListTopAuthors(original *model.DiscordMessage, data []model.AuthorRanking, n, days int) error {
 	var content []string
-
 	for i, author := range data {
-		content = append(content, fmt.Sprintf("[[%v]](%s) <@%s> - %v posts", i+1, fmt.Sprintf("https://memo.d.foundation/contributor/%s", author.MemoUsername), author.DiscordID, author.TotalMemos))
-	}
+		if i >= n {
+			break
+		}
 
+		authorField := ""
+		if author.DiscordID != "" {
+			authorField += fmt.Sprintf(" <@%s> ", author.DiscordID)
+		} else if author.DiscordUsername != "" {
+			authorField += fmt.Sprintf(" @%s ", author.DiscordUsername)
+		} else {
+			authorField += " **@unknown-user**"
+		}
+
+		content = append(content, fmt.Sprintf("%d. %v (%d memos)", i+1, authorField, author.TotalMemos))
+	}
+	if len(content) == 0 {
+		content = append(content, "No authors found for the specified duration.")
+	}
 	msg := &discordgo.MessageEmbed{
-		Title:       "<:pepeyes:885513213431648266> Memo Leaderboard <:pepeyes:885513213431648266> \n",
+		Title:       fmt.Sprintf("Top %d Memo Authors (Last %d Days)", n, days),
 		Description: strings.Join(content, "\n"),
+		Color:       0xED4245, // Discord red color for the left border
+		Footer: &discordgo.MessageEmbedFooter{
+			Text:    "?help to see all commands",
+			IconURL: "https://cdn.discordapp.com/emojis/885513213431648266.png",
+		},
 	}
 
 	return base.SendEmbededMessage(v.ses, original, msg)

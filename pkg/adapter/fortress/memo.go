@@ -127,8 +127,12 @@ func (f *Fortress) GetMemoLogsByDiscordID(discordID string) (memos *model.MemoLo
 }
 
 // GetTopAuthors get top authors
-func (f *Fortress) GetTopAuthors() (topAuthors *model.MemoTopAuthorsResponse, err error) {
-	req, err := f.makeReq("/api/v1/memos/top-authors", http.MethodGet, nil)
+func (f *Fortress) GetTopAuthors(limit, days int) (topAuthors *model.MemoTopAuthorsResponse, err error) {
+	params := url.Values{}
+	params.Add("limit", strconv.Itoa(limit))
+	params.Add("days", strconv.Itoa(days))
+
+	req, err := f.makeReq("/api/v1/memos/top-authors?"+params.Encode(), http.MethodGet, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -18,7 +18,6 @@ func (e *Memo) Execute(message *model.DiscordMessage) error {
 	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
 	case "list":
-
 		return e.ListMemoLogs(message)
 	case "sync":
 		return e.Sync(message)
@@ -26,6 +25,8 @@ func (e *Memo) Execute(message *model.DiscordMessage) error {
 		return e.ListMemoOpenPullRequest(message)
 	case "top":
 		return e.MemoTopAuthors(message)
+	case "help":
+		return e.Help(message)
 	default:
 		return e.ListByDiscordID(message)
 	}
@@ -36,7 +37,7 @@ func (e *Memo) Name() string {
 }
 
 func (e *Memo) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Memo().Help(message)
 }
 
 // DefaultCommand handles the default command
