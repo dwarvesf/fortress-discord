@@ -69,7 +69,7 @@ type FortressAdapter interface {
 	GetMemoLogs(from, to *time.Time) (memos *model.MemoLogsResponse, err error)
 	GetMemoOpenPullRequest() (memos *model.MemoPullRequestResponse, err error)
 	GetMemoLogsByDiscordID(discordID string) (memos *model.MemoLogsByDiscordIDResponse, err error)
-	GetTopAuthors() (topAuthors *model.MemoTopAuthorsResponse, err error)
+	GetTopAuthors(limit, days int) (topAuthors *model.MemoTopAuthorsResponse, err error)
 
 	GetDiscordResearchTopics(timeRange string) (data *model.DiscordResearchTopicResponse, err error)
 

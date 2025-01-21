@@ -143,13 +143,35 @@ func (e *Memo) ListByDiscordID(message *model.DiscordMessage) error {
 }
 
 func (e *Memo) MemoTopAuthors(message *model.DiscordMessage) error {
-	// 1. get data from service
-	data, err := e.svc.Memo().GetTopAuthors()
+	// Default to 10 authors and 90 days if not specified
+	limit := 10
+	days := 90
+
+	// Parse time period from command if provided
+	if len(message.ContentArgs) >= 3 {
+		now := time.Now()
+		durationStr := message.ContentArgs[2]
+		_, amount, unit, err := stringutils.ParseTimePeriod(now, durationStr)
+		if err == nil {
+			// Convert any time period to days
+			switch unit {
+			case "days", "day":
+				days = amount
+			case "weeks", "week":
+				days = amount * 7
+			case "months", "month":
+				days = amount * 30
+			}
+		}
+	}
+
+	// 1. get data from service with limit and days
+	data, err := e.svc.Memo().GetTopAuthors(limit, days)
 	if err != nil {
 		e.L.Error(err, "can't get top authors")
 		return err
 	}
 
-	// 2. render
-	return e.view.Memo().ListTopAuthors(message, data)
+	// 2. render with the same limit and days
+	return e.view.Memo().ListTopAuthors(message, data, limit, days)
 }
