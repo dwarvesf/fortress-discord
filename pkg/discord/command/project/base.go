@@ -45,7 +45,7 @@ func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 		return e.GetProjectCommissionModels(message)
 	case "help", "h":
 		return e.Help(message)
-	case "list", "l":
+	case "list", "ls":
 		return e.GetProjectList(message)
 	default:
 		return e.Help(message)

@@ -1,6 +1,10 @@
 package model
 
-import "github.com/shopspring/decimal"
+import (
+	"time"
+
+	"github.com/shopspring/decimal"
+)
 
 type ProjectCommissionModel struct {
 	Beneficiary    BasicEmployeeInfo       `json:"beneficiary"`
@@ -15,11 +19,15 @@ type ProjectCommissionModelsResponse struct {
 }
 
 type Project struct {
-	ID           string `json:"id"`
-	Name         string `json:"name"`
-	Code         string `json:"code"`
-	Status       string `json:"status"`
-	ArtifactLink string `json:"artifactLink"`
+	ID           string     `json:"id"`
+	Name         string     `json:"name"`
+	Code         string     `json:"code"`
+	Status       string     `json:"status"`
+	ArtifactLink string     `json:"artifactLink"`
+	SourceLink   string     `json:"sourceLink"`
+	DocLink      string     `json:"docLink"`
+	StartDate    *time.Time `json:"startDate"`
+	EndDate      *time.Time `json:"endDate"`
 }
 
 type ProjectListResponse struct {
