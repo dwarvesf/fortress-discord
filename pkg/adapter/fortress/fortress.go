@@ -308,6 +308,26 @@ func (f *Fortress) GetStaffingDemands() (events *model.AdapterStaffingDemands, e
 	return events, nil
 }
 
+func (f *Fortress) GetProjects(q string) (res *model.ProjectListResponse, err error) {
+	req, err := f.makeReq("/api/v1/projects?status="+q, http.MethodGet, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("invalid call, code %v", resp.StatusCode)
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+		return nil, fmt.Errorf("invalid decoded, error %v", err.Error())
+	}
+	return res, nil
+}
+
 func (f *Fortress) GetProjectMilestones(q string) (milestone *model.AdapterProjectMilestone, err error) {
 	req, err := f.makeReq("/api/v1/notion/projects/milestones?project_name="+q, http.MethodGet, nil)
 	if err != nil {

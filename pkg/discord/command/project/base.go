@@ -45,8 +45,10 @@ func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 		return e.GetProjectCommissionModels(message)
 	case "help", "h":
 		return e.Help(message)
+	case "list", "l":
+		return e.GetProjectList(message)
 	default:
-		return e.GetProjectCommissionModels(message)
+		return e.Help(message)
 	}
 }
 
@@ -55,7 +57,7 @@ func (e *ProjectCmd) Name() string {
 }
 
 func (e *ProjectCmd) Help(message *model.DiscordMessage) error {
-	return e.view.DeliveryMetrics().Help(message)
+	return e.view.Project().Help(message)
 }
 
 func (e *ProjectCmd) DefaultCommand(message *model.DiscordMessage) error {

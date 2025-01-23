@@ -7,7 +7,7 @@ import (
 func (e *Project) GetProjectPnLs() ([]model.ProjectPnL, error) {
 	pnls, err := e.adapter.IR().GetProjectPnLs()
 	if err != nil {
-		e.l.Error(err, "can't get subscriber")
+		e.l.Error(err, "can't get project pnl")
 		return nil, err
 	}
 

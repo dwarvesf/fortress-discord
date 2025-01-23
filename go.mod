@@ -10,7 +10,6 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gocolly/colly v1.2.0
 	github.com/joho/godotenv v1.5.1
-	github.com/k0kubun/pp/v3 v3.2.0
 	github.com/leekchan/accounting v1.0.0
 	github.com/sashabaranov/go-openai v1.10.1
 	github.com/shopspring/decimal v1.3.1
@@ -59,7 +58,6 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mmcloughlin/addchain v0.4.0 // indirect

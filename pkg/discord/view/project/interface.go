@@ -10,4 +10,6 @@ type ProjectViewer interface {
 	MissingArgsMilestones(original *model.DiscordMessage) error
 	CommissionModels(original *model.DiscordMessage, commissionModel []model.ProjectCommissionModel) error
 	PnL(original *model.DiscordMessage, pnls []model.ProjectPnL) error
+	List(original *model.DiscordMessage, projects []model.Project) error
+	Help(original *model.DiscordMessage) error
 }

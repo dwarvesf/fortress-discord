@@ -25,6 +25,7 @@ type FortressAdapter interface {
 
 	GetStaffingDemands() (staffs *model.AdapterStaffingDemands, err error)
 
+	GetProjects(q string) (res *model.ProjectListResponse, err error)
 	GetProjectMilestones(q string) (milestones *model.AdapterProjectMilestone, err error)
 	GetProjectCommissionModels(projectID string) (cm []model.ProjectCommissionModel, err error)
 
