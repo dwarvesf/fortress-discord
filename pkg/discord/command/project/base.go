@@ -78,5 +78,5 @@ func (e *ProjectCmd) PermissionCheck(message *model.DiscordMessage) (bool, []str
 	roles = append(roles, userRoles...)
 	roles = append(roles, message.Roles...)
 
-	return permutil.CheckSmodOrAbove(roles)
+	return permutil.CheckModOrAbove(roles)
 }
