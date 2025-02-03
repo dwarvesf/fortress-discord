@@ -7,4 +7,5 @@ type ChangelogViewer interface {
 	Changelog(message *model.DiscordMessage, data []*model.Changelog) error
 	ChangelogSendSuccess(message *model.DiscordMessage, data *model.Changelog) error
 	ChangelogSendFailed(message *model.DiscordMessage, data *model.Changelog) error
+	Help(message *model.DiscordMessage) error
 }
