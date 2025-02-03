@@ -25,7 +25,7 @@ func (t *TechRadar) AdoptHelp(original *model.DiscordMessage) error {
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       "**Tech Radar: Adopt Quadrant**",
+		Title:       "**Welcome to Fortress Discord Bot**",
 		Description: strings.Join(content, "\n"),
 	}
 

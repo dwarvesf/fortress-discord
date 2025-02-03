@@ -2,21 +2,22 @@ package ai
 
 import (
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-type AI struct {
+type view struct {
 	ses *discordgo.Session
 }
 
 func New(ses *discordgo.Session) AIViewer {
-	return &AI{
+	return &view{
 		ses: ses,
 	}
 }
 
-func (a *AI) SendResponse(message *model.DiscordMessage, response *model.AIResponse) error {
+func (a *view) SendResponse(message *model.DiscordMessage, response *model.AIResponse) error {
 	msg := &discordgo.MessageEmbed{
 		Title:       "AI Response",
 		Description: response.Response,

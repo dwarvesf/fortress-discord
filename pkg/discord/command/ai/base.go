@@ -10,7 +10,13 @@ func (a *AI) Prefix() []string {
 
 // Execute is where we handle logic for each command
 func (a *AI) Execute(message *model.DiscordMessage) error {
-	// For AI command, we always process the input, regardless of the number of arguments
+	if len(message.ContentArgs) == 2 {
+		switch message.ContentArgs[1] {
+		case "help", "h":
+			return a.Help(message)
+		}
+	}
+
 	return a.DefaultCommand(message)
 }
 
@@ -19,11 +25,7 @@ func (a *AI) Name() string {
 }
 
 func (a *AI) Help(message *model.DiscordMessage) error {
-	helpText := "The AI command processes any text input using an AI model.\n\n" +
-		"Usage: ?ai <your text here>\n" +
-		"Example: ?ai What is the capital of France?"
-
-	return a.view.Error().Raise(message, helpText)
+	return a.view.AI().Help(message)
 }
 
 func (a *AI) DefaultCommand(message *model.DiscordMessage) error {
