@@ -3,11 +3,9 @@ package mma
 import (
 	"bytes"
 	"encoding/csv"
-	"strings"
 
 	"github.com/bwmarrin/discordgo"
 
-	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
@@ -19,20 +17,6 @@ func New(ses *discordgo.Session) Viewer {
 	return &MMA{
 		ses: ses,
 	}
-}
-
-func (v *MMA) Help(message *model.DiscordMessage) error {
-	content := []string{
-		"**?mma template**・export csv template",
-		"*Example:* `?mma template`",
-	}
-
-	msg := &discordgo.MessageEmbed{
-		Title:       "**Welcome to Fortress Discord Bot**",
-		Description: strings.Join(content, "\n"),
-	}
-
-	return base.SendEmbededMessage(v.ses, message, msg)
 }
 
 func (v *MMA) ExportTemplate(original *model.DiscordMessage, employeeMMAScores []model.EmployeeMMAScore) error {
