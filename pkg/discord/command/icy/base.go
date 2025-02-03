@@ -18,16 +18,20 @@ func (e *Icy) Execute(message *model.DiscordMessage) error {
 
 	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
-	case "list":
+	case "list", "ls":
 		return e.List(message)
+	case "help", "h":
+		return e.Help(message)
+	case "info", "i":
+		return e.PersonalInfo(message)
 	case "accounting":
 		if !e.ChannelPermissionCheck(message) {
 			return e.view.Error().Raise(message, "This command is not allowed in this channel.")
 		}
 		return e.Accounting(message)
+	default:
+		return e.Help(message)
 	}
-
-	return nil
 }
 
 func (e *Icy) Name() string {
@@ -35,11 +39,11 @@ func (e *Icy) Name() string {
 }
 
 func (e *Icy) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Icy().Help(message)
 }
 
 func (e *Icy) DefaultCommand(message *model.DiscordMessage) error {
-	return e.PersonalInfo(message)
+	return e.Help(message)
 }
 
 func (e *Icy) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
