@@ -24,7 +24,6 @@ func (v *Memo) Help(message *model.DiscordMessage) error {
 	content := []string{
 		"**Memo Commands**",
 		"",
-		"`?memo` - Show memo logs from the last 7 days",
 		"`?memo list [duration]` - Show memo logs for a specific duration (e.g. 7d, 2w, 1m)",
 		"`?memo sync` - Sync memo logs",
 		"`?memo pr` - Show open pull requests",
@@ -35,6 +34,16 @@ func (v *Memo) Help(message *model.DiscordMessage) error {
 		"    • `2w` or `2 weeks` - Last 2 weeks",
 		"    • `1m` or `1 month` - Last month",
 		"`?memo @user` - Show memos by a specific user",
+		"`?memo help` - Show this help message",
+		"",
+		"**Aliases**:",
+		"`?memos` - Alternative for memo",
+		"`?memo ls` - Shorthand for list",
+		"`?memo h` - Shorthand for help",
+		"Example:",
+		"`?memo list 7d` - View memo logs for the last 7 days",
+		"`?memo top 1m` - View top memo authors for the last month",
+		"`?memo @hnh` - View memos by a specific user",
 	}
 
 	msg := &discordgo.MessageEmbed{
