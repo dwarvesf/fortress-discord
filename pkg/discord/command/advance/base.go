@@ -17,9 +17,11 @@ func (e *Salary) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "advance":
 		return e.Advance(message)
+	case "help", "h":
+		return e.Help(message)
+	default:
+		return e.Help(message)
 	}
-
-	return nil
 }
 
 func (e *Salary) Name() string {
@@ -27,11 +29,11 @@ func (e *Salary) Name() string {
 }
 
 func (e *Salary) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Salary().Help(message)
 }
 
 func (e *Salary) DefaultCommand(message *model.DiscordMessage) error {
-	return e.Advance(message)
+	return e.Help(message)
 }
 
 func (e *Salary) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

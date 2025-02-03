@@ -12,4 +12,5 @@ type TechRadarViewer interface {
 
 	LogTopicSuccess(original *model.DiscordMessage, topicName string) error
 	LogTopicFailed(original *model.DiscordMessage, err string) error
+	Help(original *model.DiscordMessage) error
 }
