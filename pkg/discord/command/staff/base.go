@@ -22,10 +22,8 @@ func (s *Staff) Execute(message *model.DiscordMessage) error {
 	case "help", "h":
 		return s.Help(message)
 	default:
-		return s.Help(message)
+		return s.DefaultCommand(message)
 	}
-
-	return nil
 }
 
 func (s *Staff) Name() string {

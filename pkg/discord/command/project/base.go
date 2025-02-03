@@ -47,12 +47,12 @@ func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 	case "help", "h":
 		return e.Help(message)
 	default:
-		return e.Help(message)
+		return e.DefaultCommand(message)
 	}
 }
 
 func (e *ProjectCmd) Name() string {
-	return "Project"
+	return "Project Command"
 }
 
 func (e *ProjectCmd) Help(message *model.DiscordMessage) error {

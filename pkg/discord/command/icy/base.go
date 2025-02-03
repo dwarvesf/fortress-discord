@@ -30,7 +30,7 @@ func (e *Icy) Execute(message *model.DiscordMessage) error {
 		}
 		return e.Accounting(message)
 	default:
-		return e.Help(message)
+		return e.DefaultCommand(message)
 	}
 }
 

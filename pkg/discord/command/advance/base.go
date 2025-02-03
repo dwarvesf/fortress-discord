@@ -20,7 +20,7 @@ func (e *Salary) Execute(message *model.DiscordMessage) error {
 	case "help", "h":
 		return e.Help(message)
 	default:
-		return e.Help(message)
+		return e.DefaultCommand(message)
 	}
 }
 

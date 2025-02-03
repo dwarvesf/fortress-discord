@@ -23,7 +23,7 @@ func (i *Issue) Execute(message *model.DiscordMessage) error {
 	case "help", "h":
 		return i.Help(message)
 	default:
-		return i.Help(message)
+		return i.DefaultCommand(message)
 	}
 }
 

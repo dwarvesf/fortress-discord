@@ -19,9 +19,9 @@ func (e *Sum) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "help", "h":
 		return e.Help(message)
-	default:
-		return e.Sum(message)
 	}
+
+	return e.Sum(message)
 }
 
 func (e *Sum) Name() string {

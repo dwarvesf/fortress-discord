@@ -22,7 +22,7 @@ func (e *Hiring) Execute(message *model.DiscordMessage) error {
 	case "help", "h":
 		return e.Help(message)
 	default:
-		return e.Help(message)
+		return e.DefaultCommand(message)
 	}
 }
 
@@ -31,7 +31,7 @@ func (e *Hiring) Name() string {
 }
 
 func (e *Hiring) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Hiring().Help(message)
 }
 
 func (e *Hiring) DefaultCommand(message *model.DiscordMessage) error {

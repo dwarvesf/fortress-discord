@@ -10,11 +10,13 @@ func (a *AI) Prefix() []string {
 
 // Execute is where we handle logic for each command
 func (a *AI) Execute(message *model.DiscordMessage) error {
-	if len(message.ContentArgs) == 2 {
-		switch message.ContentArgs[1] {
-		case "help", "h":
-			return a.Help(message)
-		}
+	if len(message.ContentArgs) == 1 {
+		return a.Help(message)
+	}
+
+	switch message.ContentArgs[1] {
+	case "help", "h":
+		return a.Help(message)
 	}
 
 	return a.DefaultCommand(message)

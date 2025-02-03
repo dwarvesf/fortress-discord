@@ -20,9 +20,9 @@ func (d *Done) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "help", "h":
 		return d.Help(message)
-	default:
-		return d.Done(message)
 	}
+
+	return d.Done(message)
 }
 
 func (d *Done) Name() string {
