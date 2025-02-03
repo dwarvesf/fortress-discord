@@ -17,11 +17,13 @@ func (e *Hiring) Execute(message *model.DiscordMessage) error {
 
 	// handle command for 2 args input from user, e.g `?hiring list`
 	switch message.ContentArgs[1] {
-	case "list":
+	case "list", "ls":
 		return e.OpenPositions(message)
+	case "help", "h":
+		return e.Help(message)
+	default:
+		return e.Help(message)
 	}
-
-	return nil
 }
 
 func (e *Hiring) Name() string {
@@ -33,7 +35,7 @@ func (e *Hiring) Help(message *model.DiscordMessage) error {
 }
 
 func (e *Hiring) DefaultCommand(message *model.DiscordMessage) error {
-	return e.OpenPositions(message)
+	return e.Help(message)
 }
 
 func (e *Hiring) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
