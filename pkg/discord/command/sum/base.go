@@ -11,17 +11,17 @@ func (e *Sum) Prefix() []string {
 // Execute is where we handle logic for each command
 func (e *Sum) Execute(message *model.DiscordMessage) error {
 	// default command for only 1 args input from user, e.g `?sum`
-	if len(message.ContentArgs) == 2 {
-		return e.DefaultCommand(message)
+	if len(message.ContentArgs) == 1 {
+		return e.Help(message)
 	}
 
 	// handle command for 2 args input from user, e.g `?earn sum`
-	// switch message.ContentArgs[1] {
-	// case "sum":
-	// 	return e.Sum(message)
-	// }
-
-	return nil
+	switch message.ContentArgs[1] {
+	case "help", "h":
+		return e.Help(message)
+	default:
+		return e.Sum(message)
+	}
 }
 
 func (e *Sum) Name() string {
@@ -29,7 +29,7 @@ func (e *Sum) Name() string {
 }
 
 func (e *Sum) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Sum().Help(message)
 }
 
 func (e *Sum) DefaultCommand(message *model.DiscordMessage) error {

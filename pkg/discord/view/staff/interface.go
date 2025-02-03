@@ -6,4 +6,5 @@ import (
 
 type StaffViewer interface {
 	ListDemands(original *model.DiscordMessage, subs []*model.StaffingDemand) error
+	Help(original *model.DiscordMessage) error
 }

@@ -13,20 +13,28 @@ func (e *Topic) Execute(message *model.DiscordMessage) error {
 		return e.DefaultCommand(message)
 	}
 
-	return nil
+	// handle command for 2 args input from user, e.g `?earn sum`
+	switch message.ContentArgs[1] {
+	case "list", "l":
+		return e.List(message)
+	case "help", "h":
+		return e.Help(message)
+	default:
+		return e.DefaultCommand(message)
+	}
 }
 
 func (e *Topic) Name() string {
-	return "Memo Command"
+	return "Topic Command"
 }
 
 func (e *Topic) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Topic().Help(message)
 }
 
 // DefaultCommand handles the default command
 func (e *Topic) DefaultCommand(message *model.DiscordMessage) error {
-	return e.List(message)
+	return e.Help(message)
 }
 
 func (e *Topic) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
