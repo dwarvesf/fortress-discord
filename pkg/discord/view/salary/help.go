@@ -25,7 +25,7 @@ func (s *Salary) Help(original *model.DiscordMessage) error {
 	}
 
 	msg := &discordgo.MessageEmbed{
-		Title:       "**Salary Advance**",
+		Title:       "**Welcome to Fortress Discord Bot**",
 		Description: strings.Join(content, "\n"),
 	}
 

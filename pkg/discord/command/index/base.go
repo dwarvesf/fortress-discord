@@ -10,19 +10,31 @@ func (i *Index) Prefix() []string {
 
 // Execute is where we handle logic for each command
 func (i *Index) Execute(message *model.DiscordMessage) error {
-	return i.DefaultCommand(message)
+	// default command for only 1 args input from user, e.g `?earn`
+	if len(message.ContentArgs) == 1 {
+		return i.DefaultCommand(message)
+	}
+
+	switch message.ContentArgs[1] {
+	case "list", "ls":
+		return i.Search(message)
+	case "help", "h":
+		return i.Help(message)
+	default:
+		return i.Help(message)
+	}
 }
 
 func (i *Index) Name() string {
-	return "Home Command"
+	return "Index Command"
 }
 
 func (i *Index) Help(message *model.DiscordMessage) error {
-	return nil
+	return i.view.TechRadar().IndexHelp(message)
 }
 
 func (i *Index) DefaultCommand(message *model.DiscordMessage) error {
-	return i.Search(message)
+	return i.Help(message)
 }
 
 func (i *Index) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

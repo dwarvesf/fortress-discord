@@ -15,13 +15,14 @@ func (t *Trial) Execute(message *model.DiscordMessage) error {
 		return t.DefaultCommand(message)
 	}
 
-	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
-	case "list":
+	case "list", "ls":
 		return t.List(message)
+	case "help", "h":
+		return t.Help(message)
+	default:
+		return t.Help(message)
 	}
-
-	return nil
 }
 
 func (t *Trial) Name() string {
@@ -29,11 +30,11 @@ func (t *Trial) Name() string {
 }
 
 func (t *Trial) Help(message *model.DiscordMessage) error {
-	return nil
+	return t.view.TechRadar().TrialHelp(message)
 }
 
 func (t *Trial) DefaultCommand(message *model.DiscordMessage) error {
-	return t.List(message)
+	return t.Help(message)
 }
 
 func (t *Trial) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

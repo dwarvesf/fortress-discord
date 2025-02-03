@@ -15,7 +15,6 @@ func (a *Adopt) Execute(message *model.DiscordMessage) error {
 		return a.DefaultCommand(message)
 	}
 
-	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
 	case "list", "ls":
 		return a.List(message)
