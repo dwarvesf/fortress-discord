@@ -11,7 +11,19 @@ func (m *Milestone) Prefix() []string {
 
 // Execute is where we handle logic for each command
 func (m *Milestone) Execute(message *model.DiscordMessage) error {
-	return m.ListMilestones(message)
+	// default command for only 1 args input from user, e.g `?earn`
+	if len(message.ContentArgs) == 1 {
+		return m.DefaultCommand(message)
+	}
+
+	switch message.ContentArgs[1] {
+	case "list", "ls":
+		return m.ListMilestones(message)
+	case "help", "h":
+		return m.Help(message)
+	default:
+		return m.DefaultCommand(message)
+	}
 }
 
 func (m *Milestone) Name() string {
@@ -23,7 +35,7 @@ func (m *Milestone) Help(message *model.DiscordMessage) error {
 }
 
 func (m *Milestone) DefaultCommand(message *model.DiscordMessage) error {
-	return m.ListMilestones(message)
+	return m.Help(message)
 }
 
 func (m *Milestone) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

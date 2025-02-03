@@ -35,3 +35,27 @@ func (e *Project) Help(message *model.DiscordMessage) error {
 
 	return base.SendEmbededMessage(e.ses, message, msg)
 }
+
+func (e *Project) MilestoneHelp(message *model.DiscordMessage) error {
+	content := []string{
+		"**Milestone Commands**",
+		"",
+		"`?milestone list` - List project milestones",
+		"`?milestone help` - Show this help message",
+		"",
+		"**Aliases**",
+		"`?milestones` - Alias for milestone",
+		"`?milestone ls` - Shorthand for list",
+		"`?milestone h` - Shorthand for help",
+		"",
+		"**Permissions**:",
+		"- Requires Mod or higher role",
+	}
+
+	msg := &discordgo.MessageEmbed{
+		Title:       "**Welcome to Fortress Discord Bot**",
+		Description: strings.Join(content, "\n"),
+	}
+
+	return base.SendEmbededMessage(e.ses, message, msg)
+}
