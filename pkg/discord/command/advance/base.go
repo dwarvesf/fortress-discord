@@ -15,7 +15,7 @@ func (e *Salary) Execute(message *model.DiscordMessage) error {
 	}
 
 	switch message.ContentArgs[1] {
-	case "advance":
+	case "advance", "adv":
 		return e.Advance(message)
 	case "help", "h":
 		return e.Help(message)

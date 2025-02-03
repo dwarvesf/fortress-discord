@@ -27,11 +27,11 @@ func (a *Adopt) Execute(message *model.DiscordMessage) error {
 }
 
 func (a *Adopt) Name() string {
-	return "Hold Command"
+	return "Adopt Command"
 }
 
 func (a *Adopt) Help(message *model.DiscordMessage) error {
-	return a.view.TechRadar().Help(message)
+	return a.view.TechRadar().AdoptHelp(message)
 }
 
 func (a *Adopt) DefaultCommand(message *model.DiscordMessage) error {
