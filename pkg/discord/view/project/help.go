@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
@@ -21,6 +22,10 @@ func (e *Project) Help(message *model.DiscordMessage) error {
 		"`?project ls [status] [page]` - Alias for list (same arguments as list)",
 		"`?project com` - Alias for commission",
 		"`?project h` - Alias for help",
+		"",
+		"**Example**:",
+		"`?project list active 1` - List active projects on the first page",
+		"`?project pnl` - Show project profit and loss information",
 	}
 
 	msg := &discordgo.MessageEmbed{
