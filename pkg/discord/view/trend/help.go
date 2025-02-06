@@ -4,12 +4,15 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
 func (t *Trend) Help(message *model.DiscordMessage) error {
 	content := []string{
+		"**Trend Commands**",
+		"",
 		"**?trend <lang>** - Get daily trending Repositories in a particular programming language, in English.",
 		"*Example:* `?trend go`\n",
 		"**?trend <lang> <date_range>** - Get trending repository in English, filtered by programming language and date range(daily(default)/weekly/monthly)",

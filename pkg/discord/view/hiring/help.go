@@ -1,4 +1,4 @@
-package withdrawal
+package hiring
 
 import (
 	"strings"
@@ -9,19 +9,20 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (e *Withdraw) Help(message *model.DiscordMessage) error {
+func (e *Hiring) Help(message *model.DiscordMessage) error {
 	content := []string{
-		"**Withdrawal Commands**",
+		"**Hiring Commands**",
 		"",
-		"`?withdraw` - Initiate withdrawal process",
-		"`?withdraw help` - Show this help message",
+		"`?hiring list` - List open job positions",
+		"`?hiring help` - Show this help message",
 		"",
 		"**Aliases**:",
-		"`?withdraw h` - Shorthand for help",
+		"`?jobs list` - Alternative for hiring list",
+		"`?hiring ls` - Shorthand for list",
+		"`?hiring h` - Shorthand for help",
 		"",
-		"**Requirements**:",
-		"- Must have sufficient ICY token balance",
-		"- Withdrawal amount depends on current ICY/VND exchange rate",
+		"**Example**:",
+		"`?hiring list` - View current open job positions",
 	}
 
 	msg := &discordgo.MessageEmbed{

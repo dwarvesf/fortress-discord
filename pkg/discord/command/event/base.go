@@ -40,7 +40,7 @@ func (e *Event) Help(message *model.DiscordMessage) error {
 }
 
 func (e *Event) DefaultCommand(message *model.DiscordMessage) error {
-	return e.List(message)
+	return e.Help(message)
 }
 
 func (e *Event) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

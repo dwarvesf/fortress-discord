@@ -1,4 +1,4 @@
-package salary
+package subscriber
 
 import (
 	"strings"
@@ -9,19 +9,16 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (s *Salary) Help(original *model.DiscordMessage) error {
+func (s *Subscriber) Help(original *model.DiscordMessage) error {
 	content := []string{
-		"**Salary Advance Commands**",
+		"**Subscriber Commands**",
 		"",
-		"`?salary advance` - Request a salary advance",
-		"`?salary help` - Show this help message",
+		"`?new list` - List new subscribers",
+		"`?new help` - Show this help message",
 		"",
 		"**Aliases**:",
-		"`?salary adv` - Shorthand for salary advance",
-		"`?salary h` - Shorthand for help",
-		"",
-		"**Example**:",
-		"`?salary advance` - Initiate a salary advance request",
+		"`?new ls` - Shorthand for list",
+		"`?new h` - Shorthand for help",
 	}
 
 	msg := &discordgo.MessageEmbed{

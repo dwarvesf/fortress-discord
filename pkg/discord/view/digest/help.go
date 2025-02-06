@@ -1,4 +1,4 @@
-package earn
+package digest
 
 import (
 	"strings"
@@ -9,16 +9,16 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (e *Earn) Help(message *model.DiscordMessage) error {
+func (a *Digest) Help(message *model.DiscordMessage) error {
 	content := []string{
-		"**Earn Commands**",
+		"**Digest Commands**",
 		"",
-		"`?earn list` - List available earning opportunities",
-		"`?earn help` - Show this help message",
+		"`?digest list` - List internal updates",
+		"`?digest help` - Show this help message",
 		"",
 		"**Aliases**:",
-		"`?earn ls` - Shorthand for list",
-		"`?earn h` - Shorthand for help",
+		"`?digest ls` - Shorthand for digest list",
+		"`?digest h` - Shorthand for help",
 	}
 
 	msg := &discordgo.MessageEmbed{
@@ -26,5 +26,5 @@ func (e *Earn) Help(message *model.DiscordMessage) error {
 		Description: strings.Join(content, "\n"),
 	}
 
-	return base.SendEmbededMessage(e.ses, message, msg)
+	return base.SendEmbededMessage(a.ses, message, msg)
 }

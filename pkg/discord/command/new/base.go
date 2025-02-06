@@ -17,11 +17,13 @@ func (n *NewCommand) Execute(message *model.DiscordMessage) error {
 
 	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
-	case "list":
+	case "list", "ls":
 		return n.List(message)
+	case "help", "h":
+		return n.Help(message)
+	default:
+		return n.DefaultCommand(message)
 	}
-
-	return nil
 }
 
 func (n *NewCommand) Name() string {
@@ -29,11 +31,11 @@ func (n *NewCommand) Name() string {
 }
 
 func (n *NewCommand) Help(message *model.DiscordMessage) error {
-	return nil
+	return n.view.Subscriber().Help(message)
 }
 
 func (n *NewCommand) DefaultCommand(message *model.DiscordMessage) error {
-	return n.List(message)
+	return n.Help(message)
 }
 
 func (n *NewCommand) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

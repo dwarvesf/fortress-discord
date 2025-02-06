@@ -38,6 +38,8 @@ func (e *MMACmd) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "template":
 		return e.ExportTemplate(message)
+	case "help", "h":
+		return e.Help(message)
 	default:
 		return e.DefaultCommand(message)
 	}

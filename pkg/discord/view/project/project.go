@@ -2,7 +2,6 @@ package project
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/bwmarrin/discordgo"
 
@@ -18,29 +17,6 @@ func New(ses *discordgo.Session) ProjectViewer {
 	return &Project{
 		ses: ses,
 	}
-}
-
-func (e *Project) Help(message *model.DiscordMessage) error {
-	content := []string{
-		"**Project Commands**",
-		"",
-		"`?project` - Show project commands help",
-		"`?project list [status] [page]` - List projects (default: active status, page 1). Status: active, paused, closed",
-		"`?project pnl` - Show project P&L information",
-		"`?project commission` - Show project commission models",
-		"",
-		"**Aliases**",
-		"`?project ls [status] [page]` - Alias for list (same arguments as list)",
-		"`?project com` - Alias for commission",
-		"`?project h` - Alias for help",
-	}
-
-	msg := &discordgo.MessageEmbed{
-		Title:       "**Project Commands Help**",
-		Description: strings.Join(content, "\n"),
-	}
-
-	return base.SendEmbededMessage(e.ses, message, msg)
 }
 
 func (e *Project) List(original *model.DiscordMessage, projects []model.Project, page int) error {

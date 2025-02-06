@@ -14,20 +14,20 @@ func (e *Withdraw) Execute(message *model.DiscordMessage) error {
 		return e.DefaultCommand(message)
 	}
 
-	//switch message.ContentArgs[1] {
-	//case "with":
-	//	return e.Home(message)
-	//}
+	switch message.ContentArgs[1] {
+	case "help", "h":
+		return e.Help(message)
+	}
 
-	return nil
+	return e.DefaultCommand(message)
 }
 
 func (e *Withdraw) Name() string {
-	return "Home Command"
+	return "Withdraw Command"
 }
 
 func (e *Withdraw) Help(message *model.DiscordMessage) error {
-	return nil
+	return e.view.Withdraw().Help(message)
 }
 
 func (e *Withdraw) DefaultCommand(message *model.DiscordMessage) error {

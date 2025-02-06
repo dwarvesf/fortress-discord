@@ -19,9 +19,11 @@ func (a *Changelog) Execute(message *model.DiscordMessage) error {
 	switch message.ContentArgs[1] {
 	case "send":
 		return a.Send(message)
+	case "help", "h":
+		return a.Help(message)
+	default:
+		return a.DefaultCommand(message)
 	}
-
-	return nil
 }
 
 func (a *Changelog) Name() string {
@@ -33,7 +35,7 @@ func (a *Changelog) Help(message *model.DiscordMessage) error {
 }
 
 func (a *Changelog) DefaultCommand(message *model.DiscordMessage) error {
-	return nil
+	return a.Help(message)
 }
 
 func (a *Changelog) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

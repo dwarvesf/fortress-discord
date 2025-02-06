@@ -1,4 +1,4 @@
-package sum
+package topic
 
 import (
 	"strings"
@@ -9,18 +9,20 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (e *Sum) Help(message *model.DiscordMessage) error {
+func (e *Topic) Help(message *model.DiscordMessage) error {
 	content := []string{
-		"**Article Summarization Commands**",
+		"**Research Topic Commands**",
 		"",
-		"`?sum <article_url>` - Summarize an article from a given URL",
-		"`?sum help` - Show this help message",
+		"`?topic list` - Show the top research topics for the last 7 days",
+		"`?topic help` - Show this help message",
 		"",
 		"**Aliases**:",
-		"`?sum h` - Shorthand for help",
+		"`?topics list` - Alternative for topic list",
+		"`?topic l` - Shorthand for list",
+		"`?topic h` - Shorthand for help",
 		"",
 		"**Example**:",
-		"`?sum https://example.com/article` - Summarize the article at the specified URL",
+		"`?topic list` - View top research topics for the past week",
 	}
 
 	msg := &discordgo.MessageEmbed{

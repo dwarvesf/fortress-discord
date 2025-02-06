@@ -15,25 +15,26 @@ func (a *Adopt) Execute(message *model.DiscordMessage) error {
 		return a.DefaultCommand(message)
 	}
 
-	// handle command for 2 args input from user, e.g `?earn list`
 	switch message.ContentArgs[1] {
-	case "list":
+	case "list", "ls":
 		return a.List(message)
+	case "help", "h":
+		return a.Help(message)
+	default:
+		return a.DefaultCommand(message)
 	}
-
-	return nil
 }
 
 func (a *Adopt) Name() string {
-	return "Hold Command"
+	return "Adopt Command"
 }
 
 func (a *Adopt) Help(message *model.DiscordMessage) error {
-	return nil
+	return a.view.TechRadar().AdoptHelp(message)
 }
 
 func (a *Adopt) DefaultCommand(message *model.DiscordMessage) error {
-	return a.List(message)
+	return a.Help(message)
 }
 
 func (a *Adopt) PermissionCheck(message *model.DiscordMessage) (bool, []string) {

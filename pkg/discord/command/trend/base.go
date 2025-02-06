@@ -16,10 +16,10 @@ func (t *Trend) Execute(message *model.DiscordMessage) error {
 	}
 
 	// handle command for 2 args input from user, e.g `?earn sum`
-	// switch message.ContentArgs[1] {
-	// case "sum":
-	// 	return e.Sum(message)
-	// }
+	switch message.ContentArgs[1] {
+	case "help", "h":
+		return t.Help(message)
+	}
 
 	return t.Trend(message)
 }

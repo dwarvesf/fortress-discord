@@ -32,7 +32,6 @@ func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 		return e.view.Error().Raise(message, "This command is not allowed in this channel.")
 	}
 
-	// default command for only 1 args input from user, e.g `?profile`
 	if len(message.ContentArgs) == 1 {
 		return e.DefaultCommand(message)
 	}
@@ -43,17 +42,17 @@ func (e *ProjectCmd) Execute(message *model.DiscordMessage) error {
 		return e.GetProjectPnL(message)
 	case "commission", "com":
 		return e.GetProjectCommissionModels(message)
-	case "help", "h":
-		return e.Help(message)
 	case "list", "ls":
 		return e.GetProjectList(message)
-	default:
+	case "help", "h":
 		return e.Help(message)
+	default:
+		return e.DefaultCommand(message)
 	}
 }
 
 func (e *ProjectCmd) Name() string {
-	return "Project"
+	return "Project Command"
 }
 
 func (e *ProjectCmd) Help(message *model.DiscordMessage) error {

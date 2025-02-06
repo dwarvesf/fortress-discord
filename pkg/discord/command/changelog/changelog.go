@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+
 	"github.com/dwarvesf/fortress-discord/pkg/discord/history"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/service"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view"

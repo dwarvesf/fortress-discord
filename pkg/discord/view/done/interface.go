@@ -9,4 +9,6 @@ type DoneViewer interface {
 	CantSendReward(original *model.DiscordMessage) error
 	Error(original *model.DiscordMessage, msg string) error
 	Success(original *model.DiscordMessage) error
+
+	Help(original *model.DiscordMessage) error
 }

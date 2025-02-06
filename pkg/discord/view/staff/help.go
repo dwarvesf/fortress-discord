@@ -1,4 +1,4 @@
-package earn
+package staff
 
 import (
 	"strings"
@@ -9,16 +9,16 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
-func (e *Earn) Help(message *model.DiscordMessage) error {
+func (s *Staff) Help(message *model.DiscordMessage) error {
 	content := []string{
-		"**Earn Commands**",
+		"**Staff Commands**",
 		"",
-		"`?earn list` - List available earning opportunities",
-		"`?earn help` - Show this help message",
+		"`?staff list` - List staff members",
+		"`?staff help` - Show this help message",
 		"",
 		"**Aliases**:",
-		"`?earn ls` - Shorthand for list",
-		"`?earn h` - Shorthand for help",
+		"`?staff ls` - Shorthand for list",
+		"`?staff h` - Shorthand for help",
 	}
 
 	msg := &discordgo.MessageEmbed{
@@ -26,5 +26,5 @@ func (e *Earn) Help(message *model.DiscordMessage) error {
 		Description: strings.Join(content, "\n"),
 	}
 
-	return base.SendEmbededMessage(e.ses, message, msg)
+	return base.SendEmbededMessage(s.ses, message, msg)
 }

@@ -15,7 +15,7 @@ func (c command) Execute(message *model.DiscordMessage) error {
 		return c.DefaultCommand(message)
 	case 2:
 		switch message.ContentArgs[1] {
-		case "help":
+		case "help", "h":
 			return c.Help(message)
 		default:
 			return c.DefaultCommand(message)

@@ -9,4 +9,5 @@ import (
 type TopicViewer interface {
 	List(original *model.DiscordMessage, timeRange string, researchTopic model.DiscordResearchTopicResponse) error
 	BuildMessage(timeRange string, researchTopic model.DiscordResearchTopicResponse) (msg *discordgo.MessageEmbed, components []discordgo.MessageComponent)
+	Help(original *model.DiscordMessage) error
 }

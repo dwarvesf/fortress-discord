@@ -22,20 +22,6 @@ func New(ses *discordgo.Session) Viewer {
 	}
 }
 
-func (v *Profile) Help(message *model.DiscordMessage) error {
-	content := []string{
-		"**?profile @user**・get employee profile",
-		"*Example:* `?profile @nam`",
-	}
-
-	msg := &discordgo.MessageEmbed{
-		Title:       "**Welcome to Fortress Discord Bot**",
-		Description: strings.Join(content, "\n"),
-	}
-
-	return base.SendEmbededMessage(v.ses, message, msg)
-}
-
 func (v *Profile) Render(original *model.DiscordMessage, employees []model.Employee) error {
 	msg := &discordgo.MessageEmbed{}
 	if len(employees) == 0 {

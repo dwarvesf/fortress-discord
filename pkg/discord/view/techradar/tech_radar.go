@@ -1,6 +1,8 @@
 package techradar
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"github.com/bwmarrin/discordgo"
+)
 
 type TechRadar struct {
 	ses *discordgo.Session
