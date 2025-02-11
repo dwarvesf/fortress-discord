@@ -21,6 +21,12 @@ func New(adapter adapter.IAdapter, l logger.Logger) AIServicer {
 }
 
 func (a *AI) ProcessText(input string) (*model.AIResponse, error) {
+	err := a.adapter.N8n().ForwardPromptText(input)
+	if err != nil {
+		fmt.Printf("failed to forward AI text to N8N. Error: %v", err)
+		return nil, err
+	}
+
 	response, err := a.adapter.Dify().ProcessAIText(input)
 	if err != nil {
 		fmt.Printf("failed to process AI text. Error: %v", err)

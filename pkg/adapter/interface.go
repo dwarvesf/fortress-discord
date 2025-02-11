@@ -6,6 +6,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/ir"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
+	"github.com/dwarvesf/fortress-discord/pkg/adapter/n8n"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/tono"
 )
@@ -18,4 +19,5 @@ type IAdapter interface {
 	Dify() dify.DifyAdapter
 	IR() ir.IRAdapter
 	Icy() icy.IcyAdapter
+	N8n() n8n.N8nAdapter
 }
