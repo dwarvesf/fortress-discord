@@ -6,4 +6,5 @@ import (
 
 type AIServicer interface {
 	ProcessText(input string) (*model.AIResponse, error)
+	ProcessTextWithN8N(input string) (*model.AIResponse, error)
 }

@@ -31,7 +31,7 @@ func (a *AI) ProcessAI(message *model.DiscordMessage) error {
 	}
 
 	// Process the text using the AI service
-	response, err := a.svc.AI().ProcessText(input)
+	response, err := a.svc.AI().ProcessTextWithN8N(input)
 	if err != nil {
 		a.L.Error(err, "failed to process AI text")
 		return err
