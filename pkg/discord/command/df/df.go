@@ -27,7 +27,7 @@ func New(l logger.Logger, svc service.Servicer, view view.Viewer, cfg *config.Co
 }
 
 func (a *DF) ProcessWithN8N(message *model.DiscordMessage) error {
-	input := strings.TrimSpace(strings.TrimPrefix(message.RawContent, "?ai"))
+	input := strings.TrimSpace(strings.TrimPrefix(message.RawContent, "?df"))
 
 	if input == "" {
 		return a.view.Error().Raise(message, "Please provide some text to process.")
