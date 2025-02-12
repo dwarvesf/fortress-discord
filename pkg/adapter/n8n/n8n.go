@@ -8,13 +8,17 @@ import (
 )
 
 type N8n struct {
-	WebhookURL string
+	WebhookURL      string
+	WebhookUsername string
+	WebhookPassword string
 }
 
 // New function return dify service
-func New(WebhookURL string) *N8n {
+func New(WebhookURL, WebhookUsername, WebhookPassword string) *N8n {
 	return &N8n{
-		WebhookURL: WebhookURL,
+		WebhookURL:      WebhookURL,
+		WebhookUsername: WebhookUsername,
+		WebhookPassword: WebhookPassword,
 	}
 }
 
@@ -31,13 +35,19 @@ func (n *N8n) ForwardPromptText(input, authorName, authorId string) (content str
 		return "", err
 	}
 
-	resp, err := http.Post(n.WebhookURL, "application/json", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", n.WebhookURL, bytes.NewBuffer(jsonData))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.SetBasicAuth(n.WebhookUsername, n.WebhookPassword)
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", err
 	}
 	defer resp.Body.Close()
 
-	// Read raw text response
 	responseBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err

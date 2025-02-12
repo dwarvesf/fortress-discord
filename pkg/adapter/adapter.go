@@ -38,7 +38,7 @@ func New(cfg *config.Config, l logger.Logger) IAdapter {
 			Dify:     dify.New(cfg.Dify.BaseURL, cfg.Dify.SummarizerAppToken, cfg.Dify.ProcessAIAppToken),
 			IR:       ir.New(cfg),
 			Icy:      icy.New(cfg.Endpoint.Icy),
-			N8n:      n8n.New(cfg.N8n.WebhookURL),
+			N8n:      n8n.New(cfg.N8n.WebhookURL, cfg.N8n.WebhookUsername, cfg.N8n.WebhookPassword),
 		},
 	}
 }

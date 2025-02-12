@@ -75,7 +75,9 @@ type Dify struct {
 }
 
 type N8n struct {
-	WebhookURL string
+	WebhookURL      string
+	WebhookUsername string
+	WebhookPassword string
 }
 
 type ENV interface {
@@ -126,7 +128,9 @@ func Generate(v ENV) *Config {
 			ProcessAIAppToken:  v.GetString("DIFY_PROCESS_AI_APP_TOKEN"),
 		},
 		N8n: N8n{
-			WebhookURL: v.GetString("N8N_WEBHOOK_URL"),
+			WebhookURL:      v.GetString("N8N_WEBHOOK_URL"),
+			WebhookUsername: v.GetString("N8N_WEBHOOK_USERNAME"),
+			WebhookPassword: v.GetString("N8N_WEBHOOK_PASSWORD"),
 		},
 	}
 }
