@@ -10,6 +10,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/deliverymetrics"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/command/df"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/command/earn"
@@ -93,6 +94,7 @@ func New(cfg *config.Config, l logger.Logger, svc service.Servicer, view view.Vi
 		ogif.New(l, svc, view, cfg),
 		ai.New(l, svc, view),
 		project.New(l, svc, view, cfg),
+		df.New(l, svc, view, cfg),
 	})
 
 	return cmd

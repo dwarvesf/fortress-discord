@@ -18,6 +18,7 @@ type Config struct {
 	Discord   Discord
 	Reddit    Reddit
 	Dify      Dify
+	N8n       N8n
 
 	Endpoint Endpoint
 }
@@ -72,6 +73,11 @@ type Dify struct {
 	SummarizerAppToken string
 	ProcessAIAppToken  string
 }
+
+type N8n struct {
+	WebhookURL string
+}
+
 type ENV interface {
 	GetBool(string) bool
 	GetString(string) string
@@ -118,6 +124,9 @@ func Generate(v ENV) *Config {
 			BaseURL:            v.GetString("DIFY_BASE_URL"),
 			SummarizerAppToken: v.GetString("DIFY_SUMMARIZER_APP_TOKEN"),
 			ProcessAIAppToken:  v.GetString("DIFY_PROCESS_AI_APP_TOKEN"),
+		},
+		N8n: N8n{
+			WebhookURL: v.GetString("N8N_WEBHOOK_URL"),
 		},
 	}
 }

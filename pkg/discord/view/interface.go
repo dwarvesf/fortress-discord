@@ -5,6 +5,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/deliverymetrics"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/df"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
@@ -58,4 +59,5 @@ type Viewer interface {
 	News() news.Viewer
 	Topic() topic.TopicViewer
 	Ogif() ogif.OgifViewer
+	DF() df.DFViewer
 }

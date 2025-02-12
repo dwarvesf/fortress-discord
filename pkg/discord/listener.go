@@ -29,8 +29,10 @@ func (d *Discord) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCrea
 	// add "is typing" indicator
 	d.Session.ChannelTyping(m.ChannelID)
 
+	var msg = d.parseMessage(m)
+
 	// pipethrough message to command
-	err := d.Command.Execute(d.parseMessage(m))
+	err := d.Command.Execute(msg)
 	if err != nil {
 		d.L.Error(err, "failed to execute command")
 	}

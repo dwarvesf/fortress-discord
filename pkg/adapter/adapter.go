@@ -6,6 +6,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/icy"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/ir"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/mochi"
+	"github.com/dwarvesf/fortress-discord/pkg/adapter/n8n"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/openai"
 	"github.com/dwarvesf/fortress-discord/pkg/adapter/tono"
 	"github.com/dwarvesf/fortress-discord/pkg/config"
@@ -24,6 +25,7 @@ type subAdapter struct {
 	Dify     dify.DifyAdapter
 	IR       ir.IRAdapter
 	Icy      icy.IcyAdapter
+	N8n      n8n.N8nAdapter
 }
 
 func New(cfg *config.Config, l logger.Logger) IAdapter {
@@ -36,6 +38,7 @@ func New(cfg *config.Config, l logger.Logger) IAdapter {
 			Dify:     dify.New(cfg.Dify.BaseURL, cfg.Dify.SummarizerAppToken, cfg.Dify.ProcessAIAppToken),
 			IR:       ir.New(cfg),
 			Icy:      icy.New(cfg.Endpoint.Icy),
+			N8n:      n8n.New(cfg.N8n.WebhookURL),
 		},
 	}
 }
@@ -67,4 +70,8 @@ func (a *Adapter) IR() ir.IRAdapter {
 
 func (a *Adapter) Icy() icy.IcyAdapter {
 	return a.subAdapter.Icy
+}
+
+func (a *Adapter) N8n() n8n.N8nAdapter {
+	return a.subAdapter.N8n
 }
