@@ -33,8 +33,8 @@ func (a *AI) ProcessText(input string) (*model.AIResponse, error) {
 	}, nil
 }
 
-func (a *AI) ProcessTextWithN8N(input string) (*model.AIResponse, error) {
-	content, err := a.adapter.N8n().ForwardPromptText(input)
+func (a *AI) ProcessTextWithN8N(input, authorId, authorName string) (*model.AIResponse, error) {
+	content, err := a.adapter.N8n().ForwardPromptText(input, authorName, authorId)
 	if err != nil {
 		fmt.Printf("failed to forward AI text to N8N webhook. Error: %v", err)
 		return nil, err

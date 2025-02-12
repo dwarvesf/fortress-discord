@@ -1,5 +1,5 @@
 package n8n
 
 type N8nAdapter interface {
-	ForwardPromptText(prompt string) (content string, err error)
+	ForwardPromptText(prompt, authorName, authorId string) (content string, err error)
 }

@@ -3,7 +3,7 @@ package n8n
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+	"io"
 	"net/http"
 )
 
@@ -19,9 +19,11 @@ func New(WebhookURL string) *N8n {
 }
 
 // ForwardPromptText forwards the prompt text from ?ai command to the N8n webhook
-func (n *N8n) ForwardPromptText(prompt string) (content string, err error) {
+func (n *N8n) ForwardPromptText(input, authorName, authorId string) (content string, err error) {
 	payload := map[string]string{
-		"prompt": prompt,
+		"content":     input,
+		"author_name": authorName,
+		"author_id":   authorId,
 	}
 
 	jsonData, err := json.Marshal(payload)
@@ -33,21 +35,13 @@ func (n *N8n) ForwardPromptText(prompt string) (content string, err error) {
 	if err != nil {
 		return "", err
 	}
+	defer resp.Body.Close()
 
-	var results []struct {
-		Output string `json:"output"`
-	}
-
-	if err := json.NewDecoder(resp.Body).Decode(&results); err != nil {
+	// Read raw text response
+	responseBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
 		return "", err
 	}
 
-	if len(results) == 0 {
-		return "", errors.New("No response from N8N")
-	}
-
-	result := results[0]
-	defer resp.Body.Close()
-
-	return result.Output, nil
+	return string(responseBytes), nil
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/brainery"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/changelog"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/deliverymetrics"
+	"github.com/dwarvesf/fortress-discord/pkg/discord/view/df"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/digest"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/done"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/earn"
@@ -64,6 +65,7 @@ type subView struct {
 	News            news.Viewer
 	Topic           topic.TopicViewer
 	Ogif            ogif.OgifViewer
+	DF              df.DFViewer
 }
 
 func New(ses *discordgo.Session) Viewer {
@@ -96,6 +98,7 @@ func New(ses *discordgo.Session) Viewer {
 			News:            news.New(ses),
 			Topic:           topic.New(ses),
 			Ogif:            ogif.New(ses),
+			DF:              df.New(ses),
 		},
 	}
 }
@@ -206,4 +209,8 @@ func (v *View) Topic() topic.TopicViewer {
 
 func (v *View) Ogif() ogif.OgifViewer {
 	return v.subView.Ogif
+}
+
+func (v *View) DF() df.DFViewer {
+	return v.subView.DF
 }
