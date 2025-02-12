@@ -13,7 +13,7 @@ func (v view) Help(original *model.DiscordMessage) error {
 	content := []string{
 		"**DF Commands**",
 		"",
-		"`?df <query>` - Ask an DF employee assistant a question",
+		"`?df <query>` - Ask DF assistant a question",
 		"`?df help` - Show this help message",
 		"",
 		"**Aliases**:",

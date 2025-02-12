@@ -49,5 +49,5 @@ func (d *DF) PermissionCheck(message *model.DiscordMessage) (bool, []string) {
 	roles = append(roles, userRoles...)
 	roles = append(roles, message.Roles...)
 
-	return permutil.CheckAdmin(roles)
+	return permutil.AdminOrAbove(roles)
 }
