@@ -1,6 +1,7 @@
 package df
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/dwarvesf/fortress-discord/pkg/config"
@@ -36,8 +37,8 @@ func (a *DF) ProcessWithN8N(message *model.DiscordMessage) error {
 	// Process the text using the AI service
 	response, err := a.svc.AI().ProcessTextWithN8N(input, message.Author.ID, message.Author.Username)
 	if err != nil {
-		a.L.Error(err, "failed to process AI text")
-		return err
+		a.L.Error(err, "failed to process AI text with N8N")
+		return a.view.Error().Raise(message, fmt.Sprintf("Error: %v", err.Error()))
 	}
 
 	// Send the AI response back to the user

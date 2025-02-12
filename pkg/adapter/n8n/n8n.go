@@ -3,8 +3,11 @@ package n8n
 import (
 	"bytes"
 	"encoding/json"
+	"html"
 	"io"
 	"net/http"
+
+	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
 
 type N8n struct {
@@ -23,7 +26,7 @@ func New(WebhookURL, WebhookUsername, WebhookPassword string) *N8n {
 }
 
 // ForwardPromptText forwards the prompt text from ?ai command to the N8n webhook
-func (n *N8n) ForwardPromptText(input, authorName, authorId string) (content string, err error) {
+func (n *N8n) ForwardPromptText(input, authorName, authorId string) (*model.N8NEmbedResponse, error) {
 	payload := map[string]string{
 		"content":     input,
 		"author_name": authorName,
@@ -32,26 +35,34 @@ func (n *N8n) ForwardPromptText(input, authorName, authorId string) (content str
 
 	jsonData, err := json.Marshal(payload)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	req, err := http.NewRequest("POST", n.WebhookURL, bytes.NewBuffer(jsonData))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(n.WebhookUsername, n.WebhookPassword)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer resp.Body.Close()
 
-	responseBytes, err := io.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(responseBytes), nil
+	// Unescape the HTML characters in the response body
+	unescapedBody := html.UnescapeString(string(bodyBytes))
+
+	var embedResponse model.N8NEmbedResponse
+	if err := json.Unmarshal([]byte(unescapedBody), &embedResponse); err != nil {
+		return nil, err
+	}
+
+	return &embedResponse, nil
 }

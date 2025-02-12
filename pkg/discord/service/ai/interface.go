@@ -6,5 +6,5 @@ import (
 
 type AIServicer interface {
 	ProcessText(input string) (*model.AIResponse, error)
-	ProcessTextWithN8N(input, authorId, authorName string) (*model.AIResponse, error)
+	ProcessTextWithN8N(input, authorId, authorName string) (*model.N8NEmbedResponse, error)
 }

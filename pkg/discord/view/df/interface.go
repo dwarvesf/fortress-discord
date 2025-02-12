@@ -5,6 +5,6 @@ import (
 )
 
 type DFViewer interface {
-	SendResponse(message *model.DiscordMessage, response *model.AIResponse) error
+	SendResponse(message *model.DiscordMessage, response *model.N8NEmbedResponse) error
 	Help(message *model.DiscordMessage) error
 }
