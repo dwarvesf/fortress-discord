@@ -1,6 +1,8 @@
 package df
 
 import (
+	"strconv"
+
 	"github.com/bwmarrin/discordgo"
 
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
@@ -17,11 +19,32 @@ func New(ses *discordgo.Session) DFViewer {
 	}
 }
 
-func (a *view) SendResponse(message *model.DiscordMessage, response *model.AIResponse) error {
-	msg := &discordgo.MessageEmbed{
-		Title:       "DF Assistant Response",
-		Description: response.Response,
+func (v *view) SendResponse(message *model.DiscordMessage, response *model.N8NEmbedResponse) error {
+	fields := make([]*discordgo.MessageEmbedField, 0)
+	if len(response.Fields) > 0 {
+		for _, field := range response.Fields {
+			fields = append(fields, &discordgo.MessageEmbedField{
+				Name:   field.Name,
+				Value:  field.Value,
+				Inline: field.Inline,
+			})
+		}
+	}
+	footer := &discordgo.MessageEmbedFooter{
+		Text: response.Footer.Text,
 	}
 
-	return base.SendEmbededMessage(a.ses, message, msg)
+	colorValue, err := strconv.ParseInt(response.Color, 0, 32)
+	if err != nil {
+		return err
+	}
+
+	msg := &discordgo.MessageEmbed{
+		Title:       response.Title,
+		Description: response.Description,
+		Color:       int(colorValue),
+		Fields:      fields,
+		Footer:      footer,
+	}
+	return base.SendEmbededMessage(v.ses, message, msg)
 }
