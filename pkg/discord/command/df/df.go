@@ -34,9 +34,15 @@ func (a *DF) ProcessWithN8N(message *model.DiscordMessage) error {
 		return a.view.Error().Raise(message, "Please provide some text to process.")
 	}
 
+	userSortRoles, err := a.svc.Profile().GetDiscordRoles(a.cfg.Discord.ID.DwarvesGuild, message.Author.ID)
+	if err != nil {
+		a.L.Error(err, "failed to get sort roles for author ID")
+		return a.view.Error().Raise(message, fmt.Sprintf("Error: %v", err.Error()))
+	}
+
 	highestRole := ""
-	if len(message.Roles) > 0 {
-		highestRole = message.Roles[0]
+	if len(userSortRoles) > 0 {
+		highestRole = userSortRoles[0]
 	}
 
 	// Process the text using the AI service
