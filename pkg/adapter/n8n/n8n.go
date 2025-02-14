@@ -26,11 +26,12 @@ func New(WebhookURL, WebhookUsername, WebhookPassword string) *N8n {
 }
 
 // ForwardPromptText forwards the prompt text from ?ai command to the N8n webhook
-func (n *N8n) ForwardPromptText(input, authorName, authorId string) (*model.N8NEmbedResponse, error) {
+func (n *N8n) ForwardPromptText(input, authorName, authorId, authorRoleId string) (*model.N8NEmbedResponse, error) {
 	payload := map[string]string{
-		"content":     input,
-		"author_name": authorName,
-		"author_id":   authorId,
+		"content":        input,
+		"author_name":    authorName,
+		"author_id":      authorId,
+		"author_role_id": authorRoleId,
 	}
 
 	jsonData, err := json.Marshal(payload)

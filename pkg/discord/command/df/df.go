@@ -34,8 +34,13 @@ func (a *DF) ProcessWithN8N(message *model.DiscordMessage) error {
 		return a.view.Error().Raise(message, "Please provide some text to process.")
 	}
 
+	highestRole := ""
+	if len(message.Roles) > 0 {
+		highestRole = message.Roles[0]
+	}
+
 	// Process the text using the AI service
-	response, err := a.svc.AI().ProcessTextWithN8N(input, message.Author.ID, message.Author.Username)
+	response, err := a.svc.AI().ProcessTextWithN8N(input, message.Author.ID, message.Author.Username, highestRole)
 	if err != nil {
 		a.L.Error(err, "failed to process AI text with N8N")
 		return a.view.Error().Raise(message, fmt.Sprintf("Error: %v", err.Error()))
