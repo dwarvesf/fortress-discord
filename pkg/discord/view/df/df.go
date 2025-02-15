@@ -39,12 +39,14 @@ func (v *view) SendResponse(message *model.DiscordMessage, response *model.N8NEm
 		return err
 	}
 
-	msg := &discordgo.MessageEmbed{
+	// Create message send data with the reference
+	embed := &discordgo.MessageEmbed{
 		Title:       response.Title,
 		Description: response.Description,
 		Color:       int(colorValue),
 		Fields:      fields,
 		Footer:      footer,
 	}
-	return base.SendEmbededMessage(v.ses, message, msg)
+
+	return base.SendComplexReplyMessageWithChannel(v.ses, message, embed, nil, message.ChannelId)
 }

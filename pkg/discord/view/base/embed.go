@@ -29,6 +29,21 @@ func SendEmbededMessageWithChannel(ses *discordgo.Session, original *model.Disco
 	return err
 }
 
+func SendComplexReplyMessageWithChannel(ses *discordgo.Session, original *model.DiscordMessage, embed *discordgo.MessageEmbed, components []discordgo.MessageComponent, channelId string) error {
+	msgData := &discordgo.MessageSend{
+		Embed:      Normalize(ses, embed),
+		Components: components,
+		Reference: &discordgo.MessageReference{
+			MessageID: original.MessageId,
+			ChannelID: channelId,
+			GuildID:   original.GuildId,
+		},
+	}
+
+	_, err := ses.ChannelMessageSendComplex(channelId, msgData)
+	return err
+}
+
 func SendMessage(ses *discordgo.Session, original *model.DiscordMessage, msg *discordgo.Message) error {
 	return SendMessageWithChannel(ses, original, msg, original.ChannelId)
 }
