@@ -82,6 +82,7 @@ func (d *Discord) parseMessage(m *discordgo.MessageCreate) *model.DiscordMessage
 	return &model.DiscordMessage{
 		RawContent:  m.Message.Content,
 		ContentArgs: parsedContent,
+		MessageId:   m.ID,
 		ChannelId:   m.ChannelID,
 		GuildId:     m.GuildID,
 		Author:      m.Author,
