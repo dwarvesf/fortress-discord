@@ -2,10 +2,10 @@ package salary
 
 import (
 	"fmt"
-	"github.com/dwarvesf/fortress-discord/pkg/constant"
 
 	"github.com/bwmarrin/discordgo"
 
+	"github.com/dwarvesf/fortress-discord/pkg/constant"
 	"github.com/dwarvesf/fortress-discord/pkg/discord/view/base"
 	"github.com/dwarvesf/fortress-discord/pkg/model"
 )
