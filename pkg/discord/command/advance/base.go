@@ -10,7 +10,7 @@ func (e *Salary) Prefix() []string {
 
 // Execute is where we handle logic for each command
 func (e *Salary) Execute(message *model.DiscordMessage) error {
-	return e.view.Error().CommandNotFound(message)
+	return e.view.Error().CommandTemporarilyDisabled(message)
 }
 
 func (e *Salary) Name() string {
