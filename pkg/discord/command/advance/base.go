@@ -10,18 +10,7 @@ func (e *Salary) Prefix() []string {
 
 // Execute is where we handle logic for each command
 func (e *Salary) Execute(message *model.DiscordMessage) error {
-	if len(message.ContentArgs) == 1 {
-		return e.DefaultCommand(message)
-	}
-
-	switch message.ContentArgs[1] {
-	case "advance", "adv":
-		return e.Advance(message)
-	case "help", "h":
-		return e.Help(message)
-	default:
-		return e.DefaultCommand(message)
-	}
+	return e.view.Error().CommandTemporarilyDisabled(message)
 }
 
 func (e *Salary) Name() string {
